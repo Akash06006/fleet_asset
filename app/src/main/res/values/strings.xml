@@ -279,5 +279,8 @@
     <string name="track">Track</string>
     <string name="job_finished_msg">Job Finished Successfully</string>
     <string name="logout_msg">Logout Successfully</string>
+    <string name="warning_finish_job">Do you really want to finish this job?</string>
+    <string name="warning_cancel_job">Do you really want to cancel this job?</string>
+    <string name="warning_reject_job">Do you really want to reject this job?</string>
 
 </resources>

@@ -172,6 +172,7 @@ open class TrackingActivity : BaseActivity(), OnMapReadyCallback, LocationListen
     var runCall = 0
     var serviceIntent : Intent? = null
     var polyPath : MutableList<LatLng>? = null
+    private var confirmationDialog : Dialog? = null
 
     companion object {
         var categoryListids : ArrayList<String>? = null
@@ -305,53 +306,14 @@ open class TrackingActivity : BaseActivity(), OnMapReadyCallback, LocationListen
             fun(it : String?) {
                 when (it) {
                     "btn_clear" -> {
-                        GlobalConstants.JOB_STARTED = "false"
-                        locationsViewModel.updateJobStatus("1", jobId.toInt())
-                        var upload = UploadDataToServer()
-                        upload.synchData(jobId, "track")
-
-                        SharedPrefClass().putObject(
-                            MyApplication.instance.applicationContext,
-                            GlobalConstants.JOB_STARTED,
-                            "false"
+                        confirmationDialog = mDialogClass.setDefaultDialog(
+                            this,
+                            this,
+                            "Finish Job",
+                            getString(R.string.warning_finish_job)
                         )
+                        confirmationDialog?.show()
 
-                        SharedPrefClass().putObject(
-                            MyApplication.instance.applicationContext,
-                            GlobalConstants.JOBID,
-                            0
-                        )
-
-                        SharedPrefClass().putObject(
-                            MyApplication.instance.applicationContext,
-                            GlobalConstants.DEST_LAT,
-                            ""
-                        )
-
-                        SharedPrefClass().putObject(
-                            MyApplication.instance.applicationContext,
-                            GlobalConstants.DEST_LONG,
-                            ""
-                        )
-
-                        gpsService?.stopTracking()
-                        gpsService?.stopService(
-                            Intent(
-                                this,
-                                BackgroundLocationService::class.java
-                            )
-                        )
-                        this.getApplication()
-                            .unbindService(serviceConnection)
-
-                        mFusedLocationClass?.stopLocationUpdates()
-                        if (UtilsFunctions.isNetworkConnected()) {
-                            trackingViewModel.startJob("1", jobId)
-                        } else {
-                            showToastSuccess(getString(R.string.job_finished_msg))
-                            startActivity(Intent(this, DashboardActivity::class.java))
-                            finish()
-                        }
                     }
                 }
             })
@@ -512,9 +474,6 @@ open class TrackingActivity : BaseActivity(), OnMapReadyCallback, LocationListen
             .zoom(17.0f)
             .tilt(30f)
             .build()
-        /*  mGoogleMap!!.moveCamera(CameraUpdateFactory.newCameraPosition(mCameraPosition))
-          mGoogleMap!!.setMinZoomPreference(2.0f)
-          mGoogleMap!!.setMaxZoomPreference(17.0f)*/
         if (!SharedPrefClass().getPrefValue(
                 MyApplication.instance.applicationContext,
                 GlobalConstants.JOBID
@@ -614,54 +573,6 @@ open class TrackingActivity : BaseActivity(), OnMapReadyCallback, LocationListen
 
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun drawPolyLine(latitudes : JSONArray, longitudes : JSONArray) {
-        //mGoogleMap!!.clear()
-        val polyline = PolylineOptions().width(5f).color(Color.BLACK).geodesic(true)
-        points.clear()
-        removeMarkers(mMarkers)
-
-        for (t in 0 until latitudes.length() - 1) {
-            val point = LatLng(
-                java.lang.Double.parseDouble(latitudes.get(t).toString()),
-                java.lang.Double.parseDouble(longitudes.get(t).toString())
-            )
-            points.add(point)
-            polyline.add(point)
-            polyline.geodesic(true)
-
-        }
-
-        if (points.size > 0) {
-            val mMarker = mGoogleMap!!.addMarker(
-                MarkerOptions()
-                    .position(
-                        LatLng(
-                            points[points.size - 1].latitude,
-                            points[points.size - 1].longitude
-                        )
-                    )
-                    //.snippet(points[0].longitude.toString() + "")
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
-            )
-            mMarkers.add(mMarker)
-            // .icon(BitmapDescriptorFactory.fromResource(R.drawable.current_location)));
-//           val m1 = mGoogleMap!!.addMarker(
-//               MarkerOptions()
-//                   .position(LatLng(location.latitude, location.longitude))
-//                   .anchor(0.5f, 0.5f)
-//                   .snippet(location.latitude.toString() + "")
-//                   .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_pin_new))
-//           )
-//           m1.tag = points[0].longitude
-        }
-        if (mLine != null) mLine!!.remove()
-        mLine = mGoogleMap!!.addPolyline(polyline)
-        // List<LatLng> snappedPoints = new ArrayList<>();
-        //new GetSnappedPointsAsyncTask().execute(sourcePoints, null, snappedPoints);
-        ///
-    }
-
     //SOCKET FUNCTIONALITY
     override fun onSocketCall(onMethadCall : String, vararg jsonObject : Any) {
         val serverResponse = jsonObject[0] as JSONObject
@@ -681,13 +592,6 @@ open class TrackingActivity : BaseActivity(), OnMapReadyCallback, LocationListen
                         obj.optString("to_lat")
                         obj.getString("to_lat")
                         obj.get("to_lat").toString()
-                        /*  if (obj.get("location_latitude") != null) {
-                              val locationLatitude =
-                                  innerResponse.get("location_latitude") as JSONArray
-                              val locationLongitude =
-                                  innerResponse.get("location_longitude") as JSONArray
-                              drawPolyLine(locationLatitude, locationLongitude)
-                          }*/
                     } catch (e1 : Exception) {
                         e1.printStackTrace()
                     }
@@ -695,44 +599,6 @@ open class TrackingActivity : BaseActivity(), OnMapReadyCallback, LocationListen
             }
         } catch (e : Exception) {
             e.printStackTrace()
-        }
-
-    }
-
-    private fun callSocketMethods(
-        methodName : String,
-        list : ArrayList<JsonObject>
-    ) {
-        val object5 = JSONObject()
-        when (methodName) {
-            "updateLocation" -> try {
-                object5.put("methodName", methodName)
-                object5.put("lat_long", list.toString())
-                //  object5.put("longitude", mLongitude)
-                object5.put(
-                    "driverId", sharedPrefClass!!.getPrefValue(
-                        MyApplication.instance,
-                        GlobalConstants.USERID
-                    ).toString()
-                )
-                object5.put("jobId", jobId)
-                socket.sendDataToServer(methodName, object5)
-            } catch (e : Exception) {
-                e.printStackTrace()
-            }
-            "getLocation" -> try {
-                object5.put("methodName", methodName)
-                object5.put(
-                    "driverId", sharedPrefClass!!.getPrefValue(
-                        MyApplication.instance,
-                        GlobalConstants.USERID
-                    ).toString()
-                )
-                object5.put("jobId", jobId)
-                socket.sendDataToServer(methodName, object5)
-            } catch (e : Exception) {
-                e.printStackTrace()
-            }
         }
 
     }
@@ -790,12 +656,69 @@ open class TrackingActivity : BaseActivity(), OnMapReadyCallback, LocationListen
                 // locationDialog.dismiss();
                 startActivity(intent)
             }
+            "Finish Job" -> {
+                GlobalConstants.JOB_STARTED = "false"
+                locationsViewModel.updateJobStatus("1", jobId.toInt())
+                var upload = UploadDataToServer()
+                upload.synchData(jobId, "track")
+
+                SharedPrefClass().putObject(
+                    MyApplication.instance.applicationContext,
+                    GlobalConstants.JOB_STARTED,
+                    "false"
+                )
+
+                SharedPrefClass().putObject(
+                    MyApplication.instance.applicationContext,
+                    GlobalConstants.JOBID,
+                    0
+                )
+
+                SharedPrefClass().putObject(
+                    MyApplication.instance.applicationContext,
+                    GlobalConstants.DEST_LAT,
+                    ""
+                )
+
+                SharedPrefClass().putObject(
+                    MyApplication.instance.applicationContext,
+                    GlobalConstants.DEST_LONG,
+                    ""
+                )
+
+                gpsService?.stopTracking()
+                gpsService?.stopService(
+                    Intent(
+                        this,
+                        BackgroundLocationService::class.java
+                    )
+                )
+                this.getApplication()
+                    .unbindService(serviceConnection)
+
+                mFusedLocationClass?.stopLocationUpdates()
+                if (UtilsFunctions.isNetworkConnected()) {
+                    trackingViewModel.startJob("1", jobId)
+                } else {
+                    showToastSuccess(getString(R.string.job_finished_msg))
+                    startActivity(Intent(this, DashboardActivity::class.java))
+                    finish()
+                }
+            }
         }
     }
 
     override fun onDialogCancelAction(mView : View?, mKey : String) {
-        dialog!!.dismiss()
-        locationDialog!!.dismiss()
+        when (mKey) {
+            "GPSCheck" -> {
+                dialog!!.dismiss()
+                locationDialog!!.dismiss()
+            }
+            "Finish Job" -> {
+                confirmationDialog?.dismiss()
+            }
+        }
+
     }
 
     fun checkGPS() {

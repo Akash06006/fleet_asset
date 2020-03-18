@@ -143,12 +143,13 @@ class DashboardActivity : BaseActivity(),
                         activityDashboardBinding!!.drawerLayout.closeDrawers()
                     }
                     "tv_nav_logout" -> {
-                        mDialogClass.setDefaultDialog(
+                        confirmationDialog =mDialogClass.setDefaultDialog(
                             this,
                             this,
                             "logout",
-                            "Do you reallt want to logout?"
+                            "Do you really want to logout?"
                         )
+                        confirmationDialog?.show()
 
                     }
                     "toolbar" -> {

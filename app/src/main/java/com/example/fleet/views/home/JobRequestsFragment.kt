@@ -1,5 +1,6 @@
 package com.example.fleet.views.home
 
+import android.app.Dialog
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -11,13 +12,17 @@ import com.example.fleet.databinding.FragmentHomeBinding
 import com.example.fleet.model.CommonModel
 import com.example.fleet.model.home.JobsResponse
 import com.example.fleet.utils.BaseFragment
+import com.example.fleet.utils.DialogClass
+import com.example.fleet.utils.DialogssInterface
 import com.example.fleet.viewmodels.home.HomeViewModel
 import com.google.gson.JsonObject
 import com.uniongoods.adapters.JobRequestsAdapter
 
-class JobRequestsFragment : BaseFragment() {
+class JobRequestsFragment : BaseFragment(), DialogssInterface {
     private var pendingJobsList = ArrayList<JobsResponse.Data>()
     private var myJobsListAdapter : JobRequestsAdapter? = null
+    private var confirmationDialog : Dialog? = null
+    private var mDialogClass = DialogClass()
     override fun getLayoutResId() : Int {
         return R.layout.fragment_home
     }
@@ -69,7 +74,6 @@ class JobRequestsFragment : BaseFragment() {
 
         homeViewModel.acceptReject().observe(this,
             Observer<CommonModel> { response->
-                baseActivity.stopProgressDialog()
                 if (response != null) {
                     val message = response.message
                     when {
@@ -83,7 +87,10 @@ class JobRequestsFragment : BaseFragment() {
                         /* response.code == 204 -> {
                              FirebaseFunctions.sendOTP("signup", mJsonObject, this)
                          }*/
-                        else -> message?.let { UtilsFunctions.showToastError(it) }
+                        else -> message?.let {
+                            UtilsFunctions.showToastError(it)
+                            baseActivity.stopProgressDialog()
+                        }
                     }
 
                 }
@@ -98,7 +105,36 @@ class JobRequestsFragment : BaseFragment() {
         mJsonObject.addProperty(
             "jobId", jobId.toString()
         )
-        homeViewModel.acceptRejectJob(mJsonObject)
+        if (status.equals("2")) {
+            confirmationDialog = mDialogClass.setDefaultDialog(
+                activity!!,
+                this,
+                "Reject Job",
+                getString(R.string.warning_reject_job)
+            )
+            confirmationDialog?.show()
+        } else {
+            baseActivity.startProgressDialog()
+            homeViewModel.acceptRejectJob(mJsonObject)
+        }
+
+    }
+
+    override fun onDialogConfirmAction(mView : View?, mKey : String) {
+        when (mKey) {
+            "Reject Job" -> {
+                baseActivity.startProgressDialog()
+                confirmationDialog?.dismiss()
+                homeViewModel.acceptRejectJob(mJsonObject)
+
+            }
+        }
+    }
+
+    override fun onDialogCancelAction(mView : View?, mKey : String) {
+        when (mKey) {
+            "Reject Job" -> confirmationDialog?.dismiss()
+        }
     }
 
     private fun initRecyclerView() {

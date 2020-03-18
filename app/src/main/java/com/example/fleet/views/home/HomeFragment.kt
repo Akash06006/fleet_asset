@@ -2,6 +2,7 @@ package com.example.fleet.views.home
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -34,13 +35,16 @@ import com.example.fleet.socket.SocketClass
 import com.example.fleet.socket.SocketInterface
 import com.example.fleet.socket.TrackingActivity
 import com.example.fleet.utils.BaseFragment
+import com.example.fleet.utils.DialogClass
+import com.example.fleet.utils.DialogssInterface
 import com.example.fleet.viewmodels.home.HomeViewModel
 import com.google.android.gms.location.*
 import com.google.gson.JsonObject
 import com.uniongoods.adapters.MyJobsListAdapter
 import org.json.JSONObject
 
-class HomeFragment : BaseFragment(), SocketInterface {
+class
+HomeFragment : BaseFragment(), SocketInterface, DialogssInterface {
     private var mFusedLocationClass : FusedLocationClass? = null
     private var socket = SocketClass.socket
     private var jobsList = ArrayList<JobsResponse.Data>()
@@ -53,6 +57,8 @@ class HomeFragment : BaseFragment(), SocketInterface {
     var currentLat = ""
     var currentLong = ""
     var mJsonObjectStartJob = JsonObject()
+    private var confirmationDialog : Dialog? = null
+    private var mDialogClass = DialogClass()
 
     override fun getLayoutResId() : Int {
         return R.layout.fragment_home
@@ -111,10 +117,10 @@ class HomeFragment : BaseFragment(), SocketInterface {
                             fragmentHomeBinding.tvNoRecord.visibility = View.GONE
                             initRecyclerView()
                         }
-                        /* response.code == 204 -> {
-                             FirebaseFunctions.sendOTP("signup", mJsonObject, this)
-                         }*/
-                        else -> message?.let { showToastError(it) }
+                        else -> message?.let { showToastError(it)
+                            fragmentHomeBinding.rvJobs.visibility = View.GONE
+                            fragmentHomeBinding.tvNoRecord.visibility = View.VISIBLE
+                        }
                     }
 
                 }
@@ -166,9 +172,6 @@ class HomeFragment : BaseFragment(), SocketInterface {
 
                             UtilsFunctions.showToastSuccess(message!!)
                         }
-                        /* response.code == 204 -> {
-                             FirebaseFunctions.sendOTP("signup", mJsonObject, this)
-                         }*/
                         else -> message?.let { UtilsFunctions.showToastError(it) }
                     }
 
@@ -225,7 +228,31 @@ class HomeFragment : BaseFragment(), SocketInterface {
         mJsonObjectStartJob.addProperty(
             "status", 0
         )
-        homeViewModel.acceptRejectJob(mJsonObjectStartJob)
+        confirmationDialog =mDialogClass.setDefaultDialog(
+            activity!!,
+            this,
+            "Cancel Job",
+            getString(R.string.warning_cancel_job)
+        )
+        confirmationDialog?.show()
+
+    }
+
+    override fun onDialogConfirmAction(mView : View?, mKey : String) {
+        when (mKey) {
+            "Cancel Job" -> {
+                baseActivity.startProgressDialog()
+                confirmationDialog?.dismiss()
+                homeViewModel.acceptRejectJob(mJsonObjectStartJob)
+
+            }
+        }
+    }
+
+    override fun onDialogCancelAction(mView : View?, mKey : String) {
+        when (mKey) {
+            "Cancel Job" -> confirmationDialog?.dismiss()
+        }
     }
 
     fun startJob(
