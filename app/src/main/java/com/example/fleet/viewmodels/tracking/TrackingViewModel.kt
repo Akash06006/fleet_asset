@@ -3,9 +3,12 @@ package com.example.fleet.viewmodels.tracking
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import android.view.View
+import com.example.fleet.application.MyApplication
 import com.example.fleet.common.UtilsFunctions
+import com.example.fleet.constants.GlobalConstants
 import com.example.fleet.model.CommonModel
 import com.example.fleet.repositories.home.HomeJobsRepository
+import com.example.fleet.sharedpreference.SharedPrefClass
 import com.example.fleet.viewmodels.BaseViewModel
 import com.google.gson.JsonObject
 
@@ -16,7 +19,9 @@ class TrackingViewModel : BaseViewModel() {
     private var homeJobsRepository = HomeJobsRepository()
 
     init {
-        completejob = homeJobsRepository.startCompleteJob(null)
+        if (UtilsFunctions.isNetworkConnectedWithoutToast()) {
+            completejob = homeJobsRepository.startCompleteJob(null)
+        }
     }
 
     override fun isLoading() : LiveData<Boolean> {
@@ -38,8 +43,9 @@ class TrackingViewModel : BaseViewModel() {
     fun startJob(status : String, jobId : String) {
         if (UtilsFunctions.isNetworkConnected()) {
             var jsonObject = JsonObject()
+            jsonObject.addProperty("employeeId",  SharedPrefClass()!!.getPrefValue(MyApplication.instance, GlobalConstants.USERID) as String)
             jsonObject.addProperty("progressStatus", status)
-            jsonObject.addProperty("jobId", jobId)
+            jsonObject.addProperty("id", jobId)
             completejob = homeJobsRepository.startCompleteJob(jsonObject)
             mIsUpdating.postValue(true)
         }

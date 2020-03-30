@@ -10,24 +10,50 @@ class JobsResponse {
     @SerializedName("message")
     @Expose
     var message : String? = null
-    @SerializedName("data")
+    @SerializedName("body")
     @Expose
     var data : ArrayList<Data>? = null
 
+    /*{"id":"26f44e62-9c5e-4a26-97fe-357eb239f6b7","fromLocation":"SCF, Sector 118, Phase 3B-2, Sector 60, Sahibzada Ajit Singh Nagar
+    , Punjab 160055, India","toLocation":"Mohali 7 Phase, सेक्टर 61, साहिबजादा अजीत सिंह नगर, 160062, India","
+    fromLat":"30.7083219","toLat":"30.7017355","fromLongt":"76.723126","toLongt":"76.7247759","distance":"0.75",
+    "scheduleDatetime":"2020-03-30T18:03:00.000Z","employeeId":"1409dbcc-dcec-4b19-b5d7-287b68ea4d9f"
+    ,"progressStatus":0,"acceptStatus":0,"jobTypeId":"72de2fd1-5953-4379-ad5d-97eb6c26cae0","passengers":"5","loadTones":"null",
+    "vehicleId":"075d7726-5588-4756-a714-edd16151a7e4","jobType":{"id":"72de2fd1-5953-4379-ad5d-97eb6c26cae0","jobType":"Taxi"},
+    "employee":{"id":"1409dbcc-dcec-4b19-b5d7-287b68ea4d9f","firstName":"Akashhh","lastName":"Gharuuu"},
+    "vehicle":{"id":"075d7726-5588-4756-a714-edd16151a7e4","name":"test1","regNumber":"qweryd"}}*/
     inner class Data {
+        @SerializedName("jobType")
+        @Expose
+        var jobType : JobType? = null
         @SerializedName("jobId")
         @Expose
-        var jobId : Int? = null
-        @SerializedName("from_location")
+        var jobId : String? = null
+        @SerializedName("id")
+        @Expose
+        var id : String? = null
+        @SerializedName("employeeId")
+        @Expose
+        var employeeId : String? = null
+        @SerializedName("jobTypeId")
+        @Expose
+        var jobTypeId : String? = null
+        @SerializedName("fromLocation")
         @Expose
         var from_location : String? = null
-        @SerializedName("to_lat")
+        @SerializedName("fromLat")
         @Expose
         var to_lat : String? = null
-        @SerializedName("to_longt")
+        @SerializedName("toLat")
+        @Expose
+        var toLat : String? = null
+        @SerializedName("fromLongt")
         @Expose
         var to_longt : String? = null
-        @SerializedName("to_location")
+        @SerializedName("toLongt")
+        @Expose
+        var toLongt : String? = null
+        @SerializedName("toLocation")
         @Expose
         var to_location : String? = null
         @SerializedName("distance")
@@ -45,9 +71,9 @@ class JobsResponse {
         @SerializedName("acceptStatus")
         @Expose
         var acceptStatus : String? = null
-        @SerializedName("jobType")
+      /*  @SerializedName("jobType")
         @Expose
-        var jobType : String? = null
+        var jobType : String? = null*/
         @SerializedName("passengers")
         @Expose
         var passengers : String? = null
@@ -56,16 +82,13 @@ class JobsResponse {
         var loadTones : String? = null
         @SerializedName("vehicleId")
         @Expose
-        var vehicleId : Int? = null
+        var vehicleId : String? = null
         @SerializedName("createdAt")
         @Expose
         var createdAt : String? = null
         @SerializedName("updatedAt")
         @Expose
         var updatedAt : String? = null
-        @SerializedName("user_id")
-        @Expose
-        var user_id : Int? = null
         @SerializedName("vehicle_name")
         @Expose
         var vehicle_name : String? = null
@@ -115,5 +138,14 @@ class JobsResponse {
         @Expose
         var updated_at : String? = null
 
+    }
+
+    inner class JobType {
+        @SerializedName("id")
+        @Expose
+        var id : String? = null
+        @SerializedName("jobType")
+        @Expose
+        var jobType : String? = null
     }
 }

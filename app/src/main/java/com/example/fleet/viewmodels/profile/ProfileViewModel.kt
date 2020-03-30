@@ -20,8 +20,12 @@ class ProfileViewModel : BaseViewModel() {
     private val btnClick = MutableLiveData<String>()
 
     init {
-        profileDetail = profileRepository.getUserProfile(null)
-        data = profileRepository.updateUserProfile(null, null)
+        if (UtilsFunctions.isNetworkConnectedWithoutToast()) {
+            profileDetail = profileRepository.getUserProfile("")
+            data = profileRepository.updateUserProfile(null, null)
+        }
+
+
     }
 
     fun getDetail() : LiveData<LoginResponse> {
@@ -44,7 +48,7 @@ class ProfileViewModel : BaseViewModel() {
         btnClick.value = v.resources.getResourceName(v.id).split("/")[1]
     }
 
-    fun getProfileDetail(mJsonObject : JsonObject) {
+    fun getProfileDetail(mJsonObject : String) {
         if (UtilsFunctions.isNetworkConnected()) {
             profileDetail = profileRepository.getUserProfile(mJsonObject)
             mIsUpdating.postValue(true)

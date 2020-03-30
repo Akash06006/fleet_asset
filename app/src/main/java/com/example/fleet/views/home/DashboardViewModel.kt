@@ -39,12 +39,11 @@ class DashboardViewModel : BaseViewModel() {
                     GlobalConstants.USERID
                 ).toString()
             )
-            val versionName = MyApplication.instance.packageManager
-                .getPackageInfo(MyApplication.instance.packageName, 0).versionName
-            val androidId = UtilsFunctions.getAndroidID()
-            mJsonObject.addProperty("device-type", GlobalConstants.PLATFORM)
-            mJsonObject.addProperty("device_id", androidId)
-            mJsonObject.addProperty("app-version", versionName)
+          //  val versionName = MyApplication.instance.packageManager.getPackageInfo(MyApplication.instance.packageName, 0).versionName
+           // val androidId = UtilsFunctions.getAndroidID()
+           // mJsonObject.addProperty("device-type", GlobalConstants.PLATFORM)
+           // mJsonObject.addProperty("device_id", androidId)
+            //mJsonObject.addProperty("app-version", versionName)
             dataLogout = loginRepository!!.getLogoutResonse(mJsonObject)
             mIsUpdating.postValue(true)
         }

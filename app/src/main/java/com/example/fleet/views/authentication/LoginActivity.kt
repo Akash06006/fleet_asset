@@ -18,6 +18,7 @@ import com.example.fleet.model.LoginResponse
 import com.example.fleet.sharedpreference.SharedPrefClass
 import com.example.fleet.utils.BaseActivity
 import com.example.fleet.viewmodels.LoginViewModel
+import com.example.fleet.views.home.DashboardActivity
 import com.google.android.gms.auth.api.phone.SmsRetriever
 import com.google.gson.JsonObject
 
@@ -42,24 +43,29 @@ class LoginActivity : BaseActivity() {
                     when {
                         response.code == 200 -> {
                             FirebaseFunctions.sendOTP("login", mJsonObject, this)
-                            mJsonObject.addProperty("phone_number", response.data?.phoneNumber)
-                            mJsonObject.addProperty("country_code", response.data?.countryCode)
+                            mJsonObject.addProperty(
+                                "phoneNumber",
+                                activityLoginbinding.etPhoneNo.text.toString()
+                            )
+                            mJsonObject.addProperty(
+                                "countryCode",
+                                "+" + activityLoginbinding.btnCcp.selectedCountryCode
+                            )
+
 
                             SharedPrefClass().putObject(
                                 this,
-                                GlobalConstants.ACCESS_TOKEN,
-                                response.data!!.session_token
-                            )
-                            SharedPrefClass().putObject(
-                                this,
                                 GlobalConstants.USERID,
-                                response.data!!.driver_id
+                                response.data!!.id
                             )
-                            SharedPrefClass().putObject(
-                                this,
-                                GlobalConstants.USER_IAMGE,
-                                response.data!!.profile_image
-                            )
+                            if (!TextUtils.isEmpty(response.data!!.profile_image)) {
+                                SharedPrefClass().putObject(
+                                    this,
+                                    GlobalConstants.USER_IAMGE,
+                                    response.data!!.profileImageUrl + response.data!!.profile_image
+                                )
+                            } //profileImageUrl +profileImage
+
 
                             SharedPrefClass().putObject(
                                 this, GlobalConstants.USERDATA,
@@ -74,18 +80,27 @@ class LoginActivity : BaseActivity() {
                             SharedPrefClass().putObject(
                                 this,
                                 getString(R.string.key_phone),
-                                response.data!!.phoneNumber
+                                activityLoginbinding.etPhoneNo.text.toString()
                             )
                             SharedPrefClass().putObject(
                                 this,
                                 getString(R.string.key_country_code),
-                                response.data!!.countryCode
+                                "+" + activityLoginbinding.btnCcp.selectedCountryCode
                             )
                             SharedPrefClass().putObject(
                                 this,
-                                getString(R.string.key_country_code),
-                                response.data!!.countryCode
+                                GlobalConstants.ACCESS_TOKEN,
+                                response.data!!.authToken
                             )
+                            SharedPrefClass().putObject(
+                                MyApplication.instance.applicationContext,
+                                "isLogin",
+                                true
+                            )
+                            val intent = Intent(this, DashboardActivity::class.java)
+                            intent.putExtra("data", mJsonObject.toString())
+                            startActivity(intent)
+                            finish()
                             /*  val intent = Intent(this, OTPVerificationActivity::class.java)
                               intent.putExtra("data", mJsonObject.toString())
                               startActivity(intent)*/
@@ -116,9 +131,9 @@ class LoginActivity : BaseActivity() {
                                     )
                             }
                             else -> {
-                                mJsonObject.addProperty("phone_number", phone)
+                                mJsonObject.addProperty("phoneNumber", phone)
                                 mJsonObject.addProperty(
-                                    "notify_id",
+                                    "deviceToken",
                                     SharedPrefClass().getPrefValue(
                                         MyApplication.instance,
                                         GlobalConstants.NOTIFICATION_TOKEN
@@ -128,14 +143,16 @@ class LoginActivity : BaseActivity() {
                                     .getPackageInfo(MyApplication.instance.packageName, 0)
                                     .versionName
                                 val androidId = UtilsFunctions.getAndroidID()
-
-                                mJsonObject.addProperty("device_type", GlobalConstants.PLATFORM)
+//deviceToken
+                                mJsonObject.addProperty("email", "")
+                                mJsonObject.addProperty("password", "")
+                                mJsonObject.addProperty("deviceType", GlobalConstants.PLATFORM)
                                 mJsonObject.addProperty(
-                                    "country_code",
+                                    "countryCode",
                                     "+" + activityLoginbinding.btnCcp.selectedCountryCode
                                 )
-                                mJsonObject.addProperty("device_id", androidId)
-                                mJsonObject.addProperty("app-version", versionName)
+                                mJsonObject.addProperty("deviceId", androidId)
+                                // mJsonObject.addProperty("app-version", versionName)
                                 loginViewModel.checkPhoneExistence(mJsonObject)
 
                                 SharedPrefClass().putObject(

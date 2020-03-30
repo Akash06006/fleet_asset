@@ -15,7 +15,6 @@ import com.example.fleet.model.home.JobsResponse
 import com.example.fleet.sharedpreference.SharedPrefClass
 import com.example.fleet.utils.Utils
 import com.example.fleet.views.home.HomeFragment
-import com.google.gson.Gson
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -54,8 +53,8 @@ class MyJobsListAdapter(
             jobsList[position].scheduleDatetime,
             "dd-MMM,yyyy | hh:mm a"
         )
-        holder.binding.tvTypeValue.text = jobsList[position].jobType
-        if (jobsList[position].jobType == "Taxi") {
+        holder.binding.tvTypeValue.text = jobsList[position].jobType?.jobType
+        if (jobsList[position].jobType?.jobType == "Taxi") {
             holder.binding.tvLoad.text = mContext.getString(R.string.persons)
             holder.binding.tvLoadValue.text = jobsList[position].passengers
         } else {
@@ -111,12 +110,12 @@ class MyJobsListAdapter(
         }
 
         holder.binding.btnCancel.setOnClickListener {
-            mContext.cancelJob(jobsList[position].jobId, "2")
+            mContext.cancelJob(jobsList[position].id, "2")
         }
 
         holder.binding.btnStart.setOnClickListener {
             mContext.startJob(
-                jobsList[position].jobId,
+                jobsList[position].id,
                 jobsList[position].to_lat,
                 jobsList[position].to_longt,
                 holder.binding.btnStart.text.toString()

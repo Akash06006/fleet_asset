@@ -32,11 +32,16 @@ class FuelEntryList : BaseActivity() {
         activityFuelEntryList.commonToolBar.imgToolbarText.text =
             resources.getString(R.string.fuel_entry_list)
 
-        fuelViewModel.getFuelEntryList()
+        if (UtilsFunctions.isNetworkConnected()) {
+            fuelViewModel.getFuelEntryList()
+            startProgressDialog()
+        }
+
 
         fuelViewModel.getFuelList().observe(this,
             Observer<FuelListResponse> { response->
                 if (response != null) {
+                    stopProgressDialog()
                     val message = response.message
                     when {
                         response.code == 200 -> {

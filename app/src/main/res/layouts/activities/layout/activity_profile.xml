@@ -66,7 +66,7 @@
                                 android:layout_centerInParent="true"
                                 android:contentDescription="@string/todo"
                                 android:elevation="@dimen/dp_5"
-                                android:src="@{profileModel.profile_image!=null ?  profileModel.profile_image.toString():@string/todo,default=@drawable/ic_dummy_image}" />
+                                android:src="@{profileModel.profileImageUrl!=null ?  profileModel.profileImageUrl.toString():@string/todo,default=@drawable/ic_dummy_image}" />
                         />
 
                         <de.hdodenhof.circleimageview.CircleImageView

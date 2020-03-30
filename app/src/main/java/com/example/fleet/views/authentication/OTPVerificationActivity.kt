@@ -129,12 +129,12 @@ class OTPVerificationActivity : BaseActivity(),
                     "tv_resend" -> {
                         val mJsonObject1 = JsonObject()
                         mJsonObject1.addProperty(
-                            "country_code",
-                            mJsonObject.get("country_code").toString()
+                            "countryCode",
+                            mJsonObject.get("countryCode").toString()
                         )
                         mJsonObject1.addProperty(
-                            "phone_number",
-                            mJsonObject.get("phone_number").toString()
+                            "phoneNumber",
+                            mJsonObject.get("phoneNumber").toString()
                         )
                         FirebaseFunctions.sendOTP("resend", mJsonObject1, this)
                         startProgressDialog()

@@ -1,5 +1,6 @@
 package com.example.fleet.repositories.profile
 
+import android.text.TextUtils
 import androidx.lifecycle.MutableLiveData
 import com.example.fleet.R
 import com.example.fleet.api.ApiClient
@@ -67,8 +68,8 @@ class ProfileRepository {
 
     }
 
-    fun getUserProfile(jsonObject : JsonObject?) : MutableLiveData<LoginResponse> {
-        if (jsonObject != null) {
+    fun getUserProfile(jsonObject : String) : MutableLiveData<LoginResponse> {
+        if (!TextUtils.isEmpty(jsonObject)) {
             val mApiService = ApiService<JsonObject>()
             mApiService.get(
                 object : ApiResponse<JsonObject> {
@@ -92,7 +93,7 @@ class ProfileRepository {
                         data1!!.postValue(null)
                     }
 
-                }, ApiClient.getApiInterface().getProfile(/*jsonObject*/)
+                }, ApiClient.getApiInterface().getProfile(jsonObject)
             )
 
         }
@@ -128,7 +129,7 @@ class ProfileRepository {
 
                     }
 
-                }, ApiClient.getApiInterface().callLogout(jsonObject)
+                }, ApiClient.getApiInterface().callLogout(/*jsonObject*/)
             )
 
         }

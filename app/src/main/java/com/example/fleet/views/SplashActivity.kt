@@ -86,8 +86,8 @@ class SplashActivity : BaseActivity() {
             }
 
         } else {
-            //  Intent(this, LoginActivity::class.java)
-            Intent(this, DashboardActivity::class.java)
+              Intent(this, LoginActivity::class.java)
+            //Intent(this, DashboardActivity::class.java)
 
         }
 

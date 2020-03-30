@@ -57,9 +57,18 @@ object ApiClient {
         val mBuilder = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-
-      /*  mAuthToken =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZV9udW1iZXIiOiI5NTMwNjA2MDA2IiwiY291bnRyeV9jb2RlIjoiKzkxIiwidHlwZSI6MiwiaWQiOjEsImlhdCI6MTU4NDAwODAyOSwiZXhwIjoxNTg0MTgwODI5fQ.hSkvHRBHlHlwf1Drg2dtPaMamRg27aI48H4ZOgWTilY"*/
+        val isLogin = sharedPrefClass.getPrefValue(
+            MyApplication.instance,
+            "isLogin"
+        ).toString()
+        if (!TextUtils.isEmpty(mAuthToken) && mAuthToken.equals("session_token")) {
+            mAuthToken = ""
+        }
+        if(isLogin == "false"){
+            mAuthToken = ""
+        }
+        /*  mAuthToken =
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZV9udW1iZXIiOiI5NTMwNjA2MDA2IiwiY291bnRyeV9jb2RlIjoiKzkxIiwidHlwZSI6MiwiaWQiOjEsImlhdCI6MTU4NDAwODAyOSwiZXhwIjoxNTg0MTgwODI5fQ.hSkvHRBHlHlwf1Drg2dtPaMamRg27aI48H4ZOgWTilY"*/
         if (!TextUtils.isEmpty(mAuthToken)) {
             val finalMAuthToken = mAuthToken
             val interceptor : Interceptor = object : Interceptor {
@@ -69,6 +78,7 @@ object ApiClient {
                     val builder = original.newBuilder()
                         .header("Authorization", finalMAuthToken)
                         .header("lang", lang)
+                        .header("Content-Type", "application/json")
                     val request = builder.build()
                     val response = chain.proceed(request)
                     return if (response.code() == 401) {

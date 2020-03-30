@@ -26,10 +26,14 @@ class FuelViewModel : BaseViewModel() {
     private val btnClick = MutableLiveData<String>()
 
     init {
-        vehiclelist = fuelRepository.getVehicleList()
-        vendorList = fuelRepository.getVendorList()
-        getFuelListResponse = fuelRepository.getFuelEntryList()
-        addFuelResponse = fuelRepository.addFuelEntry(null, null)
+
+        if (UtilsFunctions.isNetworkConnectedWithoutToast()) {
+           // vehiclelist = fuelRepository.getVehicleList()
+            vendorList = fuelRepository.getVendorList()
+            getFuelListResponse = fuelRepository.getFuelEntryList()
+            addFuelResponse = fuelRepository.addFuelEntry(null, null)
+        }
+
     }
 
     fun getVehicleList() : LiveData<VehicleListResponse> {

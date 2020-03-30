@@ -87,7 +87,7 @@ class OtpFirebaseActivity {
     }
 
     private fun sendVerificationCode(mobile : String) {
-        val phone = mJsonObject!!.get("country_code").toString().replace("\"", "") + mobile
+        val phone = mJsonObject!!.get("countryCode").toString().replace("\"", "") + mobile
 
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
             phone,

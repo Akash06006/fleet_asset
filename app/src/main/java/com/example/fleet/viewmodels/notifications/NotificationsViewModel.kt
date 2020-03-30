@@ -22,8 +22,11 @@ class NotificationsViewModel : BaseViewModel() {
     private val btnClick = MutableLiveData<String>()
 
     init {
-        notificationList = notificationRepository.getNotificationsList()
-        clearAllNotifications = notificationRepository.clearAllNotifications("")
+        if (UtilsFunctions.isNetworkConnectedWithoutToast()) {
+            notificationList = notificationRepository.getNotificationsList()
+            clearAllNotifications = notificationRepository.clearAllNotifications("")
+        }
+
     }
 
     fun clearAll() : LiveData<CommonModel> {

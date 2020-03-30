@@ -210,33 +210,40 @@ class UpdateServiceActivity : BaseActivity(), ChoiceCallBack {
                             else -> {
                                 val androidId = UtilsFunctions.getAndroidID()
                                 val mHashMap = HashMap<String, RequestBody>()
-
+//vehicleId
+                                //serviceFor
+                                //serviceFor
+                                //renewalType
                                 mHashMap["service_id"] =
                                     Utils(this).createPartFromString(mJsonObject.get("service_id").toString())
-                                mHashMap["service_date"] =
+                                mHashMap["serviceDate"] =
                                     Utils(this).createPartFromString(updateServiceBinding.etDateService.text.toString())
-                                mHashMap["vendor_id"] =
+                                mHashMap["vendorId"] =
                                     Utils(this).createPartFromString(vendorId.toString())
-                                mHashMap["labor_price"] =
+                                mHashMap["laborPrice"] =
                                     Utils(this).createPartFromString(updateServiceBinding.etLabourPrice.text.toString())
                                 mHashMap["odometer"] =
                                     Utils(this).createPartFromString(updateServiceBinding.etOdometer.text.toString())
-                                mHashMap["parts_price"] =
+                                mHashMap["partsPrice"] =
                                     Utils(this).createPartFromString(updateServiceBinding.etPartsPrice.text.toString())
                                 mHashMap["tax"] =
                                     Utils(this).createPartFromString(updateServiceBinding.etTax.text.toString())
-                                mHashMap["total_price"] =
+                                mHashMap["totalPrice"] =
                                     Utils(this).createPartFromString(updateServiceBinding.etTotalPrice.text.toString())
-                                mHashMap["invoice_number"] =
+                                mHashMap["invoiceNumber"] =
                                     Utils(this).createPartFromString(updateServiceBinding.etInvoice.text.toString())
                                 mHashMap["comments"] =
                                     Utils(this).createPartFromString(updateServiceBinding.etComments.text.toString())
                                 var userImage : MultipartBody.Part? = null
                                 if (!profileImage.isEmpty()) {
                                     val f1 = File(profileImage)
-                                    userImage = Utils(this).prepareFilePart("invoice_image", f1)
+                                    userImage = Utils(this).prepareFilePart("invoiceImage", f1)
                                 }
-                                servicesViewModel.updateService(mHashMap, userImage)
+                                if (UtilsFunctions.isNetworkConnected()) {
+                                    servicesViewModel.updateService(mHashMap, userImage)
+                                    startProgressDialog()
+                                }
+
                             }
                         }
                     }

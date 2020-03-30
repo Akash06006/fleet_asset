@@ -9,7 +9,7 @@ import java.util.HashMap
 
 interface ApiInterface {
     @Headers("Content-Type: application/json")
-    @POST("driver/auth/login")
+    @POST("api/loginEmployee")
     fun callLogin(@Body jsonObject : JsonObject) : Call<JsonObject>
 
     /*@POST("login/")
@@ -22,7 +22,7 @@ interface ApiInterface {
     ) : Call<JsonObject>
 
     @Multipart
-    @POST("driver/auth/updateProfile")
+    @PUT("api/employee/update")
     fun callUpdateProfile(
         @PartMap mHashMap : HashMap<String,
                 RequestBody>, @Part image : MultipartBody.Part?
@@ -32,8 +32,8 @@ interface ApiInterface {
     @POST("checkPhoneNumber/")
     fun checkPhoneExistence(@Body jsonObject : JsonObject) : Call<JsonObject>
 
-    @POST("driver/auth/logout")
-    fun callLogout(@Body mJsonObject : JsonObject) : Call<JsonObject>
+    @GET("api/logout")
+    fun callLogout(/*@Body mJsonObject : JsonObject*/) : Call<JsonObject>
 
     @POST("resetpassword/")
     fun resetPassword(@Body mJsonObject : JsonObject) : Call<JsonObject>
@@ -43,8 +43,8 @@ interface ApiInterface {
     @POST("users/changepassword/")
     fun chnagePassword(@Body mJsonObject : JsonObject) : Call<JsonObject>
 
-    @GET("driver/auth/getProfile")
-    fun getProfile() : Call<JsonObject>
+    @GET("api/employee/get/{id}")
+    fun getProfile(@Path("id")  id:String) : Call<JsonObject>
 
     @GET("driver/vehicle/latLongList")
     fun getVehicleList() : Call<JsonObject>
@@ -52,7 +52,10 @@ interface ApiInterface {
     @GET("service/driver/getServiceList")
     fun getServicesList(@Query("status") status : String) : Call<JsonObject>
 
-    @GET("fuel/driver/getFuelList")
+    @GET(" api/service/list")
+    fun getServicesList1(@Query("page") page : Int,@Query("limit") limit : Int) : Call<JsonObject>
+
+    @GET("api/fuel/getList")
     fun getFuelEntryList() : Call<JsonObject>
 
     @GET("notification/driver/getList")
@@ -61,30 +64,34 @@ interface ApiInterface {
     @DELETE("notification/driver/clearAll")
     fun clearAllNotification() : Call<JsonObject>
 
-    @GET("vendor/getVendorList")
-    fun getVendorList() : Call<JsonObject>
+    @GET("api/vendor/list")
+    fun getVendorList(@Query("page") page : Int,@Query("limit") limit : Int) : Call<JsonObject>
 
-    @GET("job/getDriverJob")
-    fun getJobs(@Query("acceptStatus") userId : String) : Call<JsonObject>
+   /* @GET("job/getDriverJob")
+    fun getJobs(@Query("acceptStatus") userId : String) : Call<JsonObject>*/
+   @POST("api/job/getDriverJobs")
+   fun getJobs(@Body mJsonObject : JsonObject) : Call<JsonObject>
 
     @GET("job/driver/jobsHistory")
     fun getJobsHistory(@Query("progressStatus") userId : String) : Call<JsonObject>
+    @GET("api/job/jobsHistory")
+    fun getJobsHistory1(@Query("page") page : Int,@Query("limit") limit : Int,@Query("progressStatus") progressStatus : Int) : Call<JsonObject>
 
-    @POST("job/driver/changeJobStatus")
+    @POST("api/job/changeJobStatus")
     fun startCompleteJob(@Body mJsonObject : JsonObject) : Call<JsonObject>
 
-    @POST("job/driver/acceptRejectJob")
+    @POST("api/job/AcceptReject")
     fun acceptRejectJob(@Body mJsonObject : JsonObject) : Call<JsonObject>
 
     @Multipart
-    @POST("fuel/addFuel")
+    @POST("api/fuel/addFuel")
     fun callAddFuelEntry(
         @PartMap mHashMap : HashMap<String,
                 RequestBody>, @Part image : MultipartBody.Part?
     ) : Call<JsonObject>
 
     @Multipart
-    @POST("service/updateServiceEntry")
+    @POST("api/service/add")
     fun callUpdateService(
         @PartMap mHashMap : HashMap<String,
                 RequestBody>, @Part image : MultipartBody.Part?

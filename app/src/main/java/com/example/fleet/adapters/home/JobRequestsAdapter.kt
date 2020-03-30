@@ -2,7 +2,6 @@ package com.uniongoods.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,8 +51,8 @@ class JobRequestsAdapter(
             jobsList[position].scheduleDatetime,
             "dd-MMM,yyyy | hh:mm a"
         )
-        holder.binding.tvTypeValue.text = jobsList[position].jobType
-        if (jobsList[position].jobType == "Taxi") {
+        holder.binding.tvTypeValue.text = jobsList[position].jobType?.jobType
+        if (jobsList[position].jobType?.jobType == "Taxi") {
             holder.binding.tvLoad.text = mContext.getString(R.string.persons)
             holder.binding.tvLoadValue.text = jobsList[position].passengers
         } else {
@@ -63,10 +62,10 @@ class JobRequestsAdapter(
         }
 
         holder.binding.btnAccept.setOnClickListener {
-            mContext.jobAccpetReject(jobsList[position].jobId, "1")
+            mContext.jobAccpetReject(jobsList[position].id, "1")
         }
         holder.binding.btnReject.setOnClickListener {
-            mContext.jobAccpetReject(jobsList[position].jobId, "2")
+            mContext.jobAccpetReject(jobsList[position].id, "2")
         }
     }
 

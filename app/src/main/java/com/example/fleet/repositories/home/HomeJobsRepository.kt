@@ -24,8 +24,8 @@ class HomeJobsRepository {
         data1 = MutableLiveData()
     }
 
-    fun getMyJobsList(mJsonObject : String) : MutableLiveData<JobsResponse> {
-        if (!TextUtils.isEmpty(mJsonObject)) {
+    fun getMyJobsList(mJsonObject : JsonObject?) : MutableLiveData<JobsResponse> {
+        if (mJsonObject!=null) {
             val mApiService = ApiService<JsonObject>()
             mApiService.get(
                 object : ApiResponse<JsonObject> {
@@ -86,7 +86,8 @@ class HomeJobsRepository {
 
                     }
 
-                }, ApiClient.getApiInterface().getJobsHistory(mJsonObject)
+               // }, ApiClient.getApiInterface().getJobsHistory(mJsonObject)
+                }, ApiClient.getApiInterface().getJobsHistory1(1,1000,mJsonObject.toInt())
             )
         }
         return data!!

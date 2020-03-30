@@ -121,7 +121,7 @@ class LoginRepository {
 
                     }
 
-                }, ApiClient.getApiInterface().callLogout(jsonObject)
+                }, ApiClient.getApiInterface().callLogout(/*jsonObject*/)
 
             )
 

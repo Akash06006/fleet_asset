@@ -50,8 +50,8 @@ class JobsHistoryListAdapter(
             jobsList[position].scheduleDatetime,
             "dd-MMM,yyyy | hh:mm a"
         )
-        holder.binding.tvTypeValue.text = jobsList[position].jobType
-        if (jobsList[position].jobType == "Taxi") {
+        holder.binding.tvTypeValue.text = jobsList[position].jobType?.jobType
+        if (jobsList[position].jobType?.jobType == "Taxi") {
             holder.binding.tvLoad.text = mContext.getString(R.string.persons)
             holder.binding.tvLoadValue.text = jobsList[position].passengers
         } else {

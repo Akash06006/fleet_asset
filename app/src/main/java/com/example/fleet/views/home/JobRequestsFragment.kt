@@ -8,9 +8,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fleet.R
 import com.example.fleet.common.UtilsFunctions
+import com.example.fleet.constants.GlobalConstants
 import com.example.fleet.databinding.FragmentHomeBinding
 import com.example.fleet.model.CommonModel
 import com.example.fleet.model.home.JobsResponse
+import com.example.fleet.sharedpreference.SharedPrefClass
 import com.example.fleet.utils.BaseFragment
 import com.example.fleet.utils.DialogClass
 import com.example.fleet.utils.DialogssInterface
@@ -23,6 +25,7 @@ class JobRequestsFragment : BaseFragment(), DialogssInterface {
     private var myJobsListAdapter : JobRequestsAdapter? = null
     private var confirmationDialog : Dialog? = null
     private var mDialogClass = DialogClass()
+    private val mJobListObject = JsonObject()
     override fun getLayoutResId() : Int {
         return R.layout.fragment_home
     }
@@ -41,7 +44,13 @@ class JobRequestsFragment : BaseFragment(), DialogssInterface {
         )
 
         if (UtilsFunctions.isNetworkConnected()) {
-            homeViewModel.getMyJobs("0")
+            mJobListObject.addProperty(
+                "employeeId",  SharedPrefClass()!!.getPrefValue(activity!!, GlobalConstants.USERID) as String
+            )
+            mJobListObject.addProperty(
+                "acceptStatus",  "0"
+            )
+            homeViewModel.getMyJobs(mJobListObject)
         } else {
             baseActivity.stopProgressDialog()
         }
@@ -80,7 +89,7 @@ class JobRequestsFragment : BaseFragment(), DialogssInterface {
                         response.code == 200 -> {
                             pendingJobsList.clear()
                             pendingJobsList = ArrayList<JobsResponse.Data>()
-                            homeViewModel.getMyJobs("0")
+                            homeViewModel.getMyJobs(mJobListObject)
 
                             UtilsFunctions.showToastSuccess(message!!)
                         }
@@ -98,12 +107,15 @@ class JobRequestsFragment : BaseFragment(), DialogssInterface {
 
     }
 
-    fun jobAccpetReject(jobId : Int?, status : String) {
+    fun jobAccpetReject(jobId : String?, status : String) {
         mJsonObject.addProperty(
             "acceptStatus", status
         )
         mJsonObject.addProperty(
-            "jobId", jobId.toString()
+            "jobId", jobId
+        )
+        mJsonObject.addProperty(
+            "employeeId", SharedPrefClass()!!.getPrefValue(activity!!, GlobalConstants.USERID) as String
         )
         if (status.equals("2")) {
             confirmationDialog = mDialogClass.setDefaultDialog(

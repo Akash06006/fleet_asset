@@ -67,10 +67,7 @@ class DashboardActivity : BaseActivity(),
         activityDashboardBinding!!.toolbarCommon.toolbar.setImageResource(R.drawable.ic_sidebar)
         activityDashboardBinding!!.toolbarCommon.imgRight.visibility = View.VISIBLE
         activityDashboardBinding!!.toolbarCommon.imgRight.setImageResource(R.drawable.ic_notifications)
-        val name = SharedPrefClass().getPrefValue(
-            MyApplication.instance.applicationContext,
-            getString(R.string.first_name)
-        )
+
         val image = SharedPrefClass().getPrefValue(
             MyApplication.instance.applicationContext,
             GlobalConstants.USER_IAMGE
@@ -80,6 +77,10 @@ class DashboardActivity : BaseActivity(),
             .load(image)
             .placeholder(R.drawable.user)
             .into(activityDashboardBinding!!.icProfile)
+        val name = SharedPrefClass().getPrefValue(
+            MyApplication.instance.applicationContext,
+            getString(R.string.first_name)
+        )
         activityDashboardBinding!!.tvName.text = name.toString()
         fragment = HomeFragment()
         callFragments(fragment, supportFragmentManager, false, "send_data", "")
@@ -147,7 +148,7 @@ class DashboardActivity : BaseActivity(),
                             this,
                             this,
                             "logout",
-                            "Do you really want to logout?"
+                            getString(R.string.warning_logout)
                         )
                         confirmationDialog?.show()
 
@@ -163,6 +164,11 @@ class DashboardActivity : BaseActivity(),
                             .placeholder(R.drawable.user)
                             .into(activityDashboardBinding!!.icProfile)
 
+                        val name = SharedPrefClass().getPrefValue(
+                            MyApplication.instance.applicationContext,
+                            getString(R.string.first_name)
+                        )
+                        activityDashboardBinding!!.tvName.text = name.toString()
                         if (drawer!!.isDrawerOpen(GravityCompat.START)) {
                             drawer!!.closeDrawer(Gravity.LEFT) //CLOSE Nav Drawer!
                         } else {
@@ -277,6 +283,11 @@ class DashboardActivity : BaseActivity(),
             .load(image)
             .placeholder(R.drawable.user)
             .into(activityDashboardBinding!!.icProfile)
+        val name = SharedPrefClass().getPrefValue(
+            MyApplication.instance.applicationContext,
+            getString(R.string.first_name)
+        )
+        activityDashboardBinding!!.tvName.text = name.toString()
 
     }
 

@@ -31,9 +31,12 @@ class JobsHistoryActivity : BaseActivity() {
         jobsHistoryBinding.commonToolBar.imgToolbarText.text =
             resources.getString(R.string.job_history)
 
-        startProgressDialog()
-        //acceptStatus
-        homeViewModel.getMyJobsHistory("1")
+        if (UtilsFunctions.isNetworkConnected()) {
+            startProgressDialog()
+            //acceptStatus
+            homeViewModel.getMyJobsHistory("1")
+        }
+
         homeViewModel.getJobsHistory().observe(this,
             Observer<JobsResponse> { response->
                 stopProgressDialog()

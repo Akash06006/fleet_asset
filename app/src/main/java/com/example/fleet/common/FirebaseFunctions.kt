@@ -35,8 +35,8 @@ object FirebaseFunctions {
     @JvmStatic
     fun sendOTP(key : String, mJsonObject : JsonObject, baseActivity : BaseActivity) {
         checkNumberExist()
-        val countryCode = mJsonObject.get("country_code").toString().replace("\"", "")
-        val phone = mJsonObject.get("phone_number").toString().replace("\"", "")
+        val countryCode = mJsonObject.get("countryCode").toString().replace("\"", "")
+        val phone = mJsonObject.get("phoneNumber").toString().replace("\"", "")
         val phoneUtil = PhoneNumberUtil.getInstance()
         val isValid : Boolean
         var validNumber = false

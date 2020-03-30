@@ -41,13 +41,13 @@ object GlobalConstants {
     /* @JvmStatic
      val BASE_URL = "http://10.8.23.202:9062/"*/
     @JvmStatic
-    val BASE_URL = "http://infinitywebtechnologies.com:9062/"
+    val BASE_URL = "http://camonher.infinitywebtechnologies.com:9064/"
     @JvmStatic
-    val BASE_SERVER = "http://infinitywebtechnologies.com:9062"
+    val BASE_SERVER = "http://camonher.infinitywebtechnologies.com:9064/"
     /* @JvmStatic
      val SOCKET_URL = "http://10.8.23.202:9062"*/
     @JvmStatic
-    val SOCKET_URL = "http://infinitywebtechnologies.com:9062/"
+    val SOCKET_URL = "http://camonher.infinitywebtechnologies.com:9064/"
     const val PLATFORM = "android"
     @JvmStatic
     var LOGIN = "every"

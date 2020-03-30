@@ -52,6 +52,7 @@ HomeFragment : BaseFragment(), SocketInterface, DialogssInterface {
     private lateinit var fragmentHomeBinding : FragmentHomeBinding
     private lateinit var homeViewModel : HomeViewModel
     private val mJsonObject = JsonObject()
+    private val mJobListObject = JsonObject()
     val PERMISSION_ID = 42
     lateinit var mFusedLocationClient : FusedLocationProviderClient
     var currentLat = ""
@@ -76,11 +77,19 @@ HomeFragment : BaseFragment(), SocketInterface, DialogssInterface {
 
         mFusedLocationClass = FusedLocationClass(activity)
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
-        baseActivity.startProgressDialog()
+
         jobsList.clear()
         if (UtilsFunctions.isNetworkConnected()) {
             fragmentHomeBinding.rvJobs.visibility = View.VISIBLE
-            homeViewModel.getMyJobs("1")
+            // baseActivity.startProgressDialog()
+            mJobListObject.addProperty(
+                "employeeId",
+                SharedPrefClass()!!.getPrefValue(activity!!, GlobalConstants.USERID) as String
+            )
+            mJobListObject.addProperty(
+                "acceptStatus", "1"
+            )
+            homeViewModel.getMyJobs(mJobListObject)
             var jobId =
                 SharedPrefClass()!!.getPrefValue(activity!!, GlobalConstants.JOBID).toString()
             if (!jobId.equals("null") && jobId.equals("0")) {
@@ -112,12 +121,16 @@ HomeFragment : BaseFragment(), SocketInterface, DialogssInterface {
                     val message = response.message
                     when {
                         response.code == 200 -> {
-                            jobsList.addAll(response.data!!)
-                            fragmentHomeBinding.rvJobs.visibility = View.VISIBLE
-                            fragmentHomeBinding.tvNoRecord.visibility = View.GONE
-                            initRecyclerView()
+                            if (response.data != null && response.data?.size!! > 0) {
+                                jobsList.addAll(response.data!!)
+                                fragmentHomeBinding.rvJobs.visibility = View.VISIBLE
+                                fragmentHomeBinding.tvNoRecord.visibility = View.GONE
+                                initRecyclerView()
+                            }
+
                         }
-                        else -> message?.let { showToastError(it)
+                        else -> message?.let {
+                            showToastError(it)
                             fragmentHomeBinding.rvJobs.visibility = View.GONE
                             fragmentHomeBinding.tvNoRecord.visibility = View.VISIBLE
                         }
@@ -168,7 +181,7 @@ HomeFragment : BaseFragment(), SocketInterface, DialogssInterface {
                     when {
                         response.code == 200 -> {
                             jobsList.clear()
-                            homeViewModel.getMyJobs("1")
+                            homeViewModel.getMyJobs(mJobListObject)
 
                             UtilsFunctions.showToastSuccess(message!!)
                         }
@@ -218,17 +231,21 @@ HomeFragment : BaseFragment(), SocketInterface, DialogssInterface {
         })
     }
 
-    fun cancelJob(jobId : Int?, status : String) {
+    fun cancelJob(jobId : String?, status : String) {
         mJsonObjectStartJob.addProperty(
             "acceptStatus", status
         )
         mJsonObjectStartJob.addProperty(
-            "jobId", jobId.toString()
+            "jobId", jobId
         )
         mJsonObjectStartJob.addProperty(
             "status", 0
         )
-        confirmationDialog =mDialogClass.setDefaultDialog(
+        mJsonObjectStartJob.addProperty(
+            "employeeId",
+            SharedPrefClass()!!.getPrefValue(activity!!, GlobalConstants.USERID) as String
+        )
+        confirmationDialog = mDialogClass.setDefaultDialog(
             activity!!,
             this,
             "Cancel Job",
@@ -256,7 +273,7 @@ HomeFragment : BaseFragment(), SocketInterface, DialogssInterface {
     }
 
     fun startJob(
-        jobId : Int?,
+        jobId : String?,
         toLat : String?,
         toLongt : String?,
         trackOrStart : String

@@ -162,7 +162,7 @@ class FuelRepository {
                     data2!!.postValue(null)
                 }
 
-            }, ApiClient.getApiInterface().getVendorList(/*jsonObject*/)
+            }, ApiClient.getApiInterface().getVendorList(1,1000)
         )
 
         return data2!!

@@ -68,7 +68,7 @@ class FuelEntryListAdapter(
            )*/
 
         holder.binding!!.tvAmountValue.text = fuelEntryList[position].price
-        holder.binding!!.tvVehicleName.text = fuelEntryList[position].vehicle_name
+        holder.binding!!.tvVehicleName.text = fuelEntryList[position].vehicleDetail?.name
 
     }
 

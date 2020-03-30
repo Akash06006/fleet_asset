@@ -21,9 +21,12 @@ class ServicesViewModel : BaseViewModel() {
     private var vendorList = MutableLiveData<VendorListResponse>()
 
     init {
-        serviceslist = servicesRepository.getServicesList("")
-        updateService=servicesRepository.updateService(null,null)
-        vendorList = servicesRepository.getVendorList()
+        if (UtilsFunctions.isNetworkConnectedWithoutToast()) {
+            serviceslist = servicesRepository.getServicesList("")
+            updateService=servicesRepository.updateService(null,null)
+            vendorList = servicesRepository.getVendorList()
+        }
+
     }
 
     fun getServicesList() : LiveData<ServicesListResponse> {

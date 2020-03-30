@@ -282,5 +282,6 @@
     <string name="warning_finish_job">Do you really want to finish this job?</string>
     <string name="warning_cancel_job">Do you really want to cancel this job?</string>
     <string name="warning_reject_job">Do you really want to reject this job?</string>
+    <string name="warning_logout">Do you really want to logout?</string>
 
 </resources>

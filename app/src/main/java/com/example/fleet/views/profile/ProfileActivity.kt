@@ -68,8 +68,16 @@ class ProfileActivity : BaseActivity(), ChoiceCallBack {
                 GlobalConstants.USERID
             ).toString()*/
         )
-        startProgressDialog()
-        profieViewModel.getProfileDetail(mJsonObject)
+        val id= SharedPrefClass()!!.getPrefValue(
+            MyApplication.instance,
+            GlobalConstants.USERID
+        ).toString()
+
+        if (UtilsFunctions.isNetworkConnected()) {
+            startProgressDialog()
+            profieViewModel.getProfileDetail(id)
+        }
+
         profieViewModel.getDetail().observe(this,
             Observer<LoginResponse> { response->
                 stopProgressDialog()
@@ -104,7 +112,12 @@ class ProfileActivity : BaseActivity(), ChoiceCallBack {
                             SharedPrefClass().putObject(
                                 this,
                                 GlobalConstants.USER_IAMGE,
-                                response.data!!.profile_image
+                                response.data!!.profileImageUrl
+                            )
+                            SharedPrefClass().putObject(
+                                applicationContext,
+                                getString(R.string.first_name),
+                                response.data!!.firstName + " " + response.data!!.lastName
                             )
                             makeEnableDisableViews(false)
                         }
@@ -179,33 +192,39 @@ class ProfileActivity : BaseActivity(), ChoiceCallBack {
                                 ) as String
                                 val androidId = UtilsFunctions.getAndroidID()
                                 val mHashMap = HashMap<String, RequestBody>()
-                                mHashMap["first_name"] = Utils(this).createPartFromString(fname)
-                                mHashMap["last_name"] = Utils(this).createPartFromString(lname)
-                                mHashMap["user_type"] = Utils(this).createPartFromString("1")
-                                mHashMap["phone_number"] =
+                                mHashMap["fName"] = Utils(this).createPartFromString(fname)
+                                mHashMap["lName"] = Utils(this).createPartFromString(lname)
+                                mHashMap["updateFrom"] = Utils(this).createPartFromString("mobile")
+                               /* mHashMap["phone_number"] =
                                     Utils(this).createPartFromString(phonenumber)
                                 mHashMap["country_code"] =
                                     Utils(this).createPartFromString(countrycode)
-                                mHashMap["device_id"] = Utils(this).createPartFromString(androidId)
-                                mHashMap["device_type"] =
-                                    Utils(this).createPartFromString(GlobalConstants.PLATFORM)
+                                mHashMap["device_id"] = Utils(this).createPartFromString(androidId)*/
+                                mHashMap["employeeId"] =
+                                    Utils(this).createPartFromString( SharedPrefClass().getPrefValue(
+                                        MyApplication.instance,
+                                        GlobalConstants.USERID
+                                    ) as String)
                                 mHashMap["address"] = Utils(this).createPartFromString(address)
-                                mHashMap["gender"] = Utils(this).createPartFromString("1")
-                                mHashMap["notify_id"] = Utils(this).createPartFromString(
+                               // mHashMap["gender"] = Utils(this).createPartFromString("1")
+                               /* mHashMap["notify_id"] = Utils(this).createPartFromString(
                                     SharedPrefClass().getPrefValue(
                                         MyApplication.instance,
                                         GlobalConstants.NOTIFICATION_TOKEN
                                     ) as String
-                                )
+                                )*/
                                 mHashMap["email"] = Utils(this).createPartFromString(email)
                                 //  mHashMap["password"] = Utils(this).createPartFromString(password)
                                 var userImage : MultipartBody.Part? = null
                                 if (!profileImage.isEmpty()) {
                                     val f1 = File(profileImage)
-                                    userImage = Utils(this).prepareFilePart("profile_image", f1)
+                                    userImage = Utils(this).prepareFilePart("image", f1)
                                 }
-                                startProgressDialog()
-                                profieViewModel.updateProfile(mHashMap, userImage)
+                                if (UtilsFunctions.isNetworkConnected()) {
+                                    startProgressDialog()
+                                    profieViewModel.updateProfile(mHashMap, userImage)
+                                }
+
                             }
                         }
 

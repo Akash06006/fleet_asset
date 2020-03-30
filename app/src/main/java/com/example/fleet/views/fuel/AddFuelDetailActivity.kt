@@ -47,7 +47,7 @@ class AddFuelDetailActivity : BaseActivity(), ChoiceCallBack {
     private val RESULT_LOAD_IMAGE = 100
     private val CAMERA_REQUEST = 1888
     private var profileImage = ""
-    var vendorId : Int? = null
+    var vendorId =""
     var vehicleId : Int? = null
     var partial = 0;
     // var vehicleList = listOf<String>("Select Vehicle")
@@ -68,8 +68,13 @@ class AddFuelDetailActivity : BaseActivity(), ChoiceCallBack {
         mJsonObject.addProperty(
             "id", "id"
         )
-        fuelViewModel.getVendorList()
-        fuelViewModel.getVehicleList()
+
+        if (UtilsFunctions.isNetworkConnected()) {
+            fuelViewModel.getVendorList()
+            fuelViewModel.getVehicleList()
+        }
+
+
         fuelViewModel.getVehicleList().observe(this,
             Observer<VehicleListResponse> { response->
                 stopProgressDialog()
@@ -233,26 +238,31 @@ price:15
 vendor_id:1
 invoice_number:
 invoice_image :*/
-                                mHashMap["entry_date"] =
+                                mHashMap["date"] =
                                     Utils(this).createPartFromString(addFuelDetailBinding.etDate.text.toString())
                                 mHashMap["odometer"] =
                                     Utils(this).createPartFromString(addFuelDetailBinding.etOdometer.text.toString())
-                                mHashMap["partial_fuelup"] =
+                                mHashMap["partialFuelup"] =
                                     Utils(this).createPartFromString(partial.toString())
                                 mHashMap["price"] =
                                     Utils(this).createPartFromString(addFuelDetailBinding.etPrice.text.toString())
-                                mHashMap["vendor_id"] =
-                                    Utils(this).createPartFromString(vendorId.toString())
-                                mHashMap["invoice_number"] =
+                                mHashMap["vendorId"] =
+                                    Utils(this).createPartFromString(vendorId)
+                                mHashMap["invoiceNumber"] =
                                     Utils(this).createPartFromString(addFuelDetailBinding.etInvoice.text.toString())
-                                mHashMap["vehicle_id"] =
+                                mHashMap["vehicleId"] =
                                     Utils(this).createPartFromString(vehicleId.toString())
                                 var userImage : MultipartBody.Part? = null
                                 if (!profileImage.isEmpty()) {
                                     val f1 = File(profileImage)
-                                    userImage = Utils(this).prepareFilePart("invoice_image", f1)
+                                    userImage = Utils(this).prepareFilePart("image", f1)
                                 }
-                                fuelViewModel.addFuelEntry(mHashMap, userImage)
+
+                                if (UtilsFunctions.isNetworkConnected()) {
+                                    fuelViewModel.addFuelEntry(mHashMap, userImage)
+                                    startProgressDialog()
+                                }
+
                             }
                         }
                     }
@@ -290,7 +300,7 @@ invoice_image :*/
                 view : View, position : Int, id : Long
             ) {
                 if (position > 0)
-                    vendorId = vendorData[position - 1].vendor_id
+                    vendorId = vendorData[position - 1].vendor_id!!
             }
 
             override fun onNothingSelected(parent : AdapterView<*>) {

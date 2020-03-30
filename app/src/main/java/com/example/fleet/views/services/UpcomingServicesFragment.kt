@@ -35,7 +35,10 @@ class UpcomingServicesFragment : BaseFragment() {
                 GlobalConstants.USERID
             ).toString()*/
         )
-        servicesViewModel.getServices("0")
+        if (UtilsFunctions.isNetworkConnected()) {
+            servicesViewModel.getServices("0")
+        }
+
         //   servicesViewModel.getServicesList()
         servicesViewModel.getServicesList().observe(this,
             Observer<ServicesListResponse> { response->

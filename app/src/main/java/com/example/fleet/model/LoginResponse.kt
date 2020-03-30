@@ -10,69 +10,96 @@ class LoginResponse {
     @SerializedName("message")
     @Expose
     var message : String? = null
-    @SerializedName("data")
+    @SerializedName("body")
     @Expose
     var data : Data? = null
 
     inner class Data {
-
+        @SerializedName("assignWarehouse")
+        @Expose
+        var assignWarehouse : AssignWarehouse? = null
+        @SerializedName("assignRoles")
+        @Expose
+        var assignRoles : ArrayList<AssignRoles>? = null
         @SerializedName("driver_id")
         @Expose
         var driver_id : Int? = null
-
+        @SerializedName("id")
+        @Expose
+        var id : String? = null
         @SerializedName("user_id")
         @Expose
-        var userId : Int? = null
+        var userId : String? = null
         @SerializedName("user_type")
         @Expose
         var userType : String? = null
-        @SerializedName("profile_image")
+        @SerializedName("profileImage")
         @Expose
         var profile_image : String? = null
-        @SerializedName("session_token")
+        @SerializedName("profileImageUrl")
         @Expose
-        var session_token : String? = null
+        var profileImageUrl : String? = null
+        @SerializedName("sessionToken")
+        @Expose
+        var sessionToken : String? = null
         @SerializedName("status")
         @Expose
         var status : String? = null
         @SerializedName("availablity")
         @Expose
         var availablity : String? = null
-
-        @SerializedName("country_code")
+        @SerializedName("countryCodename")
         @Expose
-        var countryCode : String? = null
+        var countryCodename : String? = null
         @SerializedName("email")
         @Expose
         var email : String? = null
         @SerializedName("password")
         @Expose
         var password : String? = null
-        @SerializedName("phone_number")
+        @SerializedName("phoneNumber")
         @Expose
         var phoneNumber : String? = null
-        @SerializedName("first_name")
+        @SerializedName("firstName")
         @Expose
         var firstName : String? = null
-        @SerializedName("last_name")
+        @SerializedName("lastName")
         @Expose
         var lastName : String? = null
         @SerializedName("gender")
         @Expose
         var gender : String? = null
+        @SerializedName("licenseNumber")
+        @Expose
+        var licenseNumber : String? = null
         @SerializedName("address")
         @Expose
         var address : String? = null
-        @SerializedName("profile_pic")
+        @SerializedName("licenseClass")
         @Expose
-        var profilePic : String? = null
-        @SerializedName("device_type")
+        var licenseClass : String? = null
+        @SerializedName("licenseState")
+        @Expose
+        var licenseState : String? = null
+        @SerializedName("dob")
+        @Expose
+        var dob : String? = null
+        @SerializedName("companyId")
+        @Expose
+        var companyId : String? = null
+        @SerializedName("authToken")
+        @Expose
+        var authToken : String? = null
+        @SerializedName("refreshToken")
+        @Expose
+        var refreshToken : String? = null
+        @SerializedName("deviceType")
         @Expose
         var deviceType : String? = null
-        @SerializedName("device_id")
+        @SerializedName("deviceId")
         @Expose
         var deviceId : String? = null
-        @SerializedName("jwt_token")
+        @SerializedName("jwtToken")
         @Expose
         var jwtToken : String? = null
         @SerializedName("notify_id")
@@ -85,5 +112,32 @@ class LoginResponse {
         @Expose
         var updatedAt : String? = null
 
+    }
+
+    inner class AssignWarehouse {
+        @SerializedName("id")
+        @Expose
+        var id : String? = null
+        @SerializedName("wareHouseId")
+        @Expose
+        var wareHouseId : String? = null
+        @SerializedName("employeeId")
+        @Expose
+        var employeeId : String? = null
+        @SerializedName("companyId")
+        @Expose
+        var companyId : String? = null
+    }
+
+    inner class AssignRoles {
+        @SerializedName("id")
+        @Expose
+        var id : String? = null
+        @SerializedName("roleTypeId")
+        @Expose
+        var roleTypeId : String? = null
+        @SerializedName("roleType")
+        @Expose
+        var roleType : String? = null
     }
 }

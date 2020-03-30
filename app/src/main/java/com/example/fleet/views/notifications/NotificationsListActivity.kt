@@ -35,7 +35,10 @@ class NotificationsListActivity : BaseActivity() {
         notificationsListBinding.notificationViewModel = notificationsViewModel
         notificationsListBinding.commonToolBar.imgToolbarText.text =
             resources.getString(R.string.notifications)
-        startProgressDialog()
+        if (UtilsFunctions.isNetworkConnected()) {
+            startProgressDialog()
+        }
+
         notificationsViewModel.getNotificationList().observe(this,
             Observer<NotificationsListResponse> { response->
                 stopProgressDialog()
