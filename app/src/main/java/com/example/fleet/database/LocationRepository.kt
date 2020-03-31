@@ -47,7 +47,7 @@ class LocationRepository() {
         return jobLocationsDetailsDao.getAllJobs()
     }
 
-    fun updateJOb(status : String, id : Int) {
+    fun updateJOb(status : String, id : String) {
         jobLocationsDetailsDao.updateJob(status, id)
     }
 

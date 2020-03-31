@@ -53,10 +53,10 @@ class ServicesHistoryListAdapter(
         )
         holder.binding.tvServiceType.text = servicesList[position].vehicle_type
 
-        if (!TextUtils.isEmpty(servicesList[position].vendor_name)) {
+        if (!TextUtils.isEmpty(servicesList[position].vendor?.vendorName)) {
             holder.binding.tvVendorName.visibility = View.VISIBLE
             holder.binding.tvVendorNameValue.visibility = View.VISIBLE
-            holder.binding.tvVendorNameValue.text = servicesList[position].vendor_name
+            holder.binding.tvVendorNameValue.text = servicesList[position].vendor?.vendorName
         } else {
             holder.binding.tvVendorName.visibility = View.GONE
             holder.binding.tvVendorNameValue.visibility = View.GONE

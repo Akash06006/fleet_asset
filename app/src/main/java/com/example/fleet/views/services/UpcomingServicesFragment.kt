@@ -35,9 +35,6 @@ class UpcomingServicesFragment : BaseFragment() {
                 GlobalConstants.USERID
             ).toString()*/
         )
-        if (UtilsFunctions.isNetworkConnected()) {
-            servicesViewModel.getServices("0")
-        }
 
         //   servicesViewModel.getServicesList()
         servicesViewModel.getServicesList().observe(this,
@@ -47,10 +44,17 @@ class UpcomingServicesFragment : BaseFragment() {
                     baseActivity.stopProgressDialog()
                     when {
                         response.code == 200 -> {
-                            servicesList.addAll(response.data!!)
-                            fragmentServicesBinding.rvServices.visibility = View.VISIBLE
-                            fragmentServicesBinding.tvNoRecord.visibility = View.GONE
-                            initRecyclerView()
+                            if (response.data != null) {
+                                servicesList.addAll(response.data!!)
+                                fragmentServicesBinding.rvServices.visibility = View.VISIBLE
+                                fragmentServicesBinding.tvNoRecord.visibility = View.GONE
+                                initRecyclerView()
+                            } else {
+                                message?.let {
+                                    UtilsFunctions.showToastError(it)
+                                }
+                            }
+
                         }
                         else -> message?.let {
                             UtilsFunctions.showToastError(it)
@@ -60,7 +64,7 @@ class UpcomingServicesFragment : BaseFragment() {
                         }
                     }
 
-                }else{
+                } else {
                     baseActivity.stopProgressDialog()
                 }
             })
@@ -84,8 +88,10 @@ class UpcomingServicesFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        servicesList.clear()
-        servicesViewModel.getServices("0")
+        if (UtilsFunctions.isNetworkConnected()) {
+            servicesList.clear()
+            servicesViewModel.getServices("0")
+        }
     }
 
 }

@@ -35,6 +35,7 @@ class LoginActivity : BaseActivity() {
         activityLoginbinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
         activityLoginbinding.loginViewModel = loginViewModel
+        checkAndRequestPermissions()
         loginViewModel.checkEmailExistence().observe(this,
             Observer<LoginResponse> { response->
                 stopProgressDialog()
@@ -42,7 +43,7 @@ class LoginActivity : BaseActivity() {
                     val message = response.message
                     when {
                         response.code == 200 -> {
-                            FirebaseFunctions.sendOTP("login", mJsonObject, this)
+                           // FirebaseFunctions.sendOTP("login", mJsonObject, this)
                             mJsonObject.addProperty(
                                 "phoneNumber",
                                 activityLoginbinding.etPhoneNo.text.toString()

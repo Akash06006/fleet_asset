@@ -1,7 +1,5 @@
 package com.example.fleet.views.notifications
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -10,20 +8,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fleet.R
 import com.example.fleet.application.MyApplication
 import com.example.fleet.common.UtilsFunctions
+import com.example.fleet.constants.GlobalConstants
 import com.example.fleet.databinding.ActivityNotificationsListBinding
 import com.example.fleet.model.CommonModel
-import com.example.fleet.model.home.JobsResponse
 import com.example.fleet.model.notificaitons.NotificationsListResponse
+import com.example.fleet.sharedpreference.SharedPrefClass
 import com.example.fleet.utils.BaseActivity
-import com.example.fleet.utils.Utils
 import com.example.fleet.viewmodels.notifications.NotificationsViewModel
-import com.uniongoods.adapters.MyJobsListAdapter
 import com.uniongoods.adapters.NotificationsListAdapter
 
 class NotificationsListActivity : BaseActivity() {
     lateinit var notificationsListBinding : ActivityNotificationsListBinding
     lateinit var notificationsViewModel : NotificationsViewModel
     private var notificationList = ArrayList<NotificationsListResponse.Data>()
+    var userId = ""
     override fun getLayoutId() : Int {
         return R.layout.activity_notifications_list
     }
@@ -35,7 +33,12 @@ class NotificationsListActivity : BaseActivity() {
         notificationsListBinding.notificationViewModel = notificationsViewModel
         notificationsListBinding.commonToolBar.imgToolbarText.text =
             resources.getString(R.string.notifications)
+        userId = SharedPrefClass()!!.getPrefValue(
+            MyApplication.instance,
+            GlobalConstants.USERID
+        ).toString()
         if (UtilsFunctions.isNetworkConnected()) {
+            notificationsViewModel.getNotificationsList(userId)
             startProgressDialog()
         }
 
@@ -46,10 +49,19 @@ class NotificationsListActivity : BaseActivity() {
                     val message = response.message
                     when {
                         response.code == 200 -> {
-                            notificationList.addAll(response.data!!)
-                            notificationsListBinding.rvNotification.visibility = View.VISIBLE
-                            notificationsListBinding.tvNoRecord.visibility = View.GONE
-                            initRecyclerView()
+                            if (response.data!=null && response.data!!.size > 0) {
+                                notificationList.addAll(response.data!!)
+                                notificationsListBinding.rvNotification.visibility = View.VISIBLE
+                                notificationsListBinding.tvNoRecord.visibility = View.GONE
+                                initRecyclerView()
+                            } else {
+                                message?.let {
+                                    UtilsFunctions.showToastError(message)
+                                }
+                                notificationsListBinding.rvNotification.visibility = View.GONE
+                                notificationsListBinding.tvNoRecord.visibility = View.VISIBLE
+                                notificationsListBinding.btnClear.visibility = View.GONE
+                            }
                         }
                         /* response.code == 204 -> {
                              FirebaseFunctions.sendOTP("signup", mJsonObject, this)
@@ -95,7 +107,7 @@ class NotificationsListActivity : BaseActivity() {
             fun(it : String?) {
                 when (it) {
                     "btn_clear" -> {
-                        notificationsViewModel.clearAllNotification()
+                        notificationsViewModel.clearAllNotification(userId)
                     }
                 }
             })

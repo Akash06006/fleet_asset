@@ -56,7 +56,7 @@ class LocationsViewModel(application : Application) : AndroidViewModel(applicati
         return repository.getAllJob()
     }
 
-    fun updateJobStatus(completeStatus : String, id : Int) = viewModelScope.launch {
+    fun updateJobStatus(completeStatus : String, id : String) = viewModelScope.launch {
         repository.updateJOb(completeStatus, id)
     }
 

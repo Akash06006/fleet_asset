@@ -5,13 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import android.view.View
 import com.example.fleet.common.UtilsFunctions
 import com.example.fleet.model.CommonModel
-import com.example.fleet.model.fuel.FuelListResponse
 import com.example.fleet.model.notificaitons.NotificationsListResponse
 import com.example.fleet.model.vendor.VendorListResponse
 import com.example.fleet.repositories.notifications.NotificationsRepository
 import com.example.fleet.viewmodels.BaseViewModel
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 
 class NotificationsViewModel : BaseViewModel() {
     private var clearAllNotifications = MutableLiveData<CommonModel>()
@@ -23,7 +20,7 @@ class NotificationsViewModel : BaseViewModel() {
 
     init {
         if (UtilsFunctions.isNetworkConnectedWithoutToast()) {
-            notificationList = notificationRepository.getNotificationsList()
+            notificationList = notificationRepository.getNotificationsList("")
             clearAllNotifications = notificationRepository.clearAllNotifications("")
         }
 
@@ -49,9 +46,16 @@ class NotificationsViewModel : BaseViewModel() {
         btnClick.value = v.resources.getResourceName(v.id).split("/")[1]
     }
 
-    fun clearAllNotification() {
+    fun clearAllNotification(id:String) {
         if (UtilsFunctions.isNetworkConnected()) {
-            clearAllNotifications = notificationRepository.clearAllNotifications("1")
+            clearAllNotifications = notificationRepository.clearAllNotifications(id)
+            mIsUpdating.postValue(true)
+        }
+    }
+
+    fun getNotificationsList(userId : String) {
+        if (UtilsFunctions.isNetworkConnected()) {
+            notificationList = notificationRepository.getNotificationsList(userId)
             mIsUpdating.postValue(true)
         }
     }

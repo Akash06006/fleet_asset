@@ -32,7 +32,7 @@ interface JobLocationsDetailsDao {
     fun getAllJobs() : List<JobDetails>
 
     @Query("UPDATE job_details SET complete_status = :jobStatus WHERE job_id =:id")
-    fun updateJob(jobStatus : String?, id : Int)
+    fun updateJob(jobStatus : String?, id : String)
 
     @Query("UPDATE job_details SET status = :jobSynchStatus WHERE job_id =:id")
     fun updateJobSynchStatus(jobSynchStatus : String?, id : Int)

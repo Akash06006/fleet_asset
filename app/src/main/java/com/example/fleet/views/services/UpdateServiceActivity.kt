@@ -214,7 +214,12 @@ class UpdateServiceActivity : BaseActivity(), ChoiceCallBack {
                                 //serviceFor
                                 //serviceFor
                                 //renewalType
-                                mHashMap["service_id"] =
+
+                                mHashMap["vehicleId"] =
+                                    Utils(this).createPartFromString(mJsonObject.get("vehicle_id").toString())
+                                mHashMap["updateFrom"] =
+                                    Utils(this).createPartFromString("mobile")
+                                mHashMap["serviceId"] =
                                     Utils(this).createPartFromString(mJsonObject.get("service_id").toString())
                                 mHashMap["serviceDate"] =
                                     Utils(this).createPartFromString(updateServiceBinding.etDateService.text.toString())

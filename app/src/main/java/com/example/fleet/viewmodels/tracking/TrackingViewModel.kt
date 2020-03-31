@@ -43,7 +43,13 @@ class TrackingViewModel : BaseViewModel() {
     fun startJob(status : String, jobId : String) {
         if (UtilsFunctions.isNetworkConnected()) {
             var jsonObject = JsonObject()
-            jsonObject.addProperty("employeeId",  SharedPrefClass()!!.getPrefValue(MyApplication.instance, GlobalConstants.USERID) as String)
+            jsonObject.addProperty(
+                "employeeId",
+                SharedPrefClass()!!.getPrefValue(
+                    MyApplication.instance,
+                    GlobalConstants.USERID
+                ) as String
+            )
             jsonObject.addProperty("progressStatus", status)
             jsonObject.addProperty("id", jobId)
             completejob = homeJobsRepository.startCompleteJob(jsonObject)

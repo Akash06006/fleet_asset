@@ -1,5 +1,6 @@
 package com.example.fleet.views.fuel
 
+import android.app.Activity
 import android.content.Intent
 import android.view.View
 import androidx.lifecycle.Observer
@@ -10,12 +11,9 @@ import com.example.fleet.R
 import com.example.fleet.common.UtilsFunctions
 import com.example.fleet.databinding.ActivityFuelEntryListBinding
 import com.example.fleet.model.fuel.FuelListResponse
-import com.example.fleet.model.home.JobsResponse
 import com.example.fleet.utils.BaseActivity
 import com.example.fleet.viewmodels.fuel.FuelViewModel
-import com.example.fleet.views.home.DashboardActivity
 import com.uniongoods.adapters.FuelEntryListAdapter
-import com.uniongoods.adapters.MyJobsListAdapter
 
 class FuelEntryList : BaseActivity() {
     lateinit var activityFuelEntryList : ActivityFuelEntryListBinding
@@ -34,6 +32,7 @@ class FuelEntryList : BaseActivity() {
 
         if (UtilsFunctions.isNetworkConnected()) {
             fuelViewModel.getFuelEntryList()
+            fuelList.clear()
             startProgressDialog()
         }
 
@@ -45,10 +44,15 @@ class FuelEntryList : BaseActivity() {
                     val message = response.message
                     when {
                         response.code == 200 -> {
-                            fuelList.addAll(response.data!!)
-                            activityFuelEntryList.rvJobs.visibility = View.VISIBLE
-                            activityFuelEntryList.tvNoRecord.visibility = View.GONE
-                            initRecyclerView()
+                            if (response.data != null && response.data!!.size > 0) {
+                                fuelList.addAll(response.data!!)
+                                activityFuelEntryList.rvJobs.visibility = View.VISIBLE
+                                activityFuelEntryList.tvNoRecord.visibility = View.GONE
+                                initRecyclerView()
+                            } else {
+                                message?.let { UtilsFunctions.showToastError(it) }
+                            }
+
                         }
                         /* response.code == 204 -> {
                              FirebaseFunctions.sendOTP("signup", mJsonObject, this)
@@ -66,12 +70,25 @@ class FuelEntryList : BaseActivity() {
                 when (it) {
                     "img_add_fuel" -> {
                         val intent = Intent(this, AddFuelDetailActivity::class.java)
-                        startActivity(intent)
+                        startActivityForResult(intent, 2);
                     }
                 }
 
             })
         )
+    }
+
+    override fun onActivityResult(requestCode : Int, resultCode : Int, data : Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        // check if the request code is same as what is passed  here it is 2
+        if (resultCode == Activity.RESULT_OK && requestCode == 2) {
+            if (UtilsFunctions.isNetworkConnected()) {
+                fuelViewModel.getFuelEntryList()
+                fuelList.clear()
+                startProgressDialog()
+            }
+
+        }
     }
 
     private fun initRecyclerView() {
