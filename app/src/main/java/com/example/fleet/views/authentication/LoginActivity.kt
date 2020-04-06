@@ -43,7 +43,7 @@ class LoginActivity : BaseActivity() {
                     val message = response.message
                     when {
                         response.code == 200 -> {
-                           // FirebaseFunctions.sendOTP("login", mJsonObject, this)
+                            FirebaseFunctions.sendOTP("login", mJsonObject, this)
                             mJsonObject.addProperty(
                                 "phoneNumber",
                                 activityLoginbinding.etPhoneNo.text.toString()
@@ -93,7 +93,7 @@ class LoginActivity : BaseActivity() {
                                 GlobalConstants.ACCESS_TOKEN,
                                 response.data!!.authToken
                             )
-                            SharedPrefClass().putObject(
+                            /*SharedPrefClass().putObject(
                                 MyApplication.instance.applicationContext,
                                 "isLogin",
                                 true
@@ -101,7 +101,7 @@ class LoginActivity : BaseActivity() {
                             val intent = Intent(this, DashboardActivity::class.java)
                             intent.putExtra("data", mJsonObject.toString())
                             startActivity(intent)
-                            finish()
+                            finish()*/
                             /*  val intent = Intent(this, OTPVerificationActivity::class.java)
                               intent.putExtra("data", mJsonObject.toString())
                               startActivity(intent)*/
