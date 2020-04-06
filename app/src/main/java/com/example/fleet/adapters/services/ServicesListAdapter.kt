@@ -56,9 +56,9 @@ class ServicesListAdapter(
         holder.binding!!.tvDueDate.text = Utils(activity).getDate(
             "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
             servicesList[position].service_date,
-            "dd/MM/yyyy"
+            "yyyy/MM/dd"
         )
-        holder.binding.tvServiceType.text = servicesList[position].vehicle_type
+       // holder.binding.tvServiceType.text = servicesList[position].vehicle_type
 
         if (!TextUtils.isEmpty(servicesList[position].vendor?.vendorName)) {
             holder.binding.tvVendorName.visibility = View.VISIBLE
@@ -68,7 +68,7 @@ class ServicesListAdapter(
             holder.binding.tvVendorName.visibility = View.GONE
             holder.binding.tvVendorNameValue.visibility = View.GONE
         }
-        if (servicesList[position].service_for == 0) {
+        if (servicesList[position].service_for.equals("service")) {
             holder.binding.tvServiceType.text = mContext.getString(R.string.service)
         } else {
             holder.binding.tvServiceType.text = mContext.getString(R.string.renewal)
@@ -77,7 +77,7 @@ class ServicesListAdapter(
         val year = calendar.get(Calendar.YEAR)
         var month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
-        var cur_date = day.toString() + "/" + (month + 1) + "/" + year
+        var cur_date = year.toString() + "/" + (month + 1) + "/" + day.toString()
         var date1 = Date(cur_date)
         var date2 = Date(holder.binding.tvDueDate.text.toString())
 // To calculate the time difference of two dates

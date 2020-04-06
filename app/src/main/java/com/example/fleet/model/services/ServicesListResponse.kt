@@ -84,9 +84,7 @@ class ServicesListResponse {
         @SerializedName("vehicle_name")
         @Expose
         var vehicle_name : String? = null
-        @SerializedName("serviceType")
-        @Expose
-        var vehicle_type : String? = null
+
         @SerializedName("vehicle_model")
         @Expose
         var vehicle_model : String? = null
@@ -101,7 +99,7 @@ class ServicesListResponse {
         var fuel_measure : String? = null
         @SerializedName("serviceFor")
         @Expose
-        var service_for : Int? = null
+        var service_for : String? = null
 
     }
 

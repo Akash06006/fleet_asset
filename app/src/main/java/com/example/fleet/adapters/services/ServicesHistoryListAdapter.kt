@@ -49,9 +49,9 @@ class ServicesHistoryListAdapter(
         holder.binding!!.tvDueDate.text = Utils(activity).getDate(
             "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
             servicesList[position].service_date,
-            "dd-MM-yyyy"
+            "yyyy/MM/dd"
         )
-        holder.binding.tvServiceType.text = servicesList[position].vehicle_type
+        //holder.binding.tvServiceType.text = servicesList[position].vehicle_type
 
         if (!TextUtils.isEmpty(servicesList[position].vendor?.vendorName)) {
             holder.binding.tvVendorName.visibility = View.VISIBLE
@@ -61,7 +61,7 @@ class ServicesHistoryListAdapter(
             holder.binding.tvVendorName.visibility = View.GONE
             holder.binding.tvVendorNameValue.visibility = View.GONE
         }
-        if (servicesList[position].service_for == 0) {
+        if (servicesList[position].service_for.equals("service")) {
             holder.binding.tvServiceType.text = mContext.getString(R.string.service)
         } else {
             holder.binding.tvServiceType.text = mContext.getString(R.string.renewal)
