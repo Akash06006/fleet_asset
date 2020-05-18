@@ -94,6 +94,7 @@ class SplashActivity : BaseActivity() {
                 mJsonObjectStartJob.addProperty(
                         "dest_lat", destLat
                 )
+
                 mJsonObjectStartJob.addProperty(
                         "dest_long", destLong
                 )
