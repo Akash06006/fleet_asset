@@ -56,15 +56,15 @@ object BindingUtils {
     fun getUserName() : String {
         var name = ""
         if (UtilsFunctions.checkObjectNull(
-                SharedPrefClass().getPrefValue(
-                    MyApplication.instance.applicationContext,
-                    GlobalConstants.USERNAME
+                        SharedPrefClass().getPrefValue(
+                                MyApplication.instance.applicationContext,
+                                GlobalConstants.USERNAME
+                        )
                 )
-            )
         ) {
             name = SharedPrefClass().getPrefValue(
-                MyApplication.instance,
-                GlobalConstants.USERNAME
+                    MyApplication.instance,
+                    GlobalConstants.USERNAME
             ).toString()
         } else {
             name = "Karan!"
@@ -83,16 +83,16 @@ object BindingUtils {
         var dataSaved:LoginResponse.Data ?=null
 
         if(UtilsFunctions.checkObjectNull(
-                SharedPrefClass().getPrefValue(
-                    MyApplication.instance.applicationContext,
-                    GlobalConstants.USERDATA
-                )
-            ))
+                        SharedPrefClass().getPrefValue(
+                                MyApplication.instance.applicationContext,
+                                GlobalConstants.USERDATA
+                        )
+                ))
         {
 
             dataSaved = gson.fromJson(SharedPrefClass().getPrefValue(
-                MyApplication.instance.applicationContext,
-                GlobalConstants.USERDATA
+                    MyApplication.instance.applicationContext,
+                    GlobalConstants.USERDATA
             ) as String, LoginResponse.Data::class.java)
 
 
@@ -105,15 +105,15 @@ object BindingUtils {
         when(type) {
             "guest_pass" -> {
                 if (UtilsFunctions.checkObjectNull(
-                        SharedPrefClass().getPrefValue(
-                            MyApplication.instance.applicationContext,
-                            GlobalConstants.GUEST_PASS_COUNT
+                                SharedPrefClass().getPrefValue(
+                                        MyApplication.instance.applicationContext,
+                                        GlobalConstants.GUEST_PASS_COUNT
+                                )
                         )
-                    )
                 ) {
                     data = SharedPrefClass().getPrefValue(
-                        MyApplication.instance,
-                        GlobalConstants.GUEST_PASS_COUNT
+                            MyApplication.instance,
+                            GlobalConstants.GUEST_PASS_COUNT
                     ).toString()
                 }
             }
@@ -146,30 +146,30 @@ object BindingUtils {
         when (type) {
             "yearlyfee" -> {
                 returnString = if (UtilsFunctions.checkObjectNull(
-                        SharedPrefClass().getPrefValue(
-                            MyApplication.instance.applicationContext,
-                            GlobalConstants.YEARLYFEE
+                                SharedPrefClass().getPrefValue(
+                                        MyApplication.instance.applicationContext,
+                                        GlobalConstants.YEARLYFEE
+                                )
                         )
-                    )
                 ) {
                     SharedPrefClass().getPrefValue(
-                        MyApplication.instance,
-                        GlobalConstants.YEARLYFEE
+                            MyApplication.instance,
+                            GlobalConstants.YEARLYFEE
                     ).toString()
                 } else "$0"
 
             }
             "monthlyfee" -> {
                 returnString = if (UtilsFunctions.checkObjectNull(
-                        SharedPrefClass().getPrefValue(
-                            MyApplication.instance.applicationContext,
-                            GlobalConstants.MONTHLYFEE
+                                SharedPrefClass().getPrefValue(
+                                        MyApplication.instance.applicationContext,
+                                        GlobalConstants.MONTHLYFEE
+                                )
                         )
-                    )
                 ) {
                     SharedPrefClass().getPrefValue(
-                        MyApplication.instance,
-                        GlobalConstants.MONTHLYFEE
+                            MyApplication.instance,
+                            GlobalConstants.MONTHLYFEE
                     ).toString()
                 } else "$0"
 
@@ -185,15 +185,15 @@ object BindingUtils {
     fun getUserLocation() : String {
         var name = ""
         if (UtilsFunctions.checkObjectNull(
-                SharedPrefClass().getPrefValue(
-                    MyApplication.instance.applicationContext,
-                    GlobalConstants.USER_LOCATION
+                        SharedPrefClass().getPrefValue(
+                                MyApplication.instance.applicationContext,
+                                GlobalConstants.USER_LOCATION
+                        )
                 )
-            )
         ) {
             name = SharedPrefClass().getPrefValue(
-                MyApplication.instance,
-                GlobalConstants.USER_LOCATION
+                    MyApplication.instance,
+                    GlobalConstants.USER_LOCATION
             ).toString()
         } else {
             name = "Default"
@@ -207,15 +207,15 @@ object BindingUtils {
     fun getUserFees() : String {
         var name = ""
         if (UtilsFunctions.checkObjectNull(
-                SharedPrefClass().getPrefValue(
-                    MyApplication.instance.applicationContext,
-                    GlobalConstants.USER_REG_FEE
+                        SharedPrefClass().getPrefValue(
+                                MyApplication.instance.applicationContext,
+                                GlobalConstants.USER_REG_FEE
+                        )
                 )
-            )
         ) {
             name = SharedPrefClass().getPrefValue(
-                MyApplication.instance,
-                GlobalConstants.USER_REG_FEE
+                    MyApplication.instance,
+                    GlobalConstants.USER_REG_FEE
             ).toString()
         } else {
             name = "$0"
@@ -229,15 +229,15 @@ object BindingUtils {
     fun getProfileImage() : String {
         var image = ""
         if (UtilsFunctions.checkObjectNull(
-                SharedPrefClass().getPrefValue(
-                    MyApplication.instance.applicationContext,
-                    GlobalConstants.CUSTOMER_IAMGE
+                        SharedPrefClass().getPrefValue(
+                                MyApplication.instance.applicationContext,
+                                GlobalConstants.CUSTOMER_IAMGE
+                        )
                 )
-            )
         ) {
             image = SharedPrefClass().getPrefValue(
-                MyApplication.instance.applicationContext,
-                GlobalConstants.CUSTOMER_IAMGE
+                    MyApplication.instance.applicationContext,
+                    GlobalConstants.CUSTOMER_IAMGE
             ).toString()
 
         }

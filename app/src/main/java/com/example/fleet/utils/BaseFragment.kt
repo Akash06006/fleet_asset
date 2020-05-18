@@ -14,38 +14,38 @@ import com.example.fleet.R
  * Created by dhimanabhishek2525 on 4/4/2016.
  */
 abstract class BaseFragment : Fragment() {
-    lateinit var viewDataBinding : ViewDataBinding
-    lateinit var baseActivity : BaseActivity
-        private set
+	lateinit var viewDataBinding : ViewDataBinding
+	lateinit var baseActivity : BaseActivity
+		private set
 
-    protected abstract fun getLayoutResId() : Int
+	protected abstract fun getLayoutResId() : Int
 
-    override fun onAttach(context : Context) {
-        super.onAttach(context)
-        if (context is BaseActivity)
-            baseActivity = context
-    }
+	override fun onAttach(context : Context) {
+		super.onAttach(context)
+		if (context is BaseActivity)
+			baseActivity = context
+	}
 
-    override fun onCreateView(
-        inflater : LayoutInflater,
-        container : ViewGroup?,
-        savedInstanceState : Bundle?
-    ) : View? {
-        viewDataBinding = DataBindingUtil.inflate(inflater, getLayoutResId(), container, false)
-        val viewRootBinding = viewDataBinding.root
+	override fun onCreateView(
+			inflater : LayoutInflater,
+			container : ViewGroup?,
+			savedInstanceState : Bundle?
+	) : View? {
+		viewDataBinding = DataBindingUtil.inflate(inflater, getLayoutResId(), container, false)
+		val viewRootBinding = viewDataBinding.root
 
-        baseActivity.overridePendingTransition(
-            R.anim.slide_in,
-            R.anim.slide_out
-        )
-        return viewRootBinding
-    }
+		baseActivity.overridePendingTransition(
+				R.anim.slide_in,
+				R.anim.slide_out
+		)
+		return viewRootBinding
+	}
 
-    override fun onViewCreated(view : View, savedInstanceState : Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initView()
-    }
+	override fun onViewCreated(view : View, savedInstanceState : Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
+		initView()
+	}
 
-    protected abstract fun initView()
+	protected abstract fun initView()
 
 }

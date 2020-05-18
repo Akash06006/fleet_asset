@@ -23,190 +23,190 @@ import com.example.fleet.callbacks.ChoiceCallBack
 import com.example.fleet.socket.TrackingActivity
 
 class DialogClass {
-    private var checkClick = 0
+ private var checkClick = 0
 
-    fun setDefaultDialog(
-        mContext : Context,
-        mInterface : DialogssInterface,
-        mKey : String,
-        mTitle : String
-    ) : Dialog {
-        val dialogView = Dialog(mContext)
-        dialogView.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        val binding =
-            DataBindingUtil.inflate<ViewDataBinding>(
-                LayoutInflater.from(mContext),
-                R.layout.custom_dialog,
-                null,
-                false
-            )
+ fun setDefaultDialog(
+         mContext : Context,
+         mInterface : DialogssInterface,
+         mKey : String,
+         mTitle : String
+ ) : Dialog {
+  val dialogView = Dialog(mContext)
+  dialogView.requestWindowFeature(Window.FEATURE_NO_TITLE)
+  val binding =
+          DataBindingUtil.inflate<ViewDataBinding>(
+                  LayoutInflater.from(mContext),
+                  R.layout.custom_dialog,
+                  null,
+                  false
+          )
 
-        dialogView.setContentView(binding.root)
-        dialogView.setCancelable(false)
-        dialogView.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
-        dialogView.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val yes = dialogView.findViewById<Button>(R.id.yes)
-        val no = dialogView.findViewById<Button>(R.id.no)
-        val tvLogout = dialogView.findViewById<TextView>(R.id.tv_dialog_logout)
-        if (mKey.equals("logout"))
-            tvLogout.visibility = View.VISIBLE
-        else
-            tvLogout.visibility = View.GONE
+  dialogView.setContentView(binding.root)
+  dialogView.setCancelable(false)
+  dialogView.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+  dialogView.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+  val yes = dialogView.findViewById<Button>(R.id.yes)
+  val no = dialogView.findViewById<Button>(R.id.no)
+  val tvLogout = dialogView.findViewById<TextView>(R.id.tv_dialog_logout)
+  if (mKey.equals("logout"))
+   tvLogout.visibility = View.VISIBLE
+  else
+   tvLogout.visibility = View.GONE
 
-        if (!ValidationsClass().checkStringNull(mTitle))
-            (dialogView.findViewById<View>(R.id.txt_dia) as TextView).text = mTitle
+  if (!ValidationsClass().checkStringNull(mTitle))
+   (dialogView.findViewById<View>(R.id.txt_dia) as TextView).text = mTitle
 //        (dialogView.findViewById<View>(R.id.txt_dia) as TextView).text = mTitle
 
-        yes.setOnClickListener {
-            mInterface.onDialogConfirmAction(null, mKey)
-        }
+  yes.setOnClickListener {
+   mInterface.onDialogConfirmAction(null, mKey)
+  }
 
 
-        no.setOnClickListener {
-            mInterface.onDialogCancelAction(null, mKey)
-        }
-        // Create the AlertDialog object and return it
-        return dialogView
+  no.setOnClickListener {
+   mInterface.onDialogCancelAction(null, mKey)
+  }
+  // Create the AlertDialog object and return it
+  return dialogView
 
-    }
+ }
 
-    fun setPermissionDialog(mContext : Context, homeActivity : TrackingActivity) : Dialog {
-        val dialogView = Dialog(mContext)
-        dialogView.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        val activity = mContext as Activity
-        val binding = DataBindingUtil.inflate<ViewDataBinding>(
-            LayoutInflater.from(mContext),
-            R.layout.location_popup,
-            null,
-            false
-        )
+ fun setPermissionDialog(mContext : Context, homeActivity : TrackingActivity) : Dialog {
+  val dialogView = Dialog(mContext)
+  dialogView.requestWindowFeature(Window.FEATURE_NO_TITLE)
+  val activity = mContext as Activity
+  val binding = DataBindingUtil.inflate<ViewDataBinding>(
+          LayoutInflater.from(mContext),
+          R.layout.location_popup,
+          null,
+          false
+  )
 
-        dialogView.setContentView(binding.root)
-        dialogView.setCancelable(false)
-        dialogView.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
-        val btn_turn_on_location = dialogView.findViewById<Button>(R.id.btn_turn_on_location)
+  dialogView.setContentView(binding.root)
+  dialogView.setCancelable(false)
+  dialogView.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+  val btn_turn_on_location = dialogView.findViewById<Button>(R.id.btn_turn_on_location)
 
-        btn_turn_on_location.setOnClickListener { homeActivity.checkPermission() }
+  btn_turn_on_location.setOnClickListener { homeActivity.checkPermission() }
 
-        return dialogView
+  return dialogView
 
-    }
+ }
 
-    fun setConfirmationDialog(
-        mContext : Context,
-        mInterface : DialogssInterface,
-        mKey : String
-    ) : Dialog {
-        val dialogView = Dialog(mContext, R.style.transparent_dialog_borderless)
-        dialogView.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        val binding =
-            DataBindingUtil.inflate<ViewDataBinding>(
-                LayoutInflater.from(mContext),
-                R.layout.layout_confirmation_popup,
-                null,
-                false
-            )
-
-
-        dialogView.setContentView(binding.root)
-        dialogView.setCancelable(false)
-
-        dialogView.window!!.setLayout(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        dialogView.window!!.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
-        val submit = dialogView.findViewById<Button>(R.id.btn_continue)
+ fun setConfirmationDialog(
+         mContext : Context,
+         mInterface : DialogssInterface,
+         mKey : String
+ ) : Dialog {
+  val dialogView = Dialog(mContext, R.style.transparent_dialog_borderless)
+  dialogView.requestWindowFeature(Window.FEATURE_NO_TITLE)
+  val binding =
+          DataBindingUtil.inflate<ViewDataBinding>(
+                  LayoutInflater.from(mContext),
+                  R.layout.layout_confirmation_popup,
+                  null,
+                  false
+          )
 
 
-        submit.setOnClickListener {
-            mInterface.onDialogConfirmAction(null, mKey)
-        }
+  dialogView.setContentView(binding.root)
+  dialogView.setCancelable(false)
+
+  dialogView.window!!.setLayout(
+          LinearLayout.LayoutParams.MATCH_PARENT,
+          LinearLayout.LayoutParams.WRAP_CONTENT
+  )
+  dialogView.window!!.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
+  val submit = dialogView.findViewById<Button>(R.id.btn_continue)
 
 
-        return dialogView
-
-    }
-
-    fun setCancelDialog(
-        mContext : Context,
-        mInterface : DialogssInterface,
-        mKey : String
-    ) : Dialog {
-        val dialogView = Dialog(mContext, R.style.transparent_dialog_borderless)
-        dialogView.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        val binding =
-            DataBindingUtil.inflate<ViewDataBinding>(
-                LayoutInflater.from(mContext),
-                R.layout.layout_cancel_popup,
-                null,
-                false
-            )
+  submit.setOnClickListener {
+   mInterface.onDialogConfirmAction(null, mKey)
+  }
 
 
-        dialogView.setContentView(binding.root)
-        dialogView.setCancelable(false)
+  return dialogView
 
-        dialogView.window!!.setLayout(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        dialogView.window!!.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
-        val submit = dialogView.findViewById<Button>(R.id.btn_continue)
-        val cancel = dialogView.findViewById<Button>(R.id.btn_back)
+ }
 
-        submit.setOnClickListener {
-            mInterface.onDialogConfirmAction(null, mKey)
-        }
-        cancel.setOnClickListener {
-            mInterface.onDialogCancelAction(null, mKey)
-        }
+ fun setCancelDialog(
+         mContext : Context,
+         mInterface : DialogssInterface,
+         mKey : String
+ ) : Dialog {
+  val dialogView = Dialog(mContext, R.style.transparent_dialog_borderless)
+  dialogView.requestWindowFeature(Window.FEATURE_NO_TITLE)
+  val binding =
+          DataBindingUtil.inflate<ViewDataBinding>(
+                  LayoutInflater.from(mContext),
+                  R.layout.layout_cancel_popup,
+                  null,
+                  false
+          )
 
 
+  dialogView.setContentView(binding.root)
+  dialogView.setCancelable(false)
 
+  dialogView.window!!.setLayout(
+          LinearLayout.LayoutParams.MATCH_PARENT,
+          LinearLayout.LayoutParams.WRAP_CONTENT
+  )
+  dialogView.window!!.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
+  val submit = dialogView.findViewById<Button>(R.id.btn_continue)
+  val cancel = dialogView.findViewById<Button>(R.id.btn_back)
 
-        return dialogView
-    }
+  submit.setOnClickListener {
+   mInterface.onDialogConfirmAction(null, mKey)
+  }
+  cancel.setOnClickListener {
+   mInterface.onDialogCancelAction(null, mKey)
+  }
 
 
 
-    fun setUploadConfirmationDialog(
-        mContext: Context,
-        mInterface: ChoiceCallBack,
-        mKey: String
-    ): Dialog {
-        val dialogView = Dialog(mContext)
-        dialogView.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        val binding =
-            DataBindingUtil.inflate<ViewDataBinding>(
-                LayoutInflater.from(mContext),
-                R.layout.dialog_image_choice,
-                null,
-                false
-            )
 
-        dialogView.setContentView(binding.root)
-        dialogView.setCancelable(true)
-        dialogView.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
-        dialogView.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val camera = dialogView.findViewById<LinearLayout>(R.id.ll_camera)
-        val gallery = dialogView.findViewById<LinearLayout>(R.id.ll_gallery)
-        // Create the AlertDialog object and return it
-        camera.setOnClickListener {
-            mInterface.photoFromCamera(mKey)
-            dialogView.dismiss()
-        }
-        gallery.setOnClickListener {
-            mInterface.photoFromGallery(mKey)
-            dialogView.dismiss()
-        }
+  return dialogView
+ }
 
 
 
-        dialogView.show()
+ fun setUploadConfirmationDialog(
+         mContext: Context,
+         mInterface: ChoiceCallBack,
+         mKey: String
+ ): Dialog {
+  val dialogView = Dialog(mContext)
+  dialogView.requestWindowFeature(Window.FEATURE_NO_TITLE)
+  val binding =
+          DataBindingUtil.inflate<ViewDataBinding>(
+                  LayoutInflater.from(mContext),
+                  R.layout.dialog_image_choice,
+                  null,
+                  false
+          )
 
-        return dialogView
+  dialogView.setContentView(binding.root)
+  dialogView.setCancelable(true)
+  dialogView.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+  dialogView.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+  val camera = dialogView.findViewById<LinearLayout>(R.id.ll_camera)
+  val gallery = dialogView.findViewById<LinearLayout>(R.id.ll_gallery)
+  // Create the AlertDialog object and return it
+  camera.setOnClickListener {
+   mInterface.photoFromCamera(mKey)
+   dialogView.dismiss()
+  }
+  gallery.setOnClickListener {
+   mInterface.photoFromGallery(mKey)
+   dialogView.dismiss()
+  }
 
-    }
+
+
+  dialogView.show()
+
+  return dialogView
+
+ }
 
 }

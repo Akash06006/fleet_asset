@@ -18,7 +18,7 @@ import org.json.JSONObject
 
 class OTPVerificationModel : BaseViewModel() {
     override fun isLoading() : LiveData<Boolean> {
-    return mIsUpdating   }
+        return mIsUpdating   }
 
     override fun isClick() : LiveData<String> {
         return btnClick     }

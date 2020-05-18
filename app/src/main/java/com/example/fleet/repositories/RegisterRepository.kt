@@ -27,29 +27,29 @@ class RegisterRepository {
         if (hashMap != null) {
             val mApiService = ApiService<JsonObject>()
             mApiService.get(
-                object : ApiResponse<JsonObject> {
-                    override fun onResponse(mResponse : Response<JsonObject>) {
-                        val loginResponse = if (mResponse.body() != null)
-                            gson.fromJson<LoginResponse>("" + mResponse.body(), LoginResponse::class.java)
-                        else {
-                            gson.fromJson<LoginResponse>(
-                                 mResponse.errorBody()!!.charStream(),
-                                LoginResponse::class.java
-                            )
+                    object : ApiResponse<JsonObject> {
+                        override fun onResponse(mResponse : Response<JsonObject>) {
+                            val loginResponse = if (mResponse.body() != null)
+                                gson.fromJson<LoginResponse>("" + mResponse.body(), LoginResponse::class.java)
+                            else {
+                                gson.fromJson<LoginResponse>(
+                                        mResponse.errorBody()!!.charStream(),
+                                        LoginResponse::class.java
+                                )
+                            }
+
+
+                            data!!.postValue(loginResponse)
+
                         }
 
+                        override fun onError(mKey : String) {
+                            UtilsFunctions.showToastError(MyApplication.instance.getString(R.string.internal_server_error))
+                            data!!.postValue(null)
 
-                        data!!.postValue(loginResponse)
+                        }
 
-                    }
-
-                    override fun onError(mKey : String) {
-                        UtilsFunctions.showToastError(MyApplication.instance.getString(R.string.internal_server_error))
-                        data!!.postValue(null)
-
-                    }
-
-                }, ApiClient.getApiInterface().finishRegistartion(hashMap,image)
+                    }, ApiClient.getApiInterface().finishRegistartion(hashMap,image)
 
             )
 

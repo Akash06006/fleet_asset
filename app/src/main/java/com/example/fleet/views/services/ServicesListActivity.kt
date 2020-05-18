@@ -22,10 +22,12 @@ import com.google.android.material.tabs.TabLayout
 import com.uniongoods.adapters.ServicesListAdapter
 
 class ServicesListActivity : BaseActivity() {
-    lateinit var servicesListBinding : ActivityServicesListBinding
-    lateinit var servicesViewModel : ServicesViewModel
+    lateinit var servicesListBinding: ActivityServicesListBinding
+    lateinit var servicesViewModel: ServicesViewModel
     private var servicesList = ArrayList<LoginResponse.Data>()
-    var fragment : Fragment? = null
+    var fragment: Fragment? = null
+    var from = ""
+
     override fun initViews() {
         servicesListBinding = viewDataBinding as ActivityServicesListBinding
         servicesViewModel = ViewModelProviders.of(this).get(ServicesViewModel::class.java)
@@ -33,13 +35,13 @@ class ServicesListActivity : BaseActivity() {
         fragment = UpcomingServicesFragment()
         callFragments(fragment, supportFragmentManager, false, "send_data", "")
         servicesListBinding.toolbarCommon.imgToolbarText.text =
-            resources.getString(R.string.services)
+                resources.getString(R.string.services)
 
-
+        from = intent.extras?.get("from").toString()
         servicesListBinding!!.tablayout.addOnTabSelectedListener(object :
-            TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab : TabLayout.Tab?) {
-                var fragment : Fragment? = null
+                TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                var fragment: Fragment? = null
                 servicesListBinding!!.toolbarCommon.imgRight.visibility = View.GONE
 
                 when (tab!!.position) {
@@ -53,26 +55,22 @@ class ServicesListActivity : BaseActivity() {
 
             }
 
-            override fun onTabUnselected(tab : TabLayout.Tab?) {
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
 
             }
 
-            override fun onTabReselected(tab : TabLayout.Tab?) {
+            override fun onTabReselected(tab: TabLayout.Tab?) {
                 //var fragment : Fragment? = null
                 //Not In use
             }
         })
 
 
-
-
-
     }
 
-    override fun getLayoutId() : Int {
+    override fun getLayoutId(): Int {
         return R.layout.activity_services_list
     }
-
 
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)

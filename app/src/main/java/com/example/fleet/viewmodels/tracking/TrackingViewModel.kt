@@ -39,7 +39,6 @@ class TrackingViewModel : BaseViewModel() {
     fun startCompleteJob() : LiveData<CommonModel> {
         return completejob
     }
-
     fun startJob(status : String, jobId : String) {
         if (UtilsFunctions.isNetworkConnected()) {
             var jsonObject = JsonObject()
