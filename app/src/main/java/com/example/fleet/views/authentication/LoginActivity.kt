@@ -35,7 +35,8 @@ class LoginActivity : BaseActivity() {
         activityLoginbinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
         activityLoginbinding.loginViewModel = loginViewModel
-        loginViewModel.checkEmailExistence().observe(this,
+        loginViewModel.checkEmailExistence().observe(
+            this,
             Observer<LoginResponse> { response->
                 stopProgressDialog()
                 if (response != null) {
@@ -65,7 +66,22 @@ class LoginActivity : BaseActivity() {
                                     response.data!!.profileImageUrl + response.data!!.profile_image
                                 )
                             } //profileImageUrl +profileImage
+                            if (response.data!!.assignRoles != null) {
+                                if (!response.data!!.assignRoles!!.isEmpty()) {
+                                    if (response.data!!.assignRoles!!.size == 2) {
+                                        SharedPrefClass().putObject(
+                                            this, GlobalConstants.USERROLE, GlobalConstants.BOTH
+                                        )
+                                    } else {
+                                        SharedPrefClass().putObject(
+                                            this,
+                                            GlobalConstants.USERROLE,
+                                            response.data!!.assignRoles!!.get(0).roleType
+                                        )
+                                    }
 
+                                }
+                            }
 
                             SharedPrefClass().putObject(
                                 this, GlobalConstants.USERDATA,
@@ -111,7 +127,6 @@ class LoginActivity : BaseActivity() {
                          }*/
                         else -> showToastError(message)
                     }
-
                 }
             })
 
@@ -191,7 +206,6 @@ class LoginActivity : BaseActivity() {
                 stopProgressDialog()
             }
         })
-
     }
 
 }

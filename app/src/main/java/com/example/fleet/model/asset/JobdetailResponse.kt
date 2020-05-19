@@ -1,9 +1,9 @@
-package com.example.fleet.model.home
+package com.example.fleet.model.asset
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class JobsResponse {
+class JobdetailResponse {
     @SerializedName("code")
     @Expose
     var code : Int? = null
@@ -12,7 +12,7 @@ class JobsResponse {
     var message : String? = null
     @SerializedName("body")
     @Expose
-    var data : ArrayList<Data>? = null
+    var body : Body? = null
 
     /*{"id":"26f44e62-9c5e-4a26-97fe-357eb239f6b7","fromLocation":"SCF, Sector 118, Phase 3B-2, Sector 60, Sahibzada Ajit Singh Nagar
     , Punjab 160055, India","toLocation":"Mohali 7 Phase, सेक्टर 61, साहिबजादा अजीत सिंह नगर, 160062, India","
@@ -22,7 +22,7 @@ class JobsResponse {
     "vehicleId":"075d7726-5588-4756-a714-edd16151a7e4","jobType":{"id":"72de2fd1-5953-4379-ad5d-97eb6c26cae0","jobType":"Taxi"},
     "employee":{"id":"1409dbcc-dcec-4b19-b5d7-287b68ea4d9f","firstName":"Akashhh","lastName":"Gharuuu"},
     "vehicle":{"id":"075d7726-5588-4756-a714-edd16151a7e4","name":"test1","regNumber":"qweryd"}}*/
-    inner class Data {
+    inner class Body {
         @SerializedName("jobType")
         @Expose
         var jobType : JobType? = null

@@ -46,6 +46,9 @@ interface ApiInterface {
     @GET("api/employee/get/{id}")
     fun getProfile(@Path("id")  id:String) : Call<JsonObject>
 
+    @GET("api/job/getJob/{id}")
+    fun getJobDetail(@Path("id")  id:String) : Call<JsonObject>
+
     @GET("driver/vehicle/latLongList")
     fun getVehicleList() : Call<JsonObject>
 
@@ -72,16 +75,29 @@ interface ApiInterface {
    @POST("api/job/getDriverJobs")
    fun getJobs(@Body mJsonObject : JsonObject) : Call<JsonObject>
 
+    @POST("api/job/getJobListing")
+    fun getAssetJobs(@Body mJsonObject : JsonObject) : Call<JsonObject>
+
     @GET("job/driver/jobsHistory")
     fun getJobsHistory(@Query("progressStatus") userId : String) : Call<JsonObject>
     @GET("api/job/jobsHistory")
     fun getJobsHistory1(@Query("page") page : Int,@Query("limit") limit : Int,@Query("progressStatus") progressStatus : Int) : Call<JsonObject>
 
+    @GET("api/job/assetJobsHistory")
+    fun getAssetJobsHistory1(@Query("page") page : Int,@Query("limit") limit : Int,@Query("progressStatus") progressStatus : Int) : Call<JsonObject>
+
+
     @POST("api/job/changeJobStatus")
     fun startCompleteJob(@Body mJsonObject : JsonObject) : Call<JsonObject>
 
+    @POST("api/job/changeJobStatus")
+    fun assetStartCompleteJob(@Body mJsonObject : JsonObject) : Call<JsonObject>
+
     @POST("api/job/AcceptReject")
     fun acceptRejectJob(@Body mJsonObject : JsonObject) : Call<JsonObject>
+
+    @POST("api/job/AcceptReject")
+    fun assetAcceptRejectJob(@Body mJsonObject : JsonObject) : Call<JsonObject>
 
     @Multipart
     @POST("api/fuel/addFuel")

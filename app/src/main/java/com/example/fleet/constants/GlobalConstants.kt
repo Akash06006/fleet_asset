@@ -20,6 +20,8 @@ object GlobalConstants {
     @JvmStatic
     val OUTLETEMAIL = "outletuseremail"
     @JvmStatic
+    val USERROLE = "userrole"
+    @JvmStatic
     val USERDATA = "USERDATA"
     @JvmStatic
     val USERID = "USERID"
@@ -73,5 +75,14 @@ object GlobalConstants {
     var SHARED_PREF = "DEMOO_APP"
     @JvmStatic
     var OTP_VERIFICATION_ID = "OTP_VERIFICATION_ID"
+
+    @JvmStatic
+    val WORKER = "Worker"
+    @JvmStatic
+    val DRIVER = "Driver"
+    @JvmStatic
+    val BOTH = "BOTH"
+    @JvmStatic
+    val job_id = "job_id"
 
 }

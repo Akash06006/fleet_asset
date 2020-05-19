@@ -16,6 +16,8 @@
     <string name="empty">Please Enter</string>
     <string name="invalid">Please Enter Valid</string>
     <string name="home">Home</string>
+    <string name="asset_home">Asset Home</string>
+    <string name="fleet_home">Fleet Home</string>
     <string name="email_here">Please Enter Your E-mail address</string>
     <string name="enter_email">Enter your username / email id</string>
     <string name="send_otp">Send OTP</string>
@@ -205,6 +207,10 @@
     <string name="your_upcoming_booking">Upcoming Booking :</string>
     <string name="key_activity">activity</string>
     <string name="date_time">Date &amp; Time : </string>
+    <string name="distance">Distance</string>
+    <string name="vehicle_reg">Vehicle Registration</string>
+    <string name="item_name">Item name</string>
+    <string name="item_quantity">Item quantity</string>
 
     <string name="server_not_reached">We can\'t connect to the server right now,please try again after some time.</string>
     <string name="resend_otp_message">We sent OTP to verify,Please check associated phone</string>
@@ -239,6 +245,9 @@
     <string name="to">To : </string>
     <string name="from">From : </string>
     <string name="load">Load : </string>
+    <string name="view">View</string>
+    <string name="warehouse_pickup">Warehouse Pickup</string>
+    <string name="warehouse_dropoff">Warehouse DropOff</string>
     <string name="select_vehicle">Select Vehicle</string>
     <string name="odometer">Odometer</string>
     <string name="price">Price</string>
@@ -266,6 +275,12 @@
     <string name="additional_information">Additional Information</string>
     <string name="update_service_entry">Update Service Entry</string>
     <string name="job_history">Job History</string>
+    <string name="job_detail">Job Detail</string>
+    <string name="asset_job_history">Asset Job History</string>
+    <string name="fleet_job_history">Fleet Job History</string>
+    <string name="asset">Asset</string>
+    <string name="fleet_management">Feet Management</string>
+    <string name="asset_management">Asset Management</string>
     <string name="completed_date">Completed Date :</string>
     <string name="clear_all">Clear All</string>
     <string name="start">Start</string>

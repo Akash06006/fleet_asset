@@ -8,7 +8,7 @@
 
         <variable
                 name="dashboardViewModel"
-                type="com.example.fleet.views.home.DashboardViewModel" />
+                type="com.example.fleet.views.home.DashboardViewModel"/>
 
     </data>
 
@@ -34,7 +34,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:onClick="@{(v) -> dashboardViewModel.clickListener(v)}" />
+                    app:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"/>
 
             <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tablayout"
@@ -51,12 +51,12 @@
                 <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/my_jobs" />
+                        android:text="@string/my_jobs"/>
 
                 <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/job_requests" />
+                        android:text="@string/job_requests"/>
 
             </com.google.android.material.tabs.TabLayout>
 
@@ -98,235 +98,326 @@
                      app:menu="@menu/activity_home_drawer"
                      app:theme="@style/NavigationViewStyle" />-->
 
-            <LinearLayout
+            <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="start"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
-                <!-- <include
-                     layout="@layout/header_view"/>-->
+                    android:layout_height="match_parent">
 
                 <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/nav_header_height"
-                        android:background="@color/colorPrimary"
-                        android:gravity="bottom"
-                        android:orientation="vertical"
-                        android:paddingLeft="@dimen/dp_16"
-                        android:paddingTop="@dimen/dp_16"
-                        android:paddingRight="@dimen/dp_16"
-                        android:paddingBottom="@dimen/dp_16"
-                        android:theme="@style/ThemeOverlay.AppCompat.Dark">
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+                    <!-- <include
+                         layout="@layout/header_view"/>-->
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/ic_profile"
-                            android:layout_width="@dimen/dp_80"
-                            android:layout_height="90dp"
-                            android:layout_gravity="center_horizontal"
-                            android:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"
-                            android:src="@drawable/ic_user" />
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/nav_header_height"
+                            android:background="@color/colorPrimary"
+                            android:gravity="bottom"
+                            android:orientation="vertical"
+                            android:paddingLeft="@dimen/dp_16"
+                            android:paddingTop="@dimen/dp_16"
+                            android:paddingRight="@dimen/dp_16"
+                            android:paddingBottom="@dimen/dp_16"
+                            android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-                    <TextView
-                            android:id="@+id/tv_name"
+                        <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/ic_profile"
+                                android:layout_width="@dimen/dp_80"
+                                android:layout_height="90dp"
+                                android:layout_gravity="center_horizontal"
+                                android:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"
+                                android:src="@drawable/ic_user"/>
+
+                        <TextView
+                                android:id="@+id/tv_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dp_4"
+                                android:gravity="center_horizontal"
+                                android:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                                android:textColor="@color/colorWhite"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:id="@+id/ll_fleet"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dp_4"
                             android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                        <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/colorGrey1"
+                                android:gravity="center"
+                                android:paddingStart="@dimen/dp_10"
+                                android:paddingLeft="@dimen/dp_10"
+                                android:paddingTop="@dimen/dp_5"
+                                android:paddingBottom="@dimen/dp_5"
+                                android:text="@string/fleet_management"
+                                android:textAllCaps="true"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="@dimen/sp_18"
+                                app:font="@{`semibold`}"
+                                tools:ignore="RtlSymmetry"/>
+
+                        <TextView
+                                android:id="@+id/tv_nav_home"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dp_20"
+                                android:gravity="center_vertical"
+                                android:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"
+                                android:paddingStart="@dimen/dp_10"
+                                android:paddingLeft="@dimen/dp_10"
+                                android:paddingBottom="@dimen/dp_5"
+                                android:text="@string/home"
+                                android:textAllCaps="true"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="@dimen/sp_18"
+                                app:font="@{`semibold`}"
+                                tools:ignore="RtlSymmetry"/>
+
+                        <TextView
+                                android:id="@+id/tv_nav_fuel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dp_1"
+                                android:gravity="center_vertical"
+                                android:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"
+                                android:paddingStart="@dimen/dp_10"
+                                android:paddingLeft="@dimen/dp_10"
+                                android:paddingTop="@dimen/dp_12"
+                                android:paddingBottom="@dimen/dp_5"
+                                android:text="@string/fuel"
+                                android:textAllCaps="true"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="@dimen/sp_18"
+                                app:font="@{`semibold`}"
+                                tools:ignore="RtlSymmetry"/>
+
+                        <TextView
+                                android:id="@+id/tv_nav_services"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dp_1"
+                                android:gravity="center_vertical"
+                                android:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"
+                                android:paddingStart="@dimen/dp_10"
+                                android:paddingLeft="@dimen/dp_10"
+                                android:paddingTop="@dimen/dp_12"
+                                android:paddingBottom="@dimen/dp_5"
+                                android:text="@string/services"
+                                android:textAllCaps="true"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="@dimen/sp_18"
+                                app:font="@{`semibold`}"
+                                tools:ignore="RtlSymmetry"/>
+
+                        <TextView
+                                android:id="@+id/tv_nav_history"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dp_20"
+                                android:layout_marginBottom="@dimen/dp_20"
+                                android:gravity="center_vertical"
+                                android:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"
+                                android:paddingStart="@dimen/dp_10"
+                                android:paddingLeft="@dimen/dp_10"
+                                android:paddingBottom="@dimen/dp_5"
+                                android:text="@string/job_history"
+                                android:textAllCaps="true"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="@dimen/sp_18"
+                                app:font="@{`semibold`}"
+                                tools:ignore="RtlSymmetry"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:id="@+id/ll_asset"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                        <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/colorGrey1"
+                                android:gravity="center"
+                                android:paddingStart="@dimen/dp_10"
+                                android:paddingLeft="@dimen/dp_10"
+                                android:paddingTop="@dimen/dp_5"
+                                android:paddingBottom="@dimen/dp_5"
+                                android:text="@string/asset_management"
+                                android:textAllCaps="true"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="@dimen/sp_18"
+                                app:font="@{`semibold`}"
+                                tools:ignore="RtlSymmetry"/>
+
+                        <TextView
+                                android:id="@+id/tv_asset_home"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dp_20"
+                                android:gravity="center_vertical"
+                                android:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"
+                                android:paddingStart="@dimen/dp_10"
+                                android:paddingLeft="@dimen/dp_10"
+                                android:paddingBottom="@dimen/dp_5"
+                                android:text="@string/home"
+                                android:textAllCaps="true"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="@dimen/sp_18"
+                                app:font="@{`semibold`}"
+                                tools:ignore="RtlSymmetry"/>
+
+                        <TextView
+                                android:id="@+id/tv_asset_job_history"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dp_20"
+                                android:layout_marginBottom="20dp"
+                                android:gravity="center_vertical"
+                                android:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"
+                                android:paddingStart="@dimen/dp_10"
+                                android:paddingLeft="@dimen/dp_10"
+                                android:paddingBottom="@dimen/dp_5"
+                                android:text="@string/job_history"
+                                android:textAllCaps="true"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="@dimen/sp_18"
+                                app:font="@{`semibold`}"
+                                tools:ignore="RtlSymmetry"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                            android:id="@+id/tv_nav_feedback"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
                             android:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                            android:textColor="@color/colorWhite" />
+                            android:paddingStart="@dimen/dp_10"
+                            android:paddingLeft="@dimen/dp_10"
+                            android:paddingBottom="@dimen/dp_5"
+                            android:text="@string/feedback"
+                            android:textAllCaps="true"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/sp_18"
+                            app:font="@{`semibold`}"
+                            tools:ignore="RtlSymmetry"/>
+
+                    <TextView
+                            android:id="@+id/tv_nav_notification"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_20"
+                            android:gravity="center_vertical"
+                            android:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"
+                            android:paddingStart="@dimen/dp_10"
+                            android:paddingLeft="@dimen/dp_10"
+                            android:paddingBottom="@dimen/dp_5"
+                            android:text="@string/notifications"
+                            android:textAllCaps="true"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/sp_18"
+                            app:font="@{`semibold`}"
+                            tools:ignore="RtlSymmetry"/>
+
+                    <TextView
+                            android:id="@+id/tv_nav_setting"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_20"
+                            android:gravity="center_vertical"
+                            android:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"
+                            android:paddingStart="@dimen/dp_10"
+                            android:paddingLeft="@dimen/dp_10"
+                            android:paddingBottom="@dimen/dp_5"
+                            android:text="@string/settings"
+                            android:textAllCaps="true"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/sp_18"
+                            app:font="@{`semibold`}"
+                            tools:ignore="RtlSymmetry"/>
+
+                    <TextView
+                            android:id="@+id/tv_nav_account"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_1"
+                            android:gravity="center_vertical"
+                            android:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"
+                            android:paddingStart="@dimen/dp_10"
+                            android:paddingLeft="@dimen/dp_10"
+                            android:paddingTop="@dimen/dp_12"
+                            android:paddingBottom="@dimen/dp_5"
+                            android:text="@string/my_account"
+                            android:textAllCaps="true"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/sp_18"
+                            android:visibility="gone"
+                            app:font="@{`semibold`}"
+                            tools:ignore="RtlSymmetry"/>
+
+                    <TextView
+                            android:id="@+id/tv_nav_contact"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_1"
+                            android:gravity="center_vertical"
+                            android:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"
+                            android:paddingStart="@dimen/dp_10"
+                            android:paddingLeft="@dimen/dp_10"
+                            android:paddingTop="@dimen/dp_12"
+                            android:paddingBottom="@dimen/dp_5"
+                            android:text="@string/contact"
+                            android:textAllCaps="true"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/sp_18"
+                            android:visibility="gone"
+                            app:font="@{`semibold`}"
+                            tools:ignore="RtlSymmetry"/>
+
+                    <TextView
+                            android:id="@+id/tv_nav_logout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_1"
+                            android:gravity="center_vertical"
+                            android:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"
+                            android:paddingStart="@dimen/dp_10"
+                            android:paddingLeft="@dimen/dp_10"
+                            android:paddingTop="@dimen/dp_15"
+                            android:paddingBottom="@dimen/dp_5"
+                            android:text="@string/logout"
+                            android:textAllCaps="true"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/sp_18"
+                            app:font="@{`semibold`}"
+                            tools:ignore="RtlSymmetry"/>
+
+                    <ImageView
+                            android:id="@+id/img_nav_cancel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_30"
+                            android:layout_marginBottom="@dimen/dp_20"
+                            android:contentDescription="@string/todo"
+                            android:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"
+                            android:src="@drawable/ic_cross"
+                            android:tint="@color/colorBlack"/>
 
                 </LinearLayout>
-
-                <TextView
-                        android:id="@+id/tv_nav_home"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_20"
-                        android:gravity="center_vertical"
-                        android:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"
-                        android:paddingStart="@dimen/dp_10"
-                        android:paddingLeft="@dimen/dp_10"
-                        android:paddingBottom="@dimen/dp_5"
-                        android:text="@string/home"
-                        android:textAllCaps="true"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/sp_18"
-                        app:font="@{`semibold`}"
-                        tools:ignore="RtlSymmetry" />
-
-                <TextView
-                        android:id="@+id/tv_nav_fuel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_1"
-                        android:gravity="center_vertical"
-                        android:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"
-                        android:paddingStart="@dimen/dp_10"
-                        android:paddingLeft="@dimen/dp_10"
-                        android:paddingTop="@dimen/dp_12"
-                        android:paddingBottom="@dimen/dp_5"
-                        android:text="@string/fuel"
-                        android:textAllCaps="true"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/sp_18"
-                        app:font="@{`semibold`}"
-                        tools:ignore="RtlSymmetry" />
-
-                <TextView
-                        android:id="@+id/tv_nav_services"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_1"
-                        android:gravity="center_vertical"
-                        android:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"
-                        android:paddingStart="@dimen/dp_10"
-                        android:paddingLeft="@dimen/dp_10"
-                        android:paddingTop="@dimen/dp_12"
-                        android:paddingBottom="@dimen/dp_5"
-                        android:text="@string/services"
-                        android:textAllCaps="true"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/sp_18"
-                        app:font="@{`semibold`}"
-                        tools:ignore="RtlSymmetry" />
-
-                <TextView
-                        android:id="@+id/tv_nav_history"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_20"
-                        android:gravity="center_vertical"
-                        android:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"
-                        android:paddingStart="@dimen/dp_10"
-                        android:paddingLeft="@dimen/dp_10"
-                        android:paddingBottom="@dimen/dp_5"
-                        android:text="@string/job_history"
-                        android:textAllCaps="true"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/sp_18"
-                        app:font="@{`semibold`}"
-                        tools:ignore="RtlSymmetry" />
-
-                <TextView
-                        android:id="@+id/tv_nav_feedback"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_20"
-                        android:gravity="center_vertical"
-                        android:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"
-                        android:paddingStart="@dimen/dp_10"
-                        android:paddingLeft="@dimen/dp_10"
-                        android:paddingBottom="@dimen/dp_5"
-                        android:text="@string/feedback"
-                        android:textAllCaps="true"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/sp_18"
-                        app:font="@{`semibold`}"
-                        tools:ignore="RtlSymmetry" />
-
-                <TextView
-                        android:id="@+id/tv_nav_notification"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_20"
-                        android:gravity="center_vertical"
-                        android:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"
-                        android:paddingStart="@dimen/dp_10"
-                        android:paddingLeft="@dimen/dp_10"
-                        android:paddingBottom="@dimen/dp_5"
-                        android:text="@string/notifications"
-                        android:textAllCaps="true"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/sp_18"
-                        app:font="@{`semibold`}"
-                        tools:ignore="RtlSymmetry" />
-
-                <TextView
-                        android:id="@+id/tv_nav_setting"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_20"
-                        android:gravity="center_vertical"
-                        android:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"
-                        android:paddingStart="@dimen/dp_10"
-                        android:paddingLeft="@dimen/dp_10"
-                        android:paddingBottom="@dimen/dp_5"
-                        android:text="@string/settings"
-                        android:textAllCaps="true"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/sp_18"
-                        app:font="@{`semibold`}"
-                        tools:ignore="RtlSymmetry" />
-
-                <TextView
-                        android:id="@+id/tv_nav_account"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_1"
-                        android:gravity="center_vertical"
-                        android:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"
-                        android:paddingStart="@dimen/dp_10"
-                        android:paddingLeft="@dimen/dp_10"
-                        android:paddingTop="@dimen/dp_12"
-                        android:paddingBottom="@dimen/dp_5"
-                        android:text="@string/my_account"
-                        android:textAllCaps="true"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/sp_18"
-                        android:visibility="gone"
-                        app:font="@{`semibold`}"
-                        tools:ignore="RtlSymmetry" />
-
-                <TextView
-                        android:id="@+id/tv_nav_contact"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_1"
-                        android:gravity="center_vertical"
-                        android:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"
-                        android:paddingStart="@dimen/dp_10"
-                        android:paddingLeft="@dimen/dp_10"
-                        android:paddingTop="@dimen/dp_12"
-                        android:paddingBottom="@dimen/dp_5"
-                        android:text="@string/contact"
-                        android:textAllCaps="true"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/sp_18"
-                        android:visibility="gone"
-                        app:font="@{`semibold`}"
-                        tools:ignore="RtlSymmetry" />
-
-                <TextView
-                        android:id="@+id/tv_nav_logout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_1"
-                        android:gravity="center_vertical"
-                        android:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"
-                        android:paddingStart="@dimen/dp_10"
-                        android:paddingLeft="@dimen/dp_10"
-                        android:paddingTop="@dimen/dp_15"
-                        android:paddingBottom="@dimen/dp_5"
-                        android:text="@string/logout"
-                        android:textAllCaps="true"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/sp_18"
-                        app:font="@{`semibold`}"
-                        tools:ignore="RtlSymmetry" />
-
-                <ImageView
-                        android:id="@+id/img_nav_cancel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_30"
-                        android:contentDescription="@string/todo"
-                        android:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"
-                        android:src="@drawable/ic_cross"
-                        android:tint="@color/colorBlack" />
-
-            </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
 
         </com.google.android.material.navigation.NavigationView>
 

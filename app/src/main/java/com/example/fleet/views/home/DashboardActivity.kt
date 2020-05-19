@@ -23,6 +23,10 @@ import com.example.fleet.socket.TrackingActivity
 import com.example.fleet.utils.BaseActivity
 import com.example.fleet.utils.DialogClass
 import com.example.fleet.utils.DialogssInterface
+import com.example.fleet.views.asset.AssetJobsHistoryActivity
+import com.example.fleet.views.asset.TrackingMapsActivity
+import com.example.fleet.views.asset.home.AssetHomeFragment
+import com.example.fleet.views.asset.home.AssetJobRequestsFragment
 import com.example.fleet.views.authentication.LoginActivity
 import com.example.fleet.views.fuel.AddFuelDetailActivity
 import com.example.fleet.views.fuel.FuelEntryList
@@ -43,6 +47,9 @@ class DashboardActivity : BaseActivity(),
     private var mDialogClass = DialogClass()
     private var dashboardViewModel : DashboardViewModel? = null
     private var removedFrag : String = ""
+    private var fleetHomeSelected : Boolean =
+        true //this param according to the user role if employee of asset management make it false and if of fleet than true else for both also true
+    var roleAssigned : String = ""
     var fragment : Fragment? = null
     //    companion object {
 //        @get:Synchronized
@@ -64,10 +71,32 @@ class DashboardActivity : BaseActivity(),
         /** Show Rating Dialog here**/
         // checkForRating(0)
         /*****************/
+        roleAssigned = SharedPrefClass().getPrefValue(
+            MyApplication.instance.applicationContext,
+            GlobalConstants.USERROLE
+        ).toString()
+        if (roleAssigned.equals(GlobalConstants.DRIVER)) {
+            fleetHomeSelected = true
+            activityDashboardBinding!!.llAsset.visibility = View.GONE
+            activityDashboardBinding!!.llFleet.visibility = View.VISIBLE
+            fragment = HomeFragment()
+
+        } else if (roleAssigned.equals(GlobalConstants.WORKER)) {
+            fleetHomeSelected = false
+            activityDashboardBinding!!.llAsset.visibility = View.VISIBLE
+            activityDashboardBinding!!.llFleet.visibility = View.GONE
+            fragment = AssetHomeFragment()
+
+        } else if (roleAssigned.equals(GlobalConstants.BOTH)) {
+            fleetHomeSelected = true
+            activityDashboardBinding!!.llAsset.visibility = View.VISIBLE
+            activityDashboardBinding!!.llFleet.visibility = View.VISIBLE
+            fragment = HomeFragment()
+
+        }
         activityDashboardBinding!!.toolbarCommon.toolbar.setImageResource(R.drawable.ic_sidebar)
         activityDashboardBinding!!.toolbarCommon.imgRight.visibility = View.VISIBLE
         activityDashboardBinding!!.toolbarCommon.imgRight.setImageResource(R.drawable.ic_notifications)
-
         val image = SharedPrefClass().getPrefValue(
             MyApplication.instance.applicationContext,
             GlobalConstants.USER_IAMGE
@@ -82,7 +111,8 @@ class DashboardActivity : BaseActivity(),
             getString(R.string.first_name)
         )
         activityDashboardBinding!!.tvName.text = name.toString()
-        fragment = HomeFragment()
+        // TODO role check
+
         callFragments(fragment, supportFragmentManager, false, "send_data", "")
         dashboardViewModel!!.isClick().observe(
             this, Observer<String>(function =
@@ -109,13 +139,14 @@ class DashboardActivity : BaseActivity(),
                         startActivity(intent)
                     }
                     "tv_nav_home" -> {
+                        fleetHomeSelected = true
                         activityDashboardBinding!!.toolbarCommon.imgRight.visibility = View.VISIBLE
                         activityDashboardBinding!!.toolbarCommon.imgRight.setImageDrawable(
                             getDrawable(R.drawable.ic_notifications)
                         )
                         val fragment = HomeFragment()
                         activityDashboardBinding!!.toolbarCommon.imgToolbarText.text =
-                            getString(R.string.home)
+                            getString(R.string.fleet_home)
                         activityDashboardBinding!!.drawerLayout.closeDrawers()
                         this.callFragments(
                             fragment,
@@ -132,6 +163,34 @@ class DashboardActivity : BaseActivity(),
                         /* val intent = Intent(this, TrackingActivity::class.java)
                          startActivity(intent)*/
                     }
+                    "tv_asset_home" -> {
+                        fleetHomeSelected = false
+                        activityDashboardBinding!!.toolbarCommon.imgRight.visibility = View.VISIBLE
+                        activityDashboardBinding!!.toolbarCommon.imgRight.setImageDrawable(
+                            getDrawable(R.drawable.ic_notifications)
+                        )
+                        val fragment = AssetHomeFragment()
+                        activityDashboardBinding!!.toolbarCommon.imgToolbarText.text =
+                            getString(R.string.asset_home)
+                        activityDashboardBinding!!.drawerLayout.closeDrawers()
+                        this.callFragments(
+                            fragment,
+                            supportFragmentManager,
+                            false,
+                            "send_data",
+                            ""
+                        )
+                        activityDashboardBinding!!.tablayout.getTabAt(0)?.select()
+                        activityDashboardBinding!!.drawerLayout.closeDrawers()
+                        /*val intent = Intent(this, TrackingMapsActivity::class.java)
+                        startActivity(intent)*/
+
+                    }
+                    "tv_asset_job_history" -> {
+                        val intent = Intent(this, AssetJobsHistoryActivity::class.java)
+                        startActivity(intent)
+
+                    }
                     "ic_profile" -> {
                         val intent = Intent(this, ProfileActivity::class.java)
                         startActivity(intent)
@@ -144,7 +203,7 @@ class DashboardActivity : BaseActivity(),
                         activityDashboardBinding!!.drawerLayout.closeDrawers()
                     }
                     "tv_nav_logout" -> {
-                        confirmationDialog =mDialogClass.setDefaultDialog(
+                        confirmationDialog = mDialogClass.setDefaultDialog(
                             this,
                             this,
                             "logout",
@@ -163,7 +222,6 @@ class DashboardActivity : BaseActivity(),
                             .load(image)
                             .placeholder(R.drawable.user)
                             .into(activityDashboardBinding!!.icProfile)
-
                         val name = SharedPrefClass().getPrefValue(
                             MyApplication.instance.applicationContext,
                             getString(R.string.first_name)
@@ -226,8 +284,18 @@ class DashboardActivity : BaseActivity(),
                 var fragment : Fragment? = null
                 //   activityDashboardBinding!!.toolbarCommon.imgRight.visibility = View.GONE
                 when (tab!!.position) {
-                    0 -> fragment = HomeFragment()
-                    1 -> fragment = JobRequestsFragment()
+                    0 ->
+                        if (fleetHomeSelected) { // if this param is true than fleet home is selected else asset home is selected
+                            fragment = HomeFragment()
+                        } else {
+                            fragment = AssetHomeFragment()
+                        }
+                    1 ->
+                        if (fleetHomeSelected) { // if this param is true than fleet home is selected else asset home is selected
+                            fragment = JobRequestsFragment()
+                        } else {
+                            fragment = AssetJobRequestsFragment()
+                        }
                 }
                 callFragments(fragment, supportFragmentManager, false, "send_data", "")
 
@@ -259,7 +327,13 @@ class DashboardActivity : BaseActivity(),
         when (fragment) {
             is HomeFragment -> {
                 activityDashboardBinding!!.toolbarCommon.imgToolbarText.text =
-                    getString(R.string.home)
+                    getString(R.string.fleet_home)
+                getString(R.string.calendar)
+
+            }
+            is AssetHomeFragment -> {
+                activityDashboardBinding!!.toolbarCommon.imgToolbarText.text =
+                    getString(R.string.asset_home)
                 getString(R.string.calendar)
 
             }
