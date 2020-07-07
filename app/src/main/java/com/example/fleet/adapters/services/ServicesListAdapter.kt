@@ -56,19 +56,19 @@ class ServicesListAdapter(
         holder.binding!!.tvDueDate.text = Utils(activity).getDate(
             "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
             servicesList[position].service_date,
-            "dd/MM/yyyy"
+            "yyyy/MM/dd"
         )
-        holder.binding.tvServiceType.text = servicesList[position].vehicle_type
+       // holder.binding.tvServiceType.text = servicesList[position].vehicle_type
 
-        if (!TextUtils.isEmpty(servicesList[position].vendor_name)) {
+        if (!TextUtils.isEmpty(servicesList[position].vendor?.vendorName)) {
             holder.binding.tvVendorName.visibility = View.VISIBLE
             holder.binding.tvVendorNameValue.visibility = View.VISIBLE
-            holder.binding.tvVendorNameValue.text = servicesList[position].vendor_name
+            holder.binding.tvVendorNameValue.text = servicesList[position].vendor?.vendorName
         } else {
             holder.binding.tvVendorName.visibility = View.GONE
             holder.binding.tvVendorNameValue.visibility = View.GONE
         }
-        if (servicesList[position].service_for == 0) {
+        if (servicesList[position].service_for.equals("service")) {
             holder.binding.tvServiceType.text = mContext.getString(R.string.service)
         } else {
             holder.binding.tvServiceType.text = mContext.getString(R.string.renewal)
@@ -77,7 +77,7 @@ class ServicesListAdapter(
         val year = calendar.get(Calendar.YEAR)
         var month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
-        var cur_date = day.toString() + "/" + (month + 1) + "/" + year
+        var cur_date = year.toString() + "/" + (month + 1) + "/" + day.toString()
         var date1 = Date(cur_date)
         var date2 = Date(holder.binding.tvDueDate.text.toString())
 // To calculate the time difference of two dates
@@ -86,15 +86,15 @@ class ServicesListAdapter(
         var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24)
         if (Difference_In_Days < 0) {
             holder.binding.mainLayout.setBackgroundColor(mContext.resources.getColor(R.color.colorRed))
-        } else if (Difference_In_Days > 0 && Difference_In_Days <= 3) {
+        } else if (Difference_In_Days >= 0 && Difference_In_Days <= 3) {
             holder.binding.mainLayout.setBackgroundColor(mContext.resources.getColor(R.color.colorSuccess))
         } else if (Difference_In_Days > 3 ) {
             holder.binding.mainLayout.setBackgroundColor(mContext.resources.getColor(R.color.colorLightBlue))
         }
         holder.binding.btnUpdateService.setOnClickListener {
             var vendorId = "0"
-            if (!TextUtils.isEmpty(servicesList[position].vendor_id)) {
-                vendorId = servicesList[position].vendor_id.toString()
+            if (!TextUtils.isEmpty(servicesList[position].vendor?.id)) {
+                vendorId = servicesList[position].vendor?.id!!
             }
             val mJsonObject = JsonObject()
             mJsonObject.addProperty(
@@ -104,7 +104,10 @@ class ServicesListAdapter(
                 "service_id", servicesList[position].service_id
             )
             mJsonObject.addProperty(
-                "vendor_name", servicesList[position].vendor_name
+                "vendor_name", servicesList[position].vendor?.vendorName
+            )
+            mJsonObject.addProperty(
+                "vehicle_id", servicesList[position].vehicle?.id
             )
             val intent = Intent(mContext.baseActivity, UpdateServiceActivity::class.java)
             intent.putExtra("data", mJsonObject.toString())

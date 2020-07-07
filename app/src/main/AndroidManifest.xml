@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="com.example.fleet">
+        xmlns:tools="http://schemas.android.com/tools"
+        package="com.example.fleet">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.READ_SMS"/>
     <uses-permission android:name="android.permission.SEND_SMS"/>
     <uses-permission
@@ -23,8 +24,8 @@
     <uses-feature android:name="android.hardware.camera"/>
     <uses-feature
             android:name="android.hardware.camera.flash"
-            android:required="true"/>
-    <uses-feature android:name="android.hardware.camera.autofocus"/>
+            android:required="true" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
@@ -50,19 +51,19 @@
         <activity android:name=".views.profile.ProfileActivity"/>
 
         <provider
-                android:name="androidx.core.content.FileProvider"
-                android:authorities="com.example.fleet.fileprovider"
-                android:exported="false"
-                android:grantUriPermissions="true">
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.fleet.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
                     android:name="android.support.FILE_PROVIDER_PATHS"
-                    android:resource="@xml/fileprovider"/>
+                    android:resource="@xml/fileprovider" />
         </provider>
 
         <activity
-                android:name=".views.SplashActivity"
-                android:screenOrientation="portrait"
-                android:theme="@style/AppTheme.NoActionBar">
+            android:name=".views.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -115,18 +116,18 @@
                 android:screenOrientation="portrait"/>
 
         <receiver
-                android:name=".views.authentication.SMSBroadcastReciever"
-                android:exported="true"
-                android:permission="android.permission.BROADCAST_SMS"
-                android:priority="1000">
+            android:name=".views.authentication.SMSBroadcastReciever"
+            android:exported="true"
+            android:permission="android.permission.BROADCAST_SMS"
+            android:priority="1000">
             <intent-filter>
                 <action android:name="com.google.android.gms.auth.api.phone.SMS_RETRIEVED"/>
             </intent-filter>
         </receiver>
 
         <service
-                android:name="com.uniongoods.fcm.MyFirebaseMessagingService"
-                android:exported="false">
+            android:name=".firebaseMobile.MyFirebaseMessagingService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
@@ -146,6 +147,20 @@
         <meta-data
                 android:name="com.google.android.geo.API_KEY"
                 android:value="AIzaSyA7Zj-PTZm4sDG-eoiLPA-XohvgxBe95wU"/>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/app_name" />
+        <!--AIzaSyD2-RDPo0jssFqwwTXr6NDpOFzQTcIc3dI-->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_app_logo" />
+        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
+
     </application>
 
 </manifest>

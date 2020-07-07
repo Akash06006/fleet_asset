@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Intent
 import android.os.Build
 import android.os.Handler
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import androidx.annotation.RequiresApi
@@ -38,12 +39,12 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 
 class DashboardActivity : BaseActivity(),
-    DialogssInterface {
-    var activityDashboardBinding : ActivityDashboardBinding? = null
-    private var navigationView : NavigationView? = null
-    private var drawer : DrawerLayout? = null
-    private var confirmationDialog : Dialog? = null
-    private var ratingDialog : Dialog? = null
+        DialogssInterface {
+    var activityDashboardBinding: ActivityDashboardBinding? = null
+    private var navigationView: NavigationView? = null
+    private var drawer: DrawerLayout? = null
+    private var confirmationDialog: Dialog? = null
+    private var ratingDialog: Dialog? = null
     private var mDialogClass = DialogClass()
     private var dashboardViewModel : DashboardViewModel? = null
     private var removedFrag : String = ""
@@ -51,6 +52,7 @@ class DashboardActivity : BaseActivity(),
         true //this param according to the user role if employee of asset management make it false and if of fleet than true else for both also true
     var roleAssigned : String = ""
     var fragment : Fragment? = null
+    var from = ""
     //    companion object {
 //        @get:Synchronized
 //        lateinit var toolBarText : TextView
@@ -97,23 +99,32 @@ class DashboardActivity : BaseActivity(),
         activityDashboardBinding!!.toolbarCommon.toolbar.setImageResource(R.drawable.ic_sidebar)
         activityDashboardBinding!!.toolbarCommon.imgRight.visibility = View.VISIBLE
         activityDashboardBinding!!.toolbarCommon.imgRight.setImageResource(R.drawable.ic_notifications)
+
+        from = intent.extras?.get("from").toString()
+        if (from.equals("notification")) {
+            activityDashboardBinding!!.tablayout.getTabAt(1)!!.select()
+            fragment = JobRequestsFragment()
+            callFragments(fragment, supportFragmentManager, false, "send_data", "")
+        } else {
+            fragment = HomeFragment()
+            callFragments(fragment, supportFragmentManager, false, "send_data", "")
+        }
         val image = SharedPrefClass().getPrefValue(
-            MyApplication.instance.applicationContext,
-            GlobalConstants.USER_IAMGE
+                MyApplication.instance.applicationContext,
+                GlobalConstants.USER_IAMGE
         )
         // ic_profile
         Glide.with(this)
-            .load(image)
-            .placeholder(R.drawable.user)
-            .into(activityDashboardBinding!!.icProfile)
+                .load(image)
+                .placeholder(R.drawable.user)
+                .into(activityDashboardBinding!!.icProfile)
         val name = SharedPrefClass().getPrefValue(
-            MyApplication.instance.applicationContext,
-            getString(R.string.first_name)
+                MyApplication.instance.applicationContext,
+                getString(R.string.first_name)
         )
         activityDashboardBinding!!.tvName.text = name.toString()
-        // TODO role check
-
-        callFragments(fragment, supportFragmentManager, false, "send_data", "")
+       // fragment = HomeFragment()
+       // callFragments(fragment, supportFragmentManager, false, "send_data", "")
         dashboardViewModel!!.isClick().observe(
             this, Observer<String>(function =
             fun(it : String?) {
@@ -136,6 +147,7 @@ class DashboardActivity : BaseActivity(),
                     }
                     "tv_nav_services" -> {
                         val intent = Intent(this, ServicesListActivity::class.java)
+                        intent.putExtra("from", "home")
                         startActivity(intent)
                     }
                     "tv_nav_home" -> {
@@ -154,12 +166,13 @@ class DashboardActivity : BaseActivity(),
                             false,
                             "send_data",
                             ""
-                        )
-                        activityDashboardBinding!!.tablayout.getTabAt(0)?.select()
-                        activityDashboardBinding!!.drawerLayout.closeDrawers()
+                    )
+                    activityDashboardBinding!!.tablayout.getTabAt(0)?.select()
+                    activityDashboardBinding!!.drawerLayout.closeDrawers()
 
                     }
                     "tv_nav_contact" -> {
+                        showToastSuccess("Coming Soon")
                         /* val intent = Intent(this, TrackingActivity::class.java)
                          startActivity(intent)*/
                     }
@@ -208,69 +221,73 @@ class DashboardActivity : BaseActivity(),
                             this,
                             "logout",
                             getString(R.string.warning_logout)
-                        )
-                        confirmationDialog?.show()
+                    )
+                    confirmationDialog?.show()
 
-                    }
-                    "toolbar" -> {
-                        val image = SharedPrefClass().getPrefValue(
+                }
+                "toolbar" -> {
+                    val image = SharedPrefClass().getPrefValue(
                             MyApplication.instance.applicationContext,
                             GlobalConstants.USER_IAMGE
-                        )
-                        // ic_profile
-                        Glide.with(this)
+                    )
+                    // ic_profile
+                    Glide.with(this)
                             .load(image)
                             .placeholder(R.drawable.user)
                             .into(activityDashboardBinding!!.icProfile)
                         val name = SharedPrefClass().getPrefValue(
                             MyApplication.instance.applicationContext,
                             getString(R.string.first_name)
-                        )
-                        activityDashboardBinding!!.tvName.text = name.toString()
-                        if (drawer!!.isDrawerOpen(GravityCompat.START)) {
-                            drawer!!.closeDrawer(Gravity.LEFT) //CLOSE Nav Drawer!
-                        } else {
-                            drawer!!.openDrawer(Gravity.LEFT)
-                        }
-                        val fragmentType =
+                    )
+                    activityDashboardBinding!!.tvName.text = name.toString()
+                    if (drawer!!.isDrawerOpen(GravityCompat.START)) {
+                        drawer!!.closeDrawer(Gravity.LEFT) //CLOSE Nav Drawer!
+                    } else {
+                        drawer!!.openDrawer(Gravity.LEFT)
+                    }
+                    val fragmentType =
                             supportFragmentManager.findFragmentById(R.id.frame_layout)
-                        when (fragmentType) {
-                            is HomeFragment -> {
-                                activityDashboardBinding!!.toolbarCommon.imgRight.visibility =
+                    when (fragmentType) {
+                        is HomeFragment -> {
+                            activityDashboardBinding!!.toolbarCommon.imgRight.visibility =
                                     View.VISIBLE
-                            }
                         }
                     }
                 }
-            })
+            }
+        })
         )
 
         dashboardViewModel!!.getLogoutReposne.observe(this,
-            Observer<CommonModel> { logoutResponse->
-                this.stopProgressDialog()
+                Observer<CommonModel> { logoutResponse ->
+                    this.stopProgressDialog()
 
-                if (logoutResponse != null) {
-                    val message = logoutResponse.message
+                    if (logoutResponse != null) {
+                        val message = logoutResponse.message
 
-                    if (logoutResponse.code == 200) {
-                        SharedPrefClass().putObject(
-                            this,
-                            "isLogin",
-                            false
-                        )
+                        if (logoutResponse.code == 200) {
+                            SharedPrefClass().putObject(
+                                    this,
+                                    "isLogin",
+                                    false
+                            )
+                            SharedPrefClass().putObject(
+                                    this,
+                                    GlobalConstants.USER_IAMGE,
+                                    "null"
+                            )
+                            showToastSuccess(getString(R.string.logout_msg))
+                            val intent1 = Intent(this, LoginActivity::class.java)
+                            startActivity(intent1)
+                            finish()
 
-                        showToastSuccess(getString(R.string.logout_msg))
-                        val intent1 = Intent(this, LoginActivity::class.java)
-                        startActivity(intent1)
-                        finish()
-
-                    } else {
-                        showToastError(message)
+                        } else {
+                            showToastError(message)
+                        }
                     }
-                }
-            })
+                })
 
-        dashboardViewModel!!.isLoading().observe(this, Observer<Boolean> { aBoolean->
+        dashboardViewModel!!.isLoading().observe(this, Observer<Boolean> { aBoolean ->
             if (aBoolean!!) {
                 this.startProgressDialog()
             } else {
@@ -279,9 +296,9 @@ class DashboardActivity : BaseActivity(),
         })
 
         activityDashboardBinding!!.tablayout.addOnTabSelectedListener(object :
-            TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab : TabLayout.Tab?) {
-                var fragment : Fragment? = null
+                TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                var fragment: Fragment? = null
                 //   activityDashboardBinding!!.toolbarCommon.imgRight.visibility = View.GONE
                 when (tab!!.position) {
                     0 ->
@@ -305,11 +322,11 @@ class DashboardActivity : BaseActivity(),
 
             }
 
-            override fun onTabUnselected(tab : TabLayout.Tab?) {
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
 
             }
 
-            override fun onTabReselected(tab : TabLayout.Tab?) {
+            override fun onTabReselected(tab: TabLayout.Tab?) {
                 //var fragment : Fragment? = null
                 //Not In use
             }
@@ -317,7 +334,7 @@ class DashboardActivity : BaseActivity(),
 
     }
 
-    override fun getLayoutId() : Int {
+    override fun getLayoutId(): Int {
         return R.layout.activity_dashboard
     }
 
@@ -344,28 +361,29 @@ class DashboardActivity : BaseActivity(),
     override fun onResume() {
         super.onResume()
         setHeadings()
-        /*  if (GlobalConstants.selectedCheckedFragment == 100) {
-              activityDashboardBinding!!.tablayout.getTabAt(GlobalConstants.selectedFragment)!!.select()
-              GlobalConstants.selectedCheckedFragment = 0
-          }*/
+        /* if (GlobalConstants.selectedCheckedFragment == 100) {
+             activityDashboardBinding!!.tablayout.getTabAt(GlobalConstants.selectedFragment)!!.select()
+             GlobalConstants.selectedCheckedFragment = 0
+         }*/
         val image = SharedPrefClass().getPrefValue(
-            MyApplication.instance.applicationContext,
-            GlobalConstants.USER_IAMGE
+                MyApplication.instance.applicationContext,
+                GlobalConstants.USER_IAMGE
         )
         // ic_profile
+
         Glide.with(this)
-            .load(image)
-            .placeholder(R.drawable.user)
-            .into(activityDashboardBinding!!.icProfile)
+                .load(image)
+                .placeholder(R.drawable.user)
+                .into(activityDashboardBinding!!.icProfile)
         val name = SharedPrefClass().getPrefValue(
-            MyApplication.instance.applicationContext,
-            getString(R.string.first_name)
+                MyApplication.instance.applicationContext,
+                getString(R.string.first_name)
         )
         activityDashboardBinding!!.tvName.text = name.toString()
 
     }
 
-    override fun onDialogConfirmAction(mView : View?, mKey : String) {
+    override fun onDialogConfirmAction(mView: View?, mKey: String) {
         when (mKey) {
             "logout" -> {
                 confirmationDialog?.dismiss()
@@ -379,7 +397,7 @@ class DashboardActivity : BaseActivity(),
         }
     }
 
-    override fun onDialogCancelAction(mView : View?, mKey : String) {
+    override fun onDialogCancelAction(mView: View?, mKey: String) {
         when (mKey) {
             "logout" -> confirmationDialog?.dismiss()
             "rating" -> ratingDialog?.dismiss()

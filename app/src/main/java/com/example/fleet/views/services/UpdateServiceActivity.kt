@@ -38,24 +38,24 @@ import java.util.*
 
 class UpdateServiceActivity : BaseActivity(), ChoiceCallBack {
     val vendorList = ArrayList<String>()
-    private lateinit var vendorData : ArrayList<VendorListResponse.Data>
-    lateinit var updateServiceBinding : ActivityUpdateServiceBinding
-    lateinit var servicesViewModel : ServicesViewModel
+    private lateinit var vendorData: ArrayList<VendorListResponse.Data>
+    lateinit var updateServiceBinding: ActivityUpdateServiceBinding
+    lateinit var servicesViewModel: ServicesViewModel
     private var mJsonObject = JSONObject()
-    private var confirmationDialog : Dialog? = null
+    private var confirmationDialog: Dialog? = null
     private var mDialogClass = DialogClass()
     private val RESULT_LOAD_IMAGE = 100
     private val CAMERA_REQUEST = 1888
     private var profileImage = ""
     var final = ""
-    var vendorId : String? = null
+    var vendorId: String? = null
 
     override fun initViews() {
         updateServiceBinding = viewDataBinding as ActivityUpdateServiceBinding
         servicesViewModel = ViewModelProviders.of(this).get(ServicesViewModel::class.java)
         updateServiceBinding.serviceViewModel = servicesViewModel
         updateServiceBinding.commonToolBar.imgToolbarText.text =
-            resources.getString(R.string.update_service_entry)
+                resources.getString(R.string.update_service_entry)
 
         try {
             mJsonObject = JSONObject(intent.extras.get("data").toString())
@@ -70,232 +70,237 @@ class UpdateServiceActivity : BaseActivity(), ChoiceCallBack {
                 updateServiceBinding.etVendorName.visibility = View.GONE
                 updateServiceBinding.spVendor.visibility = View.VISIBLE
             }
-        } catch (e : JSONException) {
+        } catch (e: JSONException) {
             e.printStackTrace()
         }
 
         servicesViewModel.updateServiceStatus().observe(this,
-            Observer<CommonModel> { response->
-                stopProgressDialog()
-                if (response != null) {
-                    val message = response.message
-                    when {
-                        response.code == 200 -> {
-                            finish()
-                            showToastSuccess(message)
+                Observer<CommonModel> { response ->
+                    stopProgressDialog()
+                    if (response != null) {
+                        val message = response.message
+                        when {
+                            response.code == 200 -> {
+                                finish()
+                                showToastSuccess(message)
+                            }
+                            else -> showToastError(message)
                         }
-                        else -> showToastError(message)
-                    }
 
-                }
-            })
+                    }
+                })
 
         servicesViewModel.getVendorList().observe(this,
-            Observer<VendorListResponse> { response->
-                stopProgressDialog()
-                if (response != null) {
-                    val message = response.message
-                    when {
-                        response.code == 200 -> {
-                            vendorData = response.data!!
-                            vendorList.add(getString(R.string.select_vendor))
-                            for (i in response.data!!) {
-                                vendorList.add(i.vendor_name!!)
+                Observer<VendorListResponse> { response ->
+                    stopProgressDialog()
+                    if (response != null) {
+                        val message = response.message
+                        when {
+                            response.code == 200 -> {
+                                vendorData = response.data!!
+                                vendorList.add(getString(R.string.select_vendor))
+                                for (i in response.data!!) {
+                                    vendorList.add(i.vendor_name!!)
+                                }
+                                setVendorSpinner()
                             }
-                            setVendorSpinner()
+                            /* response.code == 204 -> {
+                                 FirebaseFunctions.sendOTP("signup", mJsonObject, this)
+                             }*/
+                            else -> showToastError(message)
                         }
-                        /* response.code == 204 -> {
-                             FirebaseFunctions.sendOTP("signup", mJsonObject, this)
-                         }*/
-                        else -> showToastError(message)
-                    }
 
-                }
-            })
+                    }
+                })
 
         servicesViewModel.isClick().observe(
-            this, Observer<String>(function =
-            @SuppressLint("SetTextI18n", "SimpleDateFormat")
-            fun(it : String?) {
-                when (it) {
-                    "et_date_service" -> {
-                        val calendar = Calendar.getInstance()
-                        val year = calendar.get(Calendar.YEAR)
-                        val month = calendar.get(Calendar.MONTH)
-                        val day = calendar.get(Calendar.DAY_OF_MONTH)
-                        val datePickerDialog = DatePickerDialog(
+                this, Observer<String>(function =
+        @SuppressLint("SetTextI18n", "SimpleDateFormat")
+        fun(it: String?) {
+            when (it) {
+                "et_date_service" -> {
+                    val calendar = Calendar.getInstance()
+                    val year = calendar.get(Calendar.YEAR)
+                    val month = calendar.get(Calendar.MONTH)
+                    val day = calendar.get(Calendar.DAY_OF_MONTH)
+                    val datePickerDialog = DatePickerDialog(
                             this@UpdateServiceActivity,
                             DatePickerDialog.OnDateSetListener
-                            { view, year, monthOfYear, dayOfMonth->
+                            { view, year, monthOfYear, dayOfMonth ->
                                 updateServiceBinding.etDateService.setText("" + year + "-" + (monthOfYear + 1) + "-" + dayOfMonth)
                             },
                             year,
                             month,
                             day
-                        )
-                        datePickerDialog.getDatePicker().setMaxDate(Date().getTime());
-                        datePickerDialog.show()
-                    }
-                    "img_profile" -> {
-                        confirmationDialog =
+                    )
+                    datePickerDialog.getDatePicker().setMaxDate(Date().getTime());
+                    datePickerDialog.show()
+                }
+                "img_profile" -> {
+                    confirmationDialog =
                             mDialogClass.setUploadConfirmationDialog(this, this, "gallery")
-                    }
-                    "btn_submit" -> {
-                        val invoiceNumber = updateServiceBinding.etInvoice.text.toString()
-                        val date = updateServiceBinding.etDateService.text.toString()
-                        val odometer = updateServiceBinding.etOdometer.text.toString()
-                        val laborPrice = updateServiceBinding.etLabourPrice.text.toString()
-                        val partsPrice = updateServiceBinding.etPartsPrice.text.toString()
-                        val tax = updateServiceBinding.etTax.text.toString()
-                        val totalPrice = updateServiceBinding.etTotalPrice.text.toString()
-                        val additionalInfo = updateServiceBinding.etComments.text.toString()
+                }
+                "btn_submit" -> {
+                    val invoiceNumber = updateServiceBinding.etInvoice.text.toString()
+                    val date = updateServiceBinding.etDateService.text.toString()
+                    val odometer = updateServiceBinding.etOdometer.text.toString()
+                    val laborPrice = updateServiceBinding.etLabourPrice.text.toString()
+                    val partsPrice = updateServiceBinding.etPartsPrice.text.toString()
+                    val tax = updateServiceBinding.etTax.text.toString()
+                    val totalPrice = updateServiceBinding.etTotalPrice.text.toString()
+                    val additionalInfo = updateServiceBinding.etComments.text.toString()
 
-                        when {
-                            profileImage.isEmpty() -> {
-                                showToastError(
+                    when {
+                        profileImage.isEmpty() -> {
+                            showToastError(
                                     getString(R.string.please_select) + " " + getString(
-                                        R.string.invoice_image
+                                            R.string.invoice_image
                                     )
-                                )
-                            }
-                            invoiceNumber.isEmpty() -> showError(
+                            )
+                        }
+                        invoiceNumber.isEmpty() -> showError(
                                 updateServiceBinding.etInvoice,
                                 getString(R.string.empty) + " " + getString(
-                                    R.string.invoice_number
+                                        R.string.invoice_number
                                 )
-                            )
-                            date.isEmpty() -> {
-                                showToastError(
+                        )
+                        date.isEmpty() -> {
+                            showToastError(
                                     getString(R.string.please_select) + " " + getString(
-                                        R.string.select_date
+                                            R.string.select_date
                                     )
-                                )
-                            }
-                            odometer.isEmpty() -> showError(
+                            )
+                        }
+                        odometer.isEmpty() -> showError(
                                 updateServiceBinding.etOdometer,
                                 getString(R.string.empty) + " " + getString(
-                                    R.string.odometer
+                                        R.string.odometer
                                 )
-                            )
-                            laborPrice.isEmpty() -> showError(
+                        )
+                        laborPrice.isEmpty() -> showError(
                                 updateServiceBinding.etLabourPrice,
                                 getString(R.string.empty) + " " + getString(
-                                    R.string.labor_price
+                                        R.string.labor_price
                                 )
-                            )
-                            partsPrice.isEmpty() -> showError(
+                        )
+                        partsPrice.isEmpty() -> showError(
                                 updateServiceBinding.etPartsPrice,
                                 getString(R.string.empty) + " " + getString(
-                                    R.string.parts_price
+                                        R.string.parts_price
                                 )
-                            )
-                            tax.isEmpty() -> showError(
+                        )
+                        tax.isEmpty() -> showError(
                                 updateServiceBinding.etTax,
                                 getString(R.string.empty) + " " + getString(
-                                    R.string.tax
+                                        R.string.tax
                                 )
-                            )
-                            totalPrice.isEmpty() -> showError(
+                        )
+                        totalPrice.isEmpty() -> showError(
                                 updateServiceBinding.etTotalPrice,
                                 getString(R.string.empty) + " " + getString(
-                                    R.string.total_price
+                                        R.string.total_price
                                 )
-                            )
-                            additionalInfo.isEmpty() -> showError(
+                        )
+                        additionalInfo.isEmpty() -> showError(
                                 updateServiceBinding.etComments,
                                 getString(R.string.empty) + " " + getString(
-                                    R.string.additional_information
+                                        R.string.additional_information
                                 )
-                            )
-                            else -> {
-                                val androidId = UtilsFunctions.getAndroidID()
-                                val mHashMap = HashMap<String, RequestBody>()
+                        )
+                        else -> {
+                            val androidId = UtilsFunctions.getAndroidID()
+                            val mHashMap = HashMap<String, RequestBody>()
 //vehicleId
-                                //serviceFor
-                                //serviceFor
-                                //renewalType
-                                mHashMap["service_id"] =
-                                    Utils(this).createPartFromString(mJsonObject.get("service_id").toString())
-                                mHashMap["serviceDate"] =
-                                    Utils(this).createPartFromString(updateServiceBinding.etDateService.text.toString())
-                                mHashMap["vendorId"] =
-                                    Utils(this).createPartFromString(vendorId.toString())
-                                mHashMap["laborPrice"] =
-                                    Utils(this).createPartFromString(updateServiceBinding.etLabourPrice.text.toString())
-                                mHashMap["odometer"] =
-                                    Utils(this).createPartFromString(updateServiceBinding.etOdometer.text.toString())
-                                mHashMap["partsPrice"] =
-                                    Utils(this).createPartFromString(updateServiceBinding.etPartsPrice.text.toString())
-                                mHashMap["tax"] =
-                                    Utils(this).createPartFromString(updateServiceBinding.etTax.text.toString())
-                                mHashMap["totalPrice"] =
-                                    Utils(this).createPartFromString(updateServiceBinding.etTotalPrice.text.toString())
-                                mHashMap["invoiceNumber"] =
-                                    Utils(this).createPartFromString(updateServiceBinding.etInvoice.text.toString())
-                                mHashMap["comments"] =
-                                    Utils(this).createPartFromString(updateServiceBinding.etComments.text.toString())
-                                var userImage : MultipartBody.Part? = null
-                                if (!profileImage.isEmpty()) {
-                                    val f1 = File(profileImage)
-                                    userImage = Utils(this).prepareFilePart("invoiceImage", f1)
-                                }
-                                if (UtilsFunctions.isNetworkConnected()) {
-                                    servicesViewModel.updateService(mHashMap, userImage)
-                                    startProgressDialog()
-                                }
+                            //serviceFor
+                            //serviceFor
+                            //renewalType
 
+                            mHashMap["vehicleId"] =
+                                    Utils(this).createPartFromString(mJsonObject.get("vehicle_id").toString())
+                            mHashMap["updateFrom"] =
+                                    Utils(this).createPartFromString("mobile")
+                            mHashMap["serviceId"] =
+                                    Utils(this).createPartFromString(mJsonObject.get("service_id").toString())
+                            mHashMap["serviceDate"] =
+                                    Utils(this).createPartFromString(updateServiceBinding.etDateService.text.toString())
+                            mHashMap["vendorId"] =
+                                    Utils(this).createPartFromString(vendorId.toString())
+                            mHashMap["laborPrice"] =
+                                    Utils(this).createPartFromString(updateServiceBinding.etLabourPrice.text.toString())
+                            mHashMap["odometer"] =
+                                    Utils(this).createPartFromString(updateServiceBinding.etOdometer.text.toString())
+                            mHashMap["partsPrice"] =
+                                    Utils(this).createPartFromString(updateServiceBinding.etPartsPrice.text.toString())
+                            mHashMap["tax"] =
+                                    Utils(this).createPartFromString(updateServiceBinding.etTax.text.toString())
+                            mHashMap["totalPrice"] =
+                                    Utils(this).createPartFromString(updateServiceBinding.etTotalPrice.text.toString())
+                            mHashMap["invoiceNumber"] =
+                                    Utils(this).createPartFromString(updateServiceBinding.etInvoice.text.toString())
+                            mHashMap["comments"] =
+                                    Utils(this).createPartFromString(updateServiceBinding.etComments.text.toString())
+                            var userImage: MultipartBody.Part? = null
+                            if (!profileImage.isEmpty()) {
+                                val f1 = File(profileImage)
+                                userImage = Utils(this).prepareFilePart("invoiceImage", f1)
                             }
+                            if (UtilsFunctions.isNetworkConnected()) {
+                                servicesViewModel.updateService(mHashMap, userImage)
+                                startProgressDialog()
+                            }
+
                         }
                     }
                 }
+            }
 
-            })
+        })
         )
 
     }
 
-    override fun getLayoutId() : Int {
+    override fun getLayoutId(): Int {
         return R.layout.activity_update_service
     }
 
     private fun setVendorSpinner() {
         val adapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_item, vendorList
+                this,
+                android.R.layout.simple_spinner_item, vendorList
         )
         updateServiceBinding.spVendor.adapter = adapter
 
         updateServiceBinding.spVendor.onItemSelectedListener = object :
-            AdapterView.OnItemSelectedListener {
+                AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
-                parent : AdapterView<*>,
-                view : View, position : Int, id : Long
+                    parent: AdapterView<*>,
+                    view: View, position: Int, id: Long
             ) {
                 if (position > 0)
                     vendorId = vendorData[position - 1].vendor_id.toString()
             }
 
-            override fun onNothingSelected(parent : AdapterView<*>) {
+            override fun onNothingSelected(parent: AdapterView<*>) {
 
             }
         }
     }
 
-    override fun photoFromCamera(mKey : String) {
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent->
+    override fun photoFromCamera(mKey: String) {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
             // Ensure that there's a camera activity to handle the intent
             takePictureIntent.resolveActivity(packageManager)?.also {
                 // Create the File where the photo should go
-                val photoFile : File? = try {
+                val photoFile: File? = try {
                     createImageFile()
-                } catch (ex : IOException) {
+                } catch (ex: IOException) {
                     // Error occurred while creating the File
                     null
                 }
                 // Continue only if the File was successfully created
                 photoFile?.also {
-                    val photoURI : Uri =
-                        FileProvider.getUriForFile(this, packageName + ".fileprovider", it)
+                    val photoURI: Uri =
+                            FileProvider.getUriForFile(this, packageName + ".fileprovider", it)
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                     startActivityForResult(takePictureIntent, CAMERA_REQUEST)
                 }
@@ -303,38 +308,38 @@ class UpdateServiceActivity : BaseActivity(), ChoiceCallBack {
         }
     }
 
-    private fun createImageFile() : File {
+    private fun createImageFile(): File {
         // Create an image file name
-        val timeStamp : String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir : File = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         //currentPhotoPath = File(baseActivity?.cacheDir, fileName)
         return File.createTempFile(
-            "JPEG_${timeStamp}_", /* prefix */
-            ".jpg", /* suffix */
-            storageDir /* directory */
+                "JPEG_${timeStamp}_", /* prefix */
+                ".jpg", /* suffix */
+                storageDir /* directory */
         ).apply {
             // Save a file: path for use with ACTION_VIEW intents
             profileImage = absolutePath
         }
     }
 
-    override fun photoFromGallery(mKey : String) {
+    override fun photoFromGallery(mKey: String) {
         val i = Intent(
-            Intent.ACTION_PICK,
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         )
         startActivityForResult(i, RESULT_LOAD_IMAGE)
     }
 
-    override fun videoFromCamera(mKey : String) {
+    override fun videoFromCamera(mKey: String) {
         //("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun videoFromGallery(mKey : String) {
+    override fun videoFromGallery(mKey: String) {
         //("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun onActivityResult(requestCode : Int, resultCode : Int, data : Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             val selectedImage = data.data
@@ -354,14 +359,14 @@ class UpdateServiceActivity : BaseActivity(), ChoiceCallBack {
 
     }
 
-    private fun setImage(path : String) {
+    private fun setImage(path: String) {
         Glide.with(this)
-            .load(path)
-            .placeholder(R.drawable.ic_dummy_image)
-            .into(updateServiceBinding.imgProfile)
+                .load(path)
+                .placeholder(R.drawable.ic_dummy_image)
+                .into(updateServiceBinding.imgProfile)
     }
 
-    private fun showError(textView : TextView, error : String) {
+    private fun showError(textView: TextView, error: String) {
         textView.requestFocus()
         textView.error = error
     }

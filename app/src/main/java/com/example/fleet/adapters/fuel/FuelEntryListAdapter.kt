@@ -2,6 +2,7 @@ package com.uniongoods.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,14 +62,17 @@ class FuelEntryListAdapter(
              holder.binding.tvLoadValue.text =
                  fuelEntryList[position].loadTones + " " + mContext.getString(R.string.tons)
          }*/
-        holder.binding!!.tvDateValue.text = fuelEntryList[position].entry_date /*Utils(activity).getDate(
-               "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-            fuelEntryList[position].entry_date,
-               "dd-MMM-yyyy"
-           )*/
+        if(!TextUtils.isEmpty(fuelEntryList[position].entry_date)) {
 
-        holder.binding!!.tvAmountValue.text = fuelEntryList[position].price
-        holder.binding!!.tvVehicleName.text = fuelEntryList[position].vehicleDetail?.name
+            holder.binding!!.tvDateValue.text = Utils(activity).getDate(
+                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                fuelEntryList[position].entry_date,
+                "dd-MMM-yyyy"
+            )
+        }
+            holder.binding!!.tvAmountValue.text = fuelEntryList[position].price
+            holder.binding!!.tvVehicleName.text = fuelEntryList[position].vehicleDetail?.name
+
 
     }
 

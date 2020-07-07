@@ -10,14 +10,22 @@ class VehicleListResponse {
     @SerializedName("message")
     @Expose
     var message : String? = null
-    @SerializedName("data")
+    @SerializedName("body")
     @Expose
     var data : ArrayList<Data>? = null
 
+    /*{"id":"05428072-a779-49f8-80c8-1e36aa50a90a","vehicleId":"075d7726-5588-4756-a714-edd16151a7e4",
+    "driverId":"1409dbcc-dcec-4b19-b5d7-287b68ea4d9f","companyId":"021a728f-138c-4d9b-a1a6-8d02fd14922f",
+    "assignBy":"c7d67a48-cbe6-4d45-9c03-0306d868e349","status":0,"createdAt":1585571196,"updatedAt":1585571196,
+    "vehicle":{"id":"075d7726-5588-4756-a714-edd16151a7e4","name":"test1","model":"218447","yom":"2018","color":"Brown","image":"public/company/1585044203327.jpg","regNumber":"qweryd",
+    "engineNumber":"ertwwewwewe","vehicleGroup":"test","currentLat":"","currentLongt":""}}*/
     inner class Data {
-        @SerializedName("vehicle_id")
+        @SerializedName("vehicle")
         @Expose
-        var vehicle_id : Int? = null
+        var vehicle :Vehicle? = null
+        @SerializedName("vehicleId")
+        @Expose
+        var vehicle_id : String? = null
         @SerializedName("user_id")
         @Expose
         var user_id : Int? = null
@@ -72,5 +80,39 @@ class VehicleListResponse {
         @SerializedName("updated_at")
         @Expose
         var updated_at : String? = null
+    }
+
+    inner class Vehicle {
+        @SerializedName("id")
+        @Expose
+        var id : String? = null
+        @SerializedName("name")
+        @Expose
+        var name : String? = null
+        @SerializedName("model")
+        @Expose
+        var model : String? = null
+        @SerializedName("yom")
+        @Expose
+        var yom : String? = null
+        @SerializedName("color")
+        @Expose
+        var color : String? = null
+        @SerializedName("regNumber")
+        @Expose
+        var regNumber : String? = null
+        @SerializedName("engineNumber")
+        @Expose
+        var engineNumber : String? = null
+        @SerializedName("vehicleGroup")
+        @Expose
+        var vehicleGroup : String? = null
+        @SerializedName("currentLat")
+        @Expose
+        var currentLat : String? = null
+        @SerializedName("currentLongt")
+        @Expose
+        var currentLongt : String? = null
+
     }
 }

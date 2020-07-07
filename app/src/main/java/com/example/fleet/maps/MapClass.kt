@@ -95,8 +95,8 @@ class MapClass : OnMapReadyCallback, GoogleMap.OnCameraIdleListener, GoogleMap.O
     }
 
     fun setUpPlaceAutoComplete(
-        mAutocompleteView : AutoCompleteTextView?, mContext : Context,
-        mBounds : LatLngBounds, mFilter : AutocompleteFilter
+            mAutocompleteView : AutoCompleteTextView?, mContext : Context,
+            mBounds : LatLngBounds, mFilter : AutocompleteFilter
     ) {
         if (mAutocompleteView != null) {
             // Register a listener that receives callbacks when a suggestion has been selected

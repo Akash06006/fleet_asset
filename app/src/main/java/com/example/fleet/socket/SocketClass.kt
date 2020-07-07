@@ -69,8 +69,9 @@ internal class SocketClass private constructor() {
         // Get a handler that can be used to post to the main thread
         Handler(Looper.getMainLooper()).post {
             val data = args[0] as JSONObject
+            val method=data.getString("method")
             if (mSocketInterface != null)
-                mSocketInterface!!.onSocketCall(mOnMethod, *args)
+                mSocketInterface!!.onSocketCall(method, *args)
         }
     }
 

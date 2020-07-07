@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import androidx.databinding.DataBindingUtil
 import android.text.TextUtils
+import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.fleet.R
 import com.example.fleet.application.MyApplication
@@ -20,6 +21,8 @@ import com.example.fleet.utils.BaseActivity
 import com.example.fleet.viewmodels.LoginViewModel
 import com.example.fleet.views.home.DashboardActivity
 import com.google.android.gms.auth.api.phone.SmsRetriever
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.JsonObject
 
 class LoginActivity : BaseActivity() {
@@ -35,8 +38,8 @@ class LoginActivity : BaseActivity() {
         activityLoginbinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
         activityLoginbinding.loginViewModel = loginViewModel
-        loginViewModel.checkEmailExistence().observe(
-            this,
+        checkAndRequestPermissions()
+        loginViewModel.checkEmailExistence().observe(this,
             Observer<LoginResponse> { response->
                 stopProgressDialog()
                 if (response != null) {
@@ -108,15 +111,16 @@ class LoginActivity : BaseActivity() {
                                 GlobalConstants.ACCESS_TOKEN,
                                 response.data!!.authToken
                             )
-                            SharedPrefClass().putObject(
+                            /*SharedPrefClass().putObject(
                                 MyApplication.instance.applicationContext,
                                 "isLogin",
                                 true
                             )
                             val intent = Intent(this, DashboardActivity::class.java)
                             intent.putExtra("data", mJsonObject.toString())
+                            intent.putExtra("from", "home")
                             startActivity(intent)
-                            finish()
+                            finish()*/
                             /*  val intent = Intent(this, OTPVerificationActivity::class.java)
                               intent.putExtra("data", mJsonObject.toString())
                               startActivity(intent)*/
@@ -206,6 +210,29 @@ class LoginActivity : BaseActivity() {
                 stopProgressDialog()
             }
         })
+    }
+
+    private fun firebaseToken() {
+        FirebaseInstanceId.getInstance().instanceId
+                .addOnCompleteListener(OnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        Log.w("", "getInstanceId failed", task.exception)
+                        return@OnCompleteListener
+                    }
+
+                    // Get new Instance ID token
+                    val token = task.result?.token
+                    SharedPrefClass().putObject(
+                            MyApplication.instance,
+                            GlobalConstants.NOTIFICATION_TOKEN,
+                            token
+                    )
+                    // Log and toast
+                    //val msg = getString(R.string.msg_token_fmt, token)
+                  //  enableNotification(token)
+                   // Log.d("", msg)
+                    //Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                })
     }
 
 }

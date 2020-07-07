@@ -32,89 +32,89 @@ class ChangePasswrodActivity : BaseActivity() {
 
 
         changePasswordModel!!.isLoading().observe(
-            this,
-            Observer<Boolean> { aBoolean->
-                if (aBoolean!!) {
-                    startProgressDialog()
-                } else {
-                    stopProgressDialog()
+                this,
+                Observer<Boolean> { aBoolean->
+                    if (aBoolean!!) {
+                        startProgressDialog()
+                    } else {
+                        stopProgressDialog()
+                    }
                 }
-            }
         )
 
 
         changePasswordModel!!.isClick().observe(
-            this, Observer<String>(function =
-            fun(it : String?) {
-                val oldpass = activityChangePasswordBinding.etOldPassword.text.toString()
-                val confirm = activityChangePasswordBinding.etConfirmPassword.text.toString()
-                val password = activityChangePasswordBinding.etNewPassword.text.toString()
+                this, Observer<String>(function =
+        fun(it : String?) {
+            val oldpass = activityChangePasswordBinding.etOldPassword.text.toString()
+            val confirm = activityChangePasswordBinding.etConfirmPassword.text.toString()
+            val password = activityChangePasswordBinding.etNewPassword.text.toString()
 
-                when (it) {
-                    "btn_submit" -> {
-                        when {
-                            oldpass.isEmpty() -> showOldPasswordError(
+            when (it) {
+                "btn_submit" -> {
+                    when {
+                        oldpass.isEmpty() -> showOldPasswordError(
                                 MyApplication.instance.getString(R.string.empty) + " " + MyApplication.instance.getString(
-                                    R.string.enter_old_password
+                                        R.string.enter_old_password
                                 )
-                            )
-                            password.isEmpty() -> showPasswordError(
+                        )
+                        password.isEmpty() -> showPasswordError(
                                 MyApplication.instance.getString(R.string.empty) + " " + MyApplication.instance.getString(
-                                    R.string.enter_new_password1
+                                        R.string.enter_new_password1
                                 )
-                            )
+                        )
 
 
-                           !Utils(this).isValidPassword(password) -> showPasswordError(
+                        !Utils(this).isValidPassword(password) -> showPasswordError(
                                 MyApplication.instance.getString(
-                                    R.string.regex_message
+                                        R.string.regex_message
                                 )
-                            )
+                        )
 
-                            confirm.isEmpty() -> showConfirmPasswordError(
+                        confirm.isEmpty() -> showConfirmPasswordError(
                                 MyApplication.instance.getString(R.string.empty) + " " + MyApplication.instance.getString(
-                                    R.string.confirm_password
+                                        R.string.confirm_password
                                 )
-                            )
+                        )
 
 
-                            !Utils(this).isValidPassword(confirm) -> showPasswordError(
+                        !Utils(this).isValidPassword(confirm) -> showPasswordError(
                                 MyApplication.instance.getString(
-                                    R.string.regex_message
+                                        R.string.regex_message
                                 )
-                            )
+                        )
 
-                            password != confirm -> showConfirmPasswordError(
+                        password != confirm -> showConfirmPasswordError(
                                 MyApplication.instance.getString(
-                                    R.string.mismatch_paaword
+                                        R.string.mismatch_paaword
                                 )
-                            )
-                            else -> changePasswordModel!!.changePasswordApi(oldpass, password)
-                        }
-
+                        )
+                        else -> changePasswordModel!!.changePasswordApi(oldpass, password)
                     }
-                }
 
-            })
+                }
+            }
+
+        })
         )
 
 
 
         changePasswordModel!!.getChangePasswordResponse().observe(this,
-            Observer<CommonModel> { commonResponse->
-                stopProgressDialog()
-                if (commonResponse != null) {
-                    val message = commonResponse.message.toString()
+                Observer<CommonModel> { commonResponse->
+                    stopProgressDialog()
+                    if (commonResponse != null) {
+                        val message = commonResponse.message.toString()
 
-                    if (commonResponse.code == 200) {
-                        this.eventCreatedDialog(this, "change_password", message)
+                        if (commonResponse.code == 200) {
+                            this.eventCreatedDialog(this, "change_password", message)
 
-                    } else {
-                        showToastError(message)
+                        } else {
+                            showToastError(message)
+                        }
+
                     }
-
-                }
-            })
+                })
 
     }
 

@@ -45,7 +45,6 @@ class CompletedServicesFragment : BaseFragment() {
         if (UtilsFunctions.isNetworkConnected()) {
             servicesViewModel.getServices("1")
         }
-
         //   servicesViewModel.getServicesList()
         servicesViewModel.getServicesList().observe(this,
             Observer<ServicesListResponse> { response->
@@ -56,10 +55,16 @@ class CompletedServicesFragment : BaseFragment() {
                     baseActivity.stopProgressDialog()
                     when {
                         response.code == 200 -> {
-                            servicesList.addAll(response.data!!)
-                            fragmentServicesBinding.rvServices.visibility = View.VISIBLE
-                            fragmentServicesBinding.tvNoRecord.visibility = View.GONE
-                            initRecyclerView()
+                            if (response.data != null) {
+                                servicesList.addAll(response.data!!)
+                                fragmentServicesBinding.rvServices.visibility = View.VISIBLE
+                                fragmentServicesBinding.tvNoRecord.visibility = View.GONE
+                                initRecyclerView()
+                            }else {
+                                message?.let {
+                                    UtilsFunctions.showToastError(it)
+                                }
+                            }
                         }
                         else -> message?.let { UtilsFunctions.showToastError(it) }
                     }

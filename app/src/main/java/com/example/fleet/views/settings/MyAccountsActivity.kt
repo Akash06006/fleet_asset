@@ -23,17 +23,17 @@ class MyAccountsActivity : BaseActivity() {
         binding.myaccountsViewModel = accountsViewModel
         binding.toolbarCommon.imgToolbarText.text = getString(R.string.my_account)
         accountsViewModel!!.isClick().observe(
-            this, Observer<String>(function =
-            fun(it : String?) {
-                when (it) {
-                    "tv_change_password" -> {
-                        val intent1 = Intent(this, ChangePasswrodActivity::class.java)
-                        startActivity(intent1)
-                        // binding.tvChangePassword.isEnabled = false
-                    }
+                this, Observer<String>(function =
+        fun(it : String?) {
+            when (it) {
+                "tv_change_password" -> {
+                    val intent1 = Intent(this, ChangePasswrodActivity::class.java)
+                    startActivity(intent1)
+                    // binding.tvChangePassword.isEnabled = false
                 }
+            }
 
-            })
+        })
         )
 
     }

@@ -1,5 +1,6 @@
 package com.example.fleet.views.fuel
 
+import android.R.id
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.Dialog
@@ -48,12 +49,18 @@ class AddFuelDetailActivity : BaseActivity(), ChoiceCallBack {
     private val CAMERA_REQUEST = 1888
     private var profileImage = ""
     var vendorId =""
-    var vehicleId : Int? = null
+    var vehicleId = ""
     var partial = 0;
     // var vehicleList = listOf<String>("Select Vehicle")
     val vehicleList = ArrayList<String>()
     val vendorList = ArrayList<String>()
 
+    override fun onBackPressed() {
+       // super.onBackPressed()
+        val intent = Intent()
+        setResult(3, intent)
+        finish()
+    }
     override fun getLayoutId() : Int {
         return R.layout.activity_add_fuel_detail
     }
@@ -85,7 +92,7 @@ class AddFuelDetailActivity : BaseActivity(), ChoiceCallBack {
                             vehicleData = response.data!!
                             vehicleList.add(getString(R.string.select_vehicle))
                             for (i in response.data!!) {
-                                vehicleList.add(i.vehicle_name!!)
+                                vehicleList.add(i.vehicle?.name!!)
                             }
                             setVehicleSpinner()
                         }
@@ -106,6 +113,9 @@ class AddFuelDetailActivity : BaseActivity(), ChoiceCallBack {
                     when {
                         response.code == 200 -> {
                             showToastSuccess(message)
+                           // finish()
+                            val intent = Intent()
+                            setResult(2, intent)
                             finish()
                         }
                         /* response.code == 204 -> {
@@ -151,7 +161,7 @@ class AddFuelDetailActivity : BaseActivity(), ChoiceCallBack {
                             this@AddFuelDetailActivity,
                             DatePickerDialog.OnDateSetListener
                             { view, year, monthOfYear, dayOfMonth->
-                                addFuelDetailBinding.etDate.setText("" + dayOfMonth + "-" + (monthOfYear + 1) + "-" + year)
+                                addFuelDetailBinding.etDate.setText("" + year+ "-" + (monthOfYear + 1) + "-" + dayOfMonth)
                             },
                             year,
                             month,
@@ -323,7 +333,7 @@ invoice_image :*/
                 view : View, position : Int, id : Long
             ) {
                 if (position > 0)
-                    vehicleId = vehicleData[position - 1].vehicle_id
+                    vehicleId = vehicleData[position - 1].vehicle?.id!!
             }
 
             override fun onNothingSelected(parent : AdapterView<*>) {

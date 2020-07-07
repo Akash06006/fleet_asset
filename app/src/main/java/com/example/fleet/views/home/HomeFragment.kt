@@ -45,23 +45,23 @@ import org.json.JSONObject
 
 class
 HomeFragment : BaseFragment(), SocketInterface, DialogssInterface {
-    private var mFusedLocationClass : FusedLocationClass? = null
+    private var mFusedLocationClass: FusedLocationClass? = null
     private var socket = SocketClass.socket
     private var jobsList = ArrayList<JobsResponse.Data>()
-    private var myJobsListAdapter : MyJobsListAdapter? = null
-    private lateinit var fragmentHomeBinding : FragmentHomeBinding
-    private lateinit var homeViewModel : HomeViewModel
+    private var myJobsListAdapter: MyJobsListAdapter? = null
+    private lateinit var fragmentHomeBinding: FragmentHomeBinding
+    private lateinit var homeViewModel: HomeViewModel
     private val mJsonObject = JsonObject()
     private val mJobListObject = JsonObject()
     val PERMISSION_ID = 42
-    lateinit var mFusedLocationClient : FusedLocationProviderClient
+    lateinit var mFusedLocationClient: FusedLocationProviderClient
     var currentLat = ""
     var currentLong = ""
     var mJsonObjectStartJob = JsonObject()
-    private var confirmationDialog : Dialog? = null
+    private var confirmationDialog: Dialog? = null
     private var mDialogClass = DialogClass()
 
-    override fun getLayoutResId() : Int {
+    override fun getLayoutResId(): Int {
         return R.layout.fragment_home
     }
 
@@ -83,15 +83,15 @@ HomeFragment : BaseFragment(), SocketInterface, DialogssInterface {
             fragmentHomeBinding.rvJobs.visibility = View.VISIBLE
             // baseActivity.startProgressDialog()
             mJobListObject.addProperty(
-                "employeeId",
-                SharedPrefClass()!!.getPrefValue(activity!!, GlobalConstants.USERID) as String
+                    "employeeId",
+                    SharedPrefClass()!!.getPrefValue(activity!!, GlobalConstants.USERID) as String
             )
             mJobListObject.addProperty(
-                "acceptStatus", "1"
+                    "acceptStatus", "1"
             )
             homeViewModel.getMyJobs(mJobListObject)
             var jobId =
-                SharedPrefClass()!!.getPrefValue(activity!!, GlobalConstants.JOBID).toString()
+                    SharedPrefClass()!!.getPrefValue(activity!!, GlobalConstants.JOBID).toString()
             if (!jobId.equals("null") && jobId.equals("0")) {
                 Handler().postDelayed({
                     var upload = UploadDataToServer()
@@ -110,86 +110,86 @@ HomeFragment : BaseFragment(), SocketInterface, DialogssInterface {
         socket.onConnect()
         //acceptStatus
         mJsonObject.addProperty(
-            "acceptStatus", "1"
+                "acceptStatus", "1"
         )
 
 
         homeViewModel.getJobs().observe(this,
-            Observer<JobsResponse> { response->
-                baseActivity.stopProgressDialog()
-                if (response != null) {
-                    val message = response.message
-                    when {
-                        response.code == 200 -> {
-                            if (response.data != null && response.data?.size!! > 0) {
-                                jobsList.addAll(response.data!!)
-                                fragmentHomeBinding.rvJobs.visibility = View.VISIBLE
-                                fragmentHomeBinding.tvNoRecord.visibility = View.GONE
-                                initRecyclerView()
+                Observer<JobsResponse> { response ->
+                    baseActivity.stopProgressDialog()
+                    if (response != null) {
+                        val message = response.message
+                        when {
+                            response.code == 200 -> {
+                                if (response.data != null && response.data?.size!! > 0) {
+                                    jobsList.addAll(response.data!!)
+                                    fragmentHomeBinding.rvJobs.visibility = View.VISIBLE
+                                    fragmentHomeBinding.tvNoRecord.visibility = View.GONE
+                                    initRecyclerView()
+                                }
+
                             }
+                            else -> message?.let {
+                                showToastError(it)
+                                fragmentHomeBinding.rvJobs.visibility = View.GONE
+                                fragmentHomeBinding.tvNoRecord.visibility = View.VISIBLE
+                            }
+                        }
 
-                        }
-                        else -> message?.let {
-                            showToastError(it)
-                            fragmentHomeBinding.rvJobs.visibility = View.GONE
-                            fragmentHomeBinding.tvNoRecord.visibility = View.VISIBLE
-                        }
                     }
-
-                }
-            })
+                })
 
         homeViewModel.startCompleteJob().observe(this,
-            Observer<CommonModel> { response->
-                baseActivity.stopProgressDialog()
-                if (response != null) {
-                    val message = response.message
-                    when {
-                        response.code == 200 -> {
-                            message?.let { showToastSuccess(message!!) }
-                            var status = mJsonObjectStartJob.get("status").toString()
-                            if (status.equals("1")) {
-                                SharedPrefClass().putObject(
-                                    MyApplication.instance.applicationContext,
-                                    GlobalConstants.JOB_STARTED,
-                                    "true"
-                                )
-                                GlobalConstants.JOB_STARTED = "true"
-                                SharedPrefClass().putObject(
-                                    MyApplication.instance.applicationContext,
-                                    GlobalConstants.JOBID,
-                                    mJsonObjectStartJob.get("jobId")
-                                )
-                                val intent = Intent(activity, TrackingActivity::class.java)
-                                intent.putExtra("data", mJsonObjectStartJob.toString())
-                                activity!!.startActivity(intent)
-                                activity!!.finish()
+                Observer<CommonModel> { response ->
+                    baseActivity.stopProgressDialog()
+                    if (response != null) {
+                        val message = response.message
+                        when {
+                            response.code == 200 -> {
+                                message?.let { showToastSuccess(message!!) }
+                                var status = mJsonObjectStartJob.get("status").toString()
+                                if (status.equals("1")) {
+                                    SharedPrefClass().putObject(
+                                            MyApplication.instance.applicationContext,
+                                            GlobalConstants.JOB_STARTED,
+                                            "true"
+                                    )
+                                    GlobalConstants.JOB_STARTED = "true"
+                                    SharedPrefClass().putObject(
+                                            MyApplication.instance.applicationContext,
+                                            GlobalConstants.JOBID,
+                                            mJsonObjectStartJob.get("jobId")
+                                    )
+                                    val intent = Intent(activity, TrackingActivity::class.java)
+                                    intent.putExtra("data", mJsonObjectStartJob.toString())
+                                    activity!!.startActivity(intent)
+                                    activity!!.finish()
+                                }
+
                             }
-
+                            else -> message?.let { showToastError(it) }
                         }
-                        else -> message?.let { showToastError(it) }
-                    }
 
-                }
-            })
+                    }
+                })
 
         homeViewModel.acceptReject().observe(this,
-            Observer<CommonModel> { response->
-                baseActivity.stopProgressDialog()
-                if (response != null) {
-                    val message = response.message
-                    when {
-                        response.code == 200 -> {
-                            jobsList.clear()
-                            homeViewModel.getMyJobs(mJobListObject)
+                Observer<CommonModel> { response ->
+                    baseActivity.stopProgressDialog()
+                    if (response != null) {
+                        val message = response.message
+                        when {
+                            response.code == 200 -> {
+                                jobsList.clear()
+                                homeViewModel.getMyJobs(mJobListObject)
 
-                            UtilsFunctions.showToastSuccess(message!!)
+                                UtilsFunctions.showToastSuccess(message!!)
+                            }
+                            else -> message?.let { UtilsFunctions.showToastError(it) }
                         }
-                        else -> message?.let { UtilsFunctions.showToastError(it) }
-                    }
 
-                }
-            })
+                    }
+                })
         // initRecyclerView()
         Handler().postDelayed({
             callSocketMethods("updateVehicleLocation")
@@ -197,7 +197,7 @@ HomeFragment : BaseFragment(), SocketInterface, DialogssInterface {
 
     }
 
-    private fun callSocketMethods(methodName : String) {
+    private fun callSocketMethods(methodName: String) {
         val object5 = JSONObject()
         when (methodName) {
             "updateVehicleLocation" -> try {
@@ -205,13 +205,13 @@ HomeFragment : BaseFragment(), SocketInterface, DialogssInterface {
                 object5.put("latitude", currentLat)
                 object5.put("longitude", currentLong)
                 object5.put(
-                    "driver_id", SharedPrefClass().getPrefValue(
+                        "driverId", SharedPrefClass().getPrefValue(
                         MyApplication.instance,
                         GlobalConstants.USERID
-                    ).toString()
+                ).toString()
                 )
                 socket.sendDataToServer(methodName, object5)
-            } catch (e : Exception) {
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
@@ -225,37 +225,37 @@ HomeFragment : BaseFragment(), SocketInterface, DialogssInterface {
         fragmentHomeBinding.rvJobs.layoutManager = linearLayoutManager
         fragmentHomeBinding.rvJobs.adapter = myJobsListAdapter
         fragmentHomeBinding.rvJobs.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView : RecyclerView, dx : Int, dy : Int) {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
 
             }
         })
     }
 
-    fun cancelJob(jobId : String?, status : String) {
+    fun cancelJob(jobId: String?, status: String) {
         mJsonObjectStartJob.addProperty(
-            "acceptStatus", status
+                "acceptStatus", status
         )
         mJsonObjectStartJob.addProperty(
-            "jobId", jobId
+                "jobId", jobId
         )
         mJsonObjectStartJob.addProperty(
-            "status", 0
+                "status", 0
         )
         mJsonObjectStartJob.addProperty(
-            "employeeId",
-            SharedPrefClass()!!.getPrefValue(activity!!, GlobalConstants.USERID) as String
+                "employeeId",
+                SharedPrefClass()!!.getPrefValue(activity!!, GlobalConstants.USERID) as String
         )
         confirmationDialog = mDialogClass.setDefaultDialog(
-            activity!!,
-            this,
-            "Cancel Job",
-            getString(R.string.warning_cancel_job)
+                activity!!,
+                this,
+                "Cancel Job",
+                getString(R.string.warning_cancel_job)
         )
         confirmationDialog?.show()
 
     }
 
-    override fun onDialogConfirmAction(mView : View?, mKey : String) {
+    override fun onDialogConfirmAction(mView: View?, mKey: String) {
         when (mKey) {
             "Cancel Job" -> {
                 baseActivity.startProgressDialog()
@@ -266,44 +266,44 @@ HomeFragment : BaseFragment(), SocketInterface, DialogssInterface {
         }
     }
 
-    override fun onDialogCancelAction(mView : View?, mKey : String) {
+    override fun onDialogCancelAction(mView: View?, mKey: String) {
         when (mKey) {
             "Cancel Job" -> confirmationDialog?.dismiss()
         }
     }
 
     fun startJob(
-        jobId : String?,
-        toLat : String?,
-        toLongt : String?,
-        trackOrStart : String
+            jobId: String?,
+            toLat: String?,
+            toLongt: String?,
+            trackOrStart: String
     ) {
         mJsonObjectStartJob.addProperty(
-            "jobId", jobId
+                "jobId", jobId
         )
         mJsonObjectStartJob.addProperty(
-            "dest_lat", toLat.toString()
+                "dest_lat", toLat.toString()
         )
         mJsonObjectStartJob.addProperty(
-            "dest_long", toLongt.toString()
+                "dest_long", toLongt.toString()
         )
         mJsonObjectStartJob.addProperty(
-            "trackOrStart", trackOrStart
+                "trackOrStart", trackOrStart
         )
         mJsonObjectStartJob.addProperty(
-            "status", 1
+                "status", 1
         )
 
         SharedPrefClass().putObject(
-            MyApplication.instance.applicationContext,
-            GlobalConstants.DEST_LAT,
-            toLat
+                MyApplication.instance.applicationContext,
+                GlobalConstants.DEST_LAT,
+                toLat
         )
 
         SharedPrefClass().putObject(
-            MyApplication.instance.applicationContext,
-            GlobalConstants.DEST_LONG,
-            toLongt
+                MyApplication.instance.applicationContext,
+                GlobalConstants.DEST_LONG,
+                toLongt
         )
         if (trackOrStart == activity?.resources?.getString(R.string.track)) {
             val intent = Intent(activity, TrackingActivity::class.java)
@@ -316,25 +316,25 @@ HomeFragment : BaseFragment(), SocketInterface, DialogssInterface {
 
     }
 
-    override fun onSocketCall(onMethadCall : String, vararg args : Any) {
+    override fun onSocketCall(onMethadCall: String, vararg args: Any) {
         try {
             when (onMethadCall) {
                 "updateVehicleLocation" -> try {
                     mFusedLocationClient.removeLocationUpdates(mLocationCallback)
-                } catch (e1 : Exception) {
+                } catch (e1: Exception) {
                     e1.printStackTrace()
                 }
             }
-        } catch (e1 : Exception) {
+        } catch (e1: Exception) {
             e1.printStackTrace()
         }
     }
 
-    override fun onSocketConnect(vararg args : Any) {
+    override fun onSocketConnect(vararg args: Any) {
         //OnSocket Connect Call It
     }
 
-    override fun onSocketDisconnect(vararg args : Any) {
+    override fun onSocketDisconnect(vararg args: Any) {
         // //OnSocket Disconnect Call It
     }
 
@@ -342,8 +342,8 @@ HomeFragment : BaseFragment(), SocketInterface, DialogssInterface {
     private fun getLastLocation() {
         if (checkPermissions()) {
             if (isLocationEnabled()) {
-                mFusedLocationClient.lastLocation.addOnCompleteListener(activity!!) { task->
-                    var location : Location? = task.result
+                mFusedLocationClient.lastLocation.addOnCompleteListener(activity!!) { task ->
+                    var location: Location? = task.result
                     if (location == null) {
                         requestNewLocationData()
                     } else {
@@ -365,15 +365,15 @@ HomeFragment : BaseFragment(), SocketInterface, DialogssInterface {
         }
     }
 
-    private fun checkPermissions() : Boolean {
+    private fun checkPermissions(): Boolean {
         if (ActivityCompat.checkSelfPermission(
-                activity!!,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(
-                activity!!,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
+                        activity!!,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(
+                        activity!!,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
         ) {
             return true
         }
@@ -382,20 +382,20 @@ HomeFragment : BaseFragment(), SocketInterface, DialogssInterface {
 
     private fun requestPermissions() {
         ActivityCompat.requestPermissions(
-            activity!!,
-            arrayOf(
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ),
-            PERMISSION_ID
+                activity!!,
+                arrayOf(
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                ),
+                PERMISSION_ID
         )
     }
 
-    private fun isLocationEnabled() : Boolean {
-        var locationManager : LocationManager =
-            activity!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    private fun isLocationEnabled(): Boolean {
+        var locationManager: LocationManager =
+                activity!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
-            LocationManager.NETWORK_PROVIDER
+                LocationManager.NETWORK_PROVIDER
         )
     }
 
@@ -409,15 +409,15 @@ HomeFragment : BaseFragment(), SocketInterface, DialogssInterface {
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
         mFusedLocationClient!!.requestLocationUpdates(
-            mLocationRequest, mLocationCallback,
-            Looper.myLooper()
+                mLocationRequest, mLocationCallback,
+                Looper.myLooper()
         )
 
     }
 
     private val mLocationCallback = object : LocationCallback() {
-        override fun onLocationResult(locationResult : LocationResult) {
-            var mLastLocation : Location = locationResult.lastLocation
+        override fun onLocationResult(locationResult: LocationResult) {
+            var mLastLocation: Location = locationResult.lastLocation
             currentLat = mLastLocation.latitude.toString()
             currentLong = mLastLocation.longitude.toString()
             Handler().postDelayed({

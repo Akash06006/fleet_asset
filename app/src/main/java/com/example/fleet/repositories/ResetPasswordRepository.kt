@@ -27,31 +27,31 @@ class ResetPasswordRepository {
         if(jsonObject!=null) {
             val mApiService = ApiService<JsonObject>()
             mApiService.get(
-                object : ApiResponse<JsonObject> {
-                    override fun onResponse(mResponse : Response<JsonObject>) {
-                        val commonResponse = if (mResponse.body() != null)
-                            gson.fromJson<CommonModel>("" + mResponse.body(), CommonModel::class.java)
-                        else {
-                            gson.fromJson<CommonModel>(
-                                 mResponse.errorBody()!!.charStream(),
-                                CommonModel::class.java
-                            )
+                    object : ApiResponse<JsonObject> {
+                        override fun onResponse(mResponse : Response<JsonObject>) {
+                            val commonResponse = if (mResponse.body() != null)
+                                gson.fromJson<CommonModel>("" + mResponse.body(), CommonModel::class.java)
+                            else {
+                                gson.fromJson<CommonModel>(
+                                        mResponse.errorBody()!!.charStream(),
+                                        CommonModel::class.java
+                                )
+                            }
+
+                            data!!.postValue(commonResponse)
+
+
+
+
                         }
 
-                        data!!.postValue(commonResponse)
+                        override fun onError(mKey : String) {
+                            data!!.postValue(null)
+                            UtilsFunctions.showToastError(MyApplication.instance.getString(R.string.internal_server_error))
 
+                        }
 
-
-
-                    }
-
-                    override fun onError(mKey : String) {
-                        data!!.postValue(null)
-                        UtilsFunctions.showToastError(MyApplication.instance.getString(R.string.internal_server_error))
-
-                    }
-
-                }, ApiClient.getApiInterface().resetPassword(jsonObject))
+                    }, ApiClient.getApiInterface().resetPassword(jsonObject))
 
         }
         return data!!
@@ -64,24 +64,24 @@ class ResetPasswordRepository {
         if (jsonObject.toString() != "{}") {
             val mApiService = ApiService<JsonObject>()
             mApiService.get(
-                object : ApiResponse<JsonObject> {
-                    override fun onResponse(mResponse : Response<JsonObject>) {
-                        val commonResponse = gson.fromJson<CommonModel>(
-                            "" + mResponse.body(),
-                            CommonModel::class.java
-                        )
+                    object : ApiResponse<JsonObject> {
+                        override fun onResponse(mResponse : Response<JsonObject>) {
+                            val commonResponse = gson.fromJson<CommonModel>(
+                                    "" + mResponse.body(),
+                                    CommonModel::class.java
+                            )
 
-                        data!!.postValue(commonResponse)
+                            data!!.postValue(commonResponse)
 
-                    }
+                        }
 
-                    override fun onError(mKey : String) {
-                        data!!.postValue(null)
-                        UtilsFunctions.showToastError(MyApplication.instance.getString(R.string.internal_server_error))
+                        override fun onError(mKey : String) {
+                            data!!.postValue(null)
+                            UtilsFunctions.showToastError(MyApplication.instance.getString(R.string.internal_server_error))
 
-                    }
+                        }
 
-                }, ApiClient.getApiInterface().chnagePassword(jsonObject)
+                    }, ApiClient.getApiInterface().chnagePassword(jsonObject)
             )
 
         }

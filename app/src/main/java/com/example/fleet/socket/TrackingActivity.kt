@@ -328,10 +328,21 @@ open class TrackingActivity : BaseActivity(), OnMapReadyCallback, LocationListen
                         response.code == 200 -> {
                             UtilsFunctions.showToastSuccess(message!!)
                             GlobalConstants.JOB_STARTED = "false"
-                            startActivity(Intent(this, DashboardActivity::class.java))
+                           val intent = Intent(this, DashboardActivity::class.java)
+                            //startActivity(Intent(this, DashboardActivity::class.java))
+                            intent.putExtra("from", "home")
+                            startActivity(intent)
                             finish()
                         }
                         else -> message?.let {
+                            if(message.equals("Job does not exist.")){
+                                GlobalConstants.JOB_STARTED = "false"
+                               /* startActivity(Intent(this, DashboardActivity::class.java))*/
+                                val intent = Intent(this, DashboardActivity::class.java)
+                                intent.putExtra("from", "home")
+                                startActivity(intent)
+                                finish()
+                            }
                             UtilsFunctions.showToastError(it)
                         }
                     }
@@ -657,8 +668,9 @@ open class TrackingActivity : BaseActivity(), OnMapReadyCallback, LocationListen
                 startActivity(intent)
             }
             "Finish Job" -> {
+                confirmationDialog?.dismiss()
                 GlobalConstants.JOB_STARTED = "false"
-                locationsViewModel.updateJobStatus("1", jobId.toInt())
+                locationsViewModel.updateJobStatus("1", jobId)
                 var upload = UploadDataToServer()
                 upload.synchData(jobId, "track")
 
@@ -693,15 +705,23 @@ open class TrackingActivity : BaseActivity(), OnMapReadyCallback, LocationListen
                         BackgroundLocationService::class.java
                     )
                 )
-                this.getApplication()
-                    .unbindService(serviceConnection)
+
+                try {
+                    this.getApplication()
+                        .unbindService(serviceConnection)
+                } catch (e : Exception) {
+                    e.printStackTrace()
+                }
 
                 mFusedLocationClass?.stopLocationUpdates()
                 if (UtilsFunctions.isNetworkConnected()) {
-                    trackingViewModel.startJob("1", jobId)
+                    trackingViewModel.startJob("1", jobId.toString())
                 } else {
                     showToastSuccess(getString(R.string.job_finished_msg))
-                    startActivity(Intent(this, DashboardActivity::class.java))
+                    /*startActivity(Intent(this, DashboardActivity::class.java))*/
+                    val intent = Intent(this, DashboardActivity::class.java)
+                    intent.putExtra("from", "home")
+                    startActivity(intent)
                     finish()
                 }
             }

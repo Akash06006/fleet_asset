@@ -28,7 +28,7 @@ class FuelViewModel : BaseViewModel() {
     init {
 
         if (UtilsFunctions.isNetworkConnectedWithoutToast()) {
-           // vehiclelist = fuelRepository.getVehicleList()
+            vehiclelist = fuelRepository.getVehicleList()
             vendorList = fuelRepository.getVendorList()
             getFuelListResponse = fuelRepository.getFuelEntryList()
             addFuelResponse = fuelRepository.addFuelEntry(null, null)

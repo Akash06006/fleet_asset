@@ -44,44 +44,53 @@ interface ApiInterface {
     fun chnagePassword(@Body mJsonObject : JsonObject) : Call<JsonObject>
 
     @GET("api/employee/get/{id}")
-    fun getProfile(@Path("id")  id:String) : Call<JsonObject>
+    fun getProfile(@Path("id") id : String) : Call<JsonObject>
 
     @GET("api/job/getJob/{id}")
     fun getJobDetail(@Path("id")  id:String) : Call<JsonObject>
 
-    @GET("driver/vehicle/latLongList")
+   // @GET("driver/vehicle/latLongList")
+    //fun getVehicleList() : Call<JsonObject>
+
+    @GET("api/vehicle/vehicleDriverlist")
     fun getVehicleList() : Call<JsonObject>
 
-    @GET("service/driver/getServiceList")
-    fun getServicesList(@Query("status") status : String) : Call<JsonObject>
+
+    //@GET("service/driver/getServiceList")
+    //fun getServicesList(@Query("status") status : String) : Call<JsonObject>
 
     @GET(" api/service/list")
     fun getServicesList1(@Query("page") page : Int,@Query("limit") limit : Int) : Call<JsonObject>
 
+    @GET("api/service/list")
+    fun getServicesList(@Query("page") page : Int, @Query("limit") limit : Int,@Query("status") status : String) : Call<JsonObject>//(@Query("status") status : String) : Call<JsonObject>
+
+
     @GET("api/fuel/getList")
     fun getFuelEntryList() : Call<JsonObject>
 
-    @GET("notification/driver/getList")
-    fun getNotificationList() : Call<JsonObject>
+    @GET("api/notification/list/{id}")
+    fun getNotificationList(@Path("id") id : String) : Call<JsonObject>
 
-    @DELETE("notification/driver/clearAll")
-    fun clearAllNotification() : Call<JsonObject>
+    @DELETE("api/notification/delete/{id}")
+    fun clearAllNotification(@Path("id") id : String) : Call<JsonObject>
 
     @GET("api/vendor/list")
-    fun getVendorList(@Query("page") page : Int,@Query("limit") limit : Int) : Call<JsonObject>
+    fun getVendorList(@Query("page") page : Int, @Query("limit") limit : Int) : Call<JsonObject>
 
-   /* @GET("job/getDriverJob")
-    fun getJobs(@Query("acceptStatus") userId : String) : Call<JsonObject>*/
-   @POST("api/job/getDriverJobs")
-   fun getJobs(@Body mJsonObject : JsonObject) : Call<JsonObject>
+    /* @GET("job/getDriverJob")
+     fun getJobs(@Query("acceptStatus") userId : String) : Call<JsonObject>*/
+    @POST("api/job/getDriverJobs")
+    fun getJobs(@Body mJsonObject : JsonObject) : Call<JsonObject>
 
     @POST("api/job/getJobListing")
     fun getAssetJobs(@Body mJsonObject : JsonObject) : Call<JsonObject>
 
     @GET("job/driver/jobsHistory")
     fun getJobsHistory(@Query("progressStatus") userId : String) : Call<JsonObject>
+
     @GET("api/job/jobsHistory")
-    fun getJobsHistory1(@Query("page") page : Int,@Query("limit") limit : Int,@Query("progressStatus") progressStatus : Int) : Call<JsonObject>
+    fun getJobsHistory1(@Query("page") page : Int, @Query("limit") limit : Int, @Query("progressStatus") progressStatus : Int) : Call<JsonObject>
 
     @GET("api/job/assetJobsHistory")
     fun getAssetJobsHistory1(@Query("page") page : Int,@Query("limit") limit : Int,@Query("progressStatus") progressStatus : Int) : Call<JsonObject>
@@ -107,7 +116,7 @@ interface ApiInterface {
     ) : Call<JsonObject>
 
     @Multipart
-    @POST("api/service/add")
+    @PUT("api/service/update")
     fun callUpdateService(
         @PartMap mHashMap : HashMap<String,
                 RequestBody>, @Part image : MultipartBody.Part?

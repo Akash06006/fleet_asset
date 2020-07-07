@@ -115,18 +115,18 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/nav_header_height"
                             android:background="@color/colorPrimary"
-                            android:gravity="bottom"
                             android:orientation="vertical"
-                            android:paddingLeft="@dimen/dp_16"
-                            android:paddingTop="@dimen/dp_16"
-                            android:paddingRight="@dimen/dp_16"
-                            android:paddingBottom="@dimen/dp_16"
+                            android:paddingLeft="@dimen/dp_10"
+                            android:paddingTop="@dimen/dp_10"
+                            android:paddingRight="@dimen/dp_10"
+                            android:paddingBottom="@dimen/dp_10"
                             android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
                         <de.hdodenhof.circleimageview.CircleImageView
                                 android:id="@+id/ic_profile"
                                 android:layout_width="@dimen/dp_80"
                                 android:layout_height="90dp"
+                                android:layout_marginTop="@dimen/dp_10"
                                 android:layout_gravity="center_horizontal"
                                 android:onClick="@{(v) -> dashboardViewModel.clickListener(v)}"
                                 android:src="@drawable/ic_user"/>

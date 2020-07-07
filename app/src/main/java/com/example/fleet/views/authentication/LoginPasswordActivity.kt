@@ -40,75 +40,75 @@ class LoginPasswordActivity : BaseActivity() {
 
 
         loginPasswordVModel.isClick().observe(
-            this, Observer<String>(function =
-            fun(it : String?) {
-                when (it) {
-                    "btn_login" -> {
-                        val password = binding.etPassword.text.toString()
-                        when {
-                            TextUtils.isEmpty(password) -> run {
-                                binding.etPassword.requestFocus()
-                                binding.etPassword.error = getString(R.string.empty) + " " + getString(
+                this, Observer<String>(function =
+        fun(it : String?) {
+            when (it) {
+                "btn_login" -> {
+                    val password = binding.etPassword.text.toString()
+                    when {
+                        TextUtils.isEmpty(password) -> run {
+                            binding.etPassword.requestFocus()
+                            binding.etPassword.error = getString(R.string.empty) + " " + getString(
                                     R.string.password
-                                )
-                            }
-                            else -> {
-                                mJsonObject.put("password", password)
-                                loginPasswordVModel.login(mJsonObject)
-                            }
+                            )
+                        }
+                        else -> {
+                            mJsonObject.put("password", password)
+                            loginPasswordVModel.login(mJsonObject)
                         }
                     }
-                    "tv_forgot" -> {
-                        val mJsonObject1 = JsonObject()
-                        mJsonObject1.addProperty("country_code", mJsonObject.get("country_code").toString())
-                        mJsonObject1.addProperty(
+                }
+                "tv_forgot" -> {
+                    val mJsonObject1 = JsonObject()
+                    mJsonObject1.addProperty("country_code", mJsonObject.get("country_code").toString())
+                    mJsonObject1.addProperty(
                             getString(R.string.key_phone),
                             mJsonObject.get(getString(R.string.key_phone)).toString()
-                        )
+                    )
 
-                        FirebaseFunctions.sendOTP("forgot", mJsonObject1, this)
-                    }
-                    "tv_signup" -> {
-                        val mJsonObject1 = JsonObject()
-                        mJsonObject1.addProperty("country_code", mJsonObject.get("country_code").toString())
-                        mJsonObject1.addProperty(
+                    FirebaseFunctions.sendOTP("forgot", mJsonObject1, this)
+                }
+                "tv_signup" -> {
+                    val mJsonObject1 = JsonObject()
+                    mJsonObject1.addProperty("country_code", mJsonObject.get("country_code").toString())
+                    mJsonObject1.addProperty(
                             getString(R.string.key_phone),
                             mJsonObject.get(getString(R.string.key_phone)).toString()
-                        )
+                    )
 
 
-                        SharedPrefClass().putObject(
+                    SharedPrefClass().putObject(
                             applicationContext,
                             getString(R.string.key_phone),
                             mJsonObject.get(getString(R.string.key_phone)).toString()
-                        )
-                        FirebaseFunctions.sendOTP("signup", mJsonObject1, this)
-                    }
+                    )
+                    FirebaseFunctions.sendOTP("signup", mJsonObject1, this)
                 }
+            }
 
-            })
+        })
         )
 
 
 
         loginPasswordVModel.getLoginResponse().observe(this,
-            Observer<LoginResponse> { response->
-                stopProgressDialog()
-                if (response != null) {
-                    val message = response.message!!
+                Observer<LoginResponse> { response->
+                    stopProgressDialog()
+                    if (response != null) {
+                        val message = response.message!!
 
-                    when {
-                        response.code == 200 -> {
-                            showToastSuccess(message)
-                            saveSharedData(response)
-                            val intent = Intent(this, DashboardActivity::class.java)
-                            startActivity(intent)
+                        when {
+                            response.code == 200 -> {
+                                showToastSuccess(message)
+                                saveSharedData(response)
+                                val intent = Intent(this, DashboardActivity::class.java)
+                                startActivity(intent)
+                            }
+                            else -> showToastError(message)
                         }
-                        else -> showToastError(message)
-                    }
 
-                }
-            })
+                    }
+                })
 
         loginPasswordVModel.isLoading().observe(this, Observer<Boolean> { aBoolean->
             if (aBoolean!!) {
@@ -122,26 +122,26 @@ class LoginPasswordActivity : BaseActivity() {
 
     private fun saveSharedData(loginResponse : LoginResponse) {
         SharedPrefClass().putObject(
-            this,
-            GlobalConstants.ACCESS_TOKEN,
-            loginResponse.data!!.jwtToken
+                this,
+                GlobalConstants.ACCESS_TOKEN,
+                loginResponse.data!!.jwtToken
         )
         SharedPrefClass().putObject(
-            this,
-            GlobalConstants.USERID,
-            loginResponse.data!!.userId
+                this,
+                GlobalConstants.USERID,
+                loginResponse.data!!.userId
         )
 
         SharedPrefClass().putObject(
-            this, GlobalConstants.USERDATA,
-            loginResponse.data!!
+                this, GlobalConstants.USERDATA,
+                loginResponse.data!!
         )
 
 
         SharedPrefClass().putObject(
-            this,
-            "isLogin",
-            true
+                this,
+                "isLogin",
+                true
         )
 
     }

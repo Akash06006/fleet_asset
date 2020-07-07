@@ -55,7 +55,7 @@ class ServicesRepository {
                         data!!.postValue(null)
                     }
 
-                }, ApiClient.getApiInterface().getServicesList(serviceType)
+                }, ApiClient.getApiInterface().getServicesList(1,1000,serviceType)
             )
         }
         return data!!

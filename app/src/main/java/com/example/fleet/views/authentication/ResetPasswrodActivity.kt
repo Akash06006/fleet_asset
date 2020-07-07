@@ -31,62 +31,62 @@ class ResetPasswrodActivity : BaseActivity() {
 
 
         resetPasswordModel.loading.observe(
-            this,
-            Observer<Boolean> { aBoolean->
-                if (aBoolean!!) {
-                    startProgressDialog()
-                } else {
-                    stopProgressDialog()
+                this,
+                Observer<Boolean> { aBoolean->
+                    if (aBoolean!!) {
+                        startProgressDialog()
+                    } else {
+                        stopProgressDialog()
+                    }
                 }
-            }
         )
 
         resetPasswordModel.isClick().observe(
-            this, Observer<String>(function =
-            fun(it : String?) {
-                val password = activityResetPasswordBinding.etPassword.text.toString()
-                val confirm = activityResetPasswordBinding.etConfirm.text.toString()
+                this, Observer<String>(function =
+        fun(it : String?) {
+            val password = activityResetPasswordBinding.etPassword.text.toString()
+            val confirm = activityResetPasswordBinding.etConfirm.text.toString()
 
-                when (it) {
-                    "btn_continue" -> {
-                        when {
-                            password.isEmpty() -> showPassError(
+            when (it) {
+                "btn_continue" -> {
+                    when {
+                        password.isEmpty() -> showPassError(
                                 getString(R.string.empty) + " " + getString(
-                                    R.string.enter_new_password
+                                        R.string.enter_new_password
                                 )
-                            )
+                        )
 
-                            confirm.isEmpty() -> showConfirmError(
+                        confirm.isEmpty() -> showConfirmError(
                                 getString(R.string.empty) + " " + getString(
-                                    R.string.confirm_password
+                                        R.string.confirm_password
                                 )
-                            )
+                        )
 
-                            !Utils(this).isValidPassword(password) -> showPassError(
+                        !Utils(this).isValidPassword(password) -> showPassError(
                                 MyApplication.instance.getString(
-                                    R.string.regex_message
+                                        R.string.regex_message
                                 )
-                            )
+                        )
 
-                            password != confirm -> showConfirmError(MyApplication.instance.getString(R.string.mismatch_paaword))
-                            else -> {
-                                val mJsonObject = JsonObject()
-                                mJsonObject.addProperty("password", password)
-                                mJsonObject.addProperty(
+                        password != confirm -> showConfirmError(MyApplication.instance.getString(R.string.mismatch_paaword))
+                        else -> {
+                            val mJsonObject = JsonObject()
+                            mJsonObject.addProperty("password", password)
+                            mJsonObject.addProperty(
                                     getString(R.string.key_phone),
                                     sharedPrefClass.getPrefValue(
-                                        MyApplication.instance,
-                                        getString(R.string.key_phone)
+                                            MyApplication.instance,
+                                            getString(R.string.key_phone)
                                     ) as String
-                                )
+                            )
 
-                                resetPasswordModel.callResetPassword(mJsonObject)
-                            }
+                            resetPasswordModel.callResetPassword(mJsonObject)
                         }
-
                     }
+
                 }
-            })
+            }
+        })
         )
 
 
@@ -94,17 +94,17 @@ class ResetPasswrodActivity : BaseActivity() {
 
 
         resetPasswordModel.getResetPasswordResponse().observe(this,
-            Observer<CommonModel> { commonResponse->
-                if (commonResponse != null) {
-                    val message = commonResponse.message!!
+                Observer<CommonModel> { commonResponse->
+                    if (commonResponse != null) {
+                        val message = commonResponse.message!!
 
-                    when {
-                        commonResponse.code == 200 -> this.eventCreatedDialog(this, "reset_password", message)
-                        else -> showToastError(message)
+                        when {
+                            commonResponse.code == 200 -> this.eventCreatedDialog(this, "reset_password", message)
+                            else -> showToastError(message)
+                        }
+
                     }
-
-                }
-            })
+                })
 
     }
 

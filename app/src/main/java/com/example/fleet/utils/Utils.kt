@@ -115,7 +115,6 @@ class Utils(internal var context: Context) {
         outputFormat1.timeZone = tzLocal
        return  outputFormat1.format(date)
 
-
     }
 
 }

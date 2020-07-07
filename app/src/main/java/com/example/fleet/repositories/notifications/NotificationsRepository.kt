@@ -32,32 +32,34 @@ class NotificationsRepository {
         data1 = MutableLiveData()
     }
 
-    fun getNotificationsList() : MutableLiveData<NotificationsListResponse> {
-        val mApiService = ApiService<JsonObject>()
-        mApiService.get(
-            object : ApiResponse<JsonObject> {
-                override fun onResponse(mResponse : Response<JsonObject>) {
-                    val loginResponse = if (mResponse.body() != null)
-                        gson.fromJson<NotificationsListResponse>(
-                            "" + mResponse.body(),
-                            NotificationsListResponse::class.java
-                        )
-                    else {
-                        gson.fromJson<NotificationsListResponse>(
-                            mResponse.errorBody()!!.charStream(),
-                            NotificationsListResponse::class.java
-                        )
+    fun getNotificationsList(userId : String) : MutableLiveData<NotificationsListResponse> {
+        if (!TextUtils.isEmpty(userId)) {
+            val mApiService = ApiService<JsonObject>()
+            mApiService.get(
+                object : ApiResponse<JsonObject> {
+                    override fun onResponse(mResponse : Response<JsonObject>) {
+                        val loginResponse = if (mResponse.body() != null)
+                            gson.fromJson<NotificationsListResponse>(
+                                "" + mResponse.body(),
+                                NotificationsListResponse::class.java
+                            )
+                        else {
+                            gson.fromJson<NotificationsListResponse>(
+                                mResponse.errorBody()!!.charStream(),
+                                NotificationsListResponse::class.java
+                            )
+                        }
+                        data!!.postValue(loginResponse)
                     }
-                    data!!.postValue(loginResponse)
-                }
 
-                override fun onError(mKey : String) {
-                    UtilsFunctions.showToastError(MyApplication.instance.getString(R.string.internal_server_error))
-                    data!!.postValue(null)
-                }
+                    override fun onError(mKey : String) {
+                        UtilsFunctions.showToastError(MyApplication.instance.getString(R.string.internal_server_error))
+                        data!!.postValue(null)
+                    }
 
-            }, ApiClient.getApiInterface().getNotificationList(/*jsonObject*/)
-        )
+                }, ApiClient.getApiInterface().getNotificationList(userId)
+            )
+        }
         return data!!
     }
 
@@ -86,7 +88,7 @@ class NotificationsRepository {
                         data1!!.postValue(null)
                     }
 
-                }, ApiClient.getApiInterface().clearAllNotification(/*jsonObject*/)
+                }, ApiClient.getApiInterface().clearAllNotification(id)
             )
         }
         return data1!!
