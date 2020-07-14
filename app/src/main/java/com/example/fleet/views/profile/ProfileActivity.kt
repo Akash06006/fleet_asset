@@ -1,17 +1,13 @@
 package com.example.fleet.views.profile
 
-import android.Manifest
 import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.text.TextUtils
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
@@ -23,12 +19,10 @@ import com.example.fleet.callbacks.ChoiceCallBack
 import com.example.fleet.common.UtilsFunctions
 import com.example.fleet.constants.GlobalConstants
 import com.example.fleet.databinding.ActivityProfileBinding
-import com.example.fleet.model.CommonModel
 import com.example.fleet.model.LoginResponse
 import com.example.fleet.sharedpreference.SharedPrefClass
 import com.example.fleet.utils.*
 import com.example.fleet.viewmodels.profile.ProfileViewModel
-import com.example.fleet.views.authentication.OTPVerificationActivity
 import com.google.gson.JsonObject
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -39,16 +33,19 @@ import java.util.*
 import kotlin.collections.HashMap
 
 class ProfileActivity : BaseActivity(), ChoiceCallBack {
-    private lateinit var profileBinding : ActivityProfileBinding
-    private lateinit var profieViewModel : ProfileViewModel
-    private var sharedPrefClass : SharedPrefClass? = null
-    private var confirmationDialog : Dialog? = null
+    private var imageSelected = 0
+    private lateinit var profileBinding: ActivityProfileBinding
+    private lateinit var profieViewModel: ProfileViewModel
+    private var sharedPrefClass: SharedPrefClass? = null
+    private var confirmationDialog: Dialog? = null
     private var mDialogClass = DialogClass()
     private val mJsonObject = JsonObject()
     private val RESULT_LOAD_IMAGE = 100
     private val CAMERA_REQUEST = 1888
     private var profileImage = ""
-    override fun getLayoutId() : Int {
+    private var licenseImage = ""
+    private var otherImage = ""
+    override fun getLayoutId(): Int {
         return R.layout.activity_profile
     }
 
@@ -56,8 +53,8 @@ class ProfileActivity : BaseActivity(), ChoiceCallBack {
         profileBinding = viewDataBinding as ActivityProfileBinding
         profieViewModel = ViewModelProviders.of(this).get(ProfileViewModel::class.java)
         profileBinding.profileViewModel = profieViewModel
-        profileBinding.commonToolBar.imgRight.visibility = View.VISIBLE
-        profileBinding.commonToolBar.imgRight.setImageResource(R.drawable.ic_nav_edit_icon)
+        profileBinding.commonToolBar.txtEdit.visibility = View.VISIBLE
+        //profileBinding.commonToolBar.imgRight.setImageResource(R.drawable.ic_nav_edit_icon)
         profileBinding.commonToolBar.imgToolbarText.text =
             resources.getString(R.string.view_profile)
 
@@ -68,7 +65,7 @@ class ProfileActivity : BaseActivity(), ChoiceCallBack {
                 GlobalConstants.USERID
             ).toString()*/
         )
-        val id= SharedPrefClass()!!.getPrefValue(
+        val id = SharedPrefClass()!!.getPrefValue(
             MyApplication.instance,
             GlobalConstants.USERID
         ).toString()
@@ -79,13 +76,23 @@ class ProfileActivity : BaseActivity(), ChoiceCallBack {
         }
 
         profieViewModel.getDetail().observe(this,
-            Observer<LoginResponse> { response->
+            Observer<LoginResponse> { response ->
                 stopProgressDialog()
                 if (response != null) {
                     val message = response.message
                     when {
                         response.code == 200 -> {
                             profileBinding.profileModel = response.data
+                            profileBinding.etCode.setText(response.data!!.countryCodename)
+                            Glide.with(this)
+                                .load(response.data?.licenseImage)
+                                .placeholder(R.drawable.user)
+                                .into(profileBinding.imgLicense)
+                            Glide.with(this)
+                                .load(response.data?.otherimage)
+                                .placeholder(R.drawable.user)
+                                .into(profileBinding.imgOther)
+                            //=
                             /* val intent = Intent(this, OTPVerificationActivity::class.java)
                              intent.putExtra("data", mJsonObject.toString())
                              startActivity(intent)*/
@@ -101,13 +108,23 @@ class ProfileActivity : BaseActivity(), ChoiceCallBack {
             })
 
         profieViewModel.getUpdateDetail().observe(this,
-            Observer<LoginResponse> { response->
+            Observer<LoginResponse> { response ->
                 stopProgressDialog()
                 if (response != null) {
                     val message = response.message
                     when {
                         response.code == 200 -> {
                             profileBinding.profileModel = response.data
+                            Glide.with(this)
+                                .load(response.data?.licenseImage)
+                                .placeholder(R.drawable.ic_edit_image)
+                                .into(profileBinding.imgLicense)
+                            Glide.with(this)
+                                .load(response.data?.otherimage)
+                                .placeholder(R.drawable.ic_edit_image)
+                                .into(profileBinding.imgOther)
+                            profileBinding.commonToolBar.imgToolbarText.text =
+                                resources.getString(R.string.view_profile)
                             showToastSuccess(message)
                             SharedPrefClass().putObject(
                                 this,
@@ -130,19 +147,30 @@ class ProfileActivity : BaseActivity(), ChoiceCallBack {
 
         profieViewModel.isClick().observe(
             this, Observer<String>(function =
-            fun(it : String?) {
+            fun(it: String?) {
                 when (it) {
-                    "iv_edit" -> {
-                        // editImage = 0
-                        //  showPictureDialog()
+                    "imgLicense" -> {
+                        imageSelected = 1
+                        if (checkAndRequestPermissions()) {
+                            confirmationDialog =
+                                mDialogClass.setUploadConfirmationDialog(this, this, "gallery")
+                        }
                     }
-                    "img_right" -> {
+                    "imgOther" -> {
+                        imageSelected = 2
+                        if (checkAndRequestPermissions()) {
+                            confirmationDialog =
+                                mDialogClass.setUploadConfirmationDialog(this, this, "gallery")
+                        }
+                    }
+                    "txt_edit" -> {
                         // isEditable = true
                         profileBinding.commonToolBar.imgToolbarText.text =
                             resources.getString(R.string.edit_profile)
                         makeEnableDisableViews(true)
                     }
-                    "upload_profile_layer" -> {
+                    "iv_edit" -> {
+                        imageSelected = 0
                         if (checkAndRequestPermissions()) {
                             confirmationDialog =
                                 mDialogClass.setUploadConfirmationDialog(this, this, "gallery")
@@ -154,6 +182,8 @@ class ProfileActivity : BaseActivity(), ChoiceCallBack {
                         val lname = profileBinding.etLastname.text.toString()
                         val email = profileBinding.etEmail.text.toString()
                         val address = profileBinding.etAddress.text.toString()
+                        val license = profileBinding.etLicense.text.toString()
+                        val other = profileBinding.etOther.text.toString()
 
                         when {
                             fname.isEmpty() -> showError(
@@ -181,6 +211,19 @@ class ProfileActivity : BaseActivity(), ChoiceCallBack {
                                         R.string.email
                                     )
                                 )
+                            license.isEmpty() -> showError(
+                                profileBinding.etLicense,
+                                getString(R.string.empty) + " " + getString(
+                                    R.string.license
+                                )
+                            )
+                            other.isEmpty() -> showError(
+                                profileBinding.etOther,
+                                getString(R.string.empty) + " " + getString(
+                                    R.string.other_proof
+                                )
+                            )
+
                             else -> {
                                 val phonenumber = SharedPrefClass().getPrefValue(
                                     MyApplication.instance,
@@ -195,34 +238,53 @@ class ProfileActivity : BaseActivity(), ChoiceCallBack {
                                 mHashMap["fName"] = Utils(this).createPartFromString(fname)
                                 mHashMap["lName"] = Utils(this).createPartFromString(lname)
                                 mHashMap["updateFrom"] = Utils(this).createPartFromString("mobile")
-                               /* mHashMap["phone_number"] =
-                                    Utils(this).createPartFromString(phonenumber)
-                                mHashMap["country_code"] =
-                                    Utils(this).createPartFromString(countrycode)
-                                mHashMap["device_id"] = Utils(this).createPartFromString(androidId)*/
+                                /* mHashMap["phone_number"] =
+                                     Utils(this).createPartFromString(phonenumber)
+                                 mHashMap["country_code"] =
+                                     Utils(this).createPartFromString(countrycode)
+                                 mHashMap["device_id"] = Utils(this).createPartFromString(androidId)*/
                                 mHashMap["employeeId"] =
-                                    Utils(this).createPartFromString( SharedPrefClass().getPrefValue(
-                                        MyApplication.instance,
-                                        GlobalConstants.USERID
-                                    ) as String)
+                                    Utils(this).createPartFromString(
+                                        SharedPrefClass().getPrefValue(
+                                            MyApplication.instance,
+                                            GlobalConstants.USERID
+                                        ) as String
+                                    )
                                 mHashMap["address"] = Utils(this).createPartFromString(address)
-                               // mHashMap["gender"] = Utils(this).createPartFromString("1")
-                               /* mHashMap["notify_id"] = Utils(this).createPartFromString(
-                                    SharedPrefClass().getPrefValue(
-                                        MyApplication.instance,
-                                        GlobalConstants.NOTIFICATION_TOKEN
-                                    ) as String
-                                )*/
+                                mHashMap["title1"] = Utils(this).createPartFromString(license)
+                                mHashMap["title2"] = Utils(this).createPartFromString(other)
+                                // mHashMap["gender"] = Utils(this).createPartFromString("1")
+                                /* mHashMap["notify_id"] = Utils(this).createPartFromString(
+                                     SharedPrefClass().getPrefValue(
+                                         MyApplication.instance,
+                                         GlobalConstants.NOTIFICATION_TOKEN
+                                     ) as String
+                                 )*/
                                 mHashMap["email"] = Utils(this).createPartFromString(email)
                                 //  mHashMap["password"] = Utils(this).createPartFromString(password)
-                                var userImage : MultipartBody.Part? = null
+                                var userImage: MultipartBody.Part? = null
+                                var licenseimage: MultipartBody.Part? = null
+                                var otherImagee: MultipartBody.Part? = null
                                 if (!profileImage.isEmpty()) {
                                     val f1 = File(profileImage)
                                     userImage = Utils(this).prepareFilePart("image", f1)
                                 }
+                                if (!licenseImage.isEmpty()) {
+                                    val f1 = File(licenseImage)
+                                    licenseimage = Utils(this).prepareFilePart("image2", f1)
+                                }
+                                if (!otherImage.isEmpty()) {
+                                    val f1 = File(otherImage)
+                                    otherImagee = Utils(this).prepareFilePart("image3", f1)
+                                }
                                 if (UtilsFunctions.isNetworkConnected()) {
                                     startProgressDialog()
-                                    profieViewModel.updateProfile(mHashMap, userImage)
+                                    profieViewModel.updateProfile(
+                                        mHashMap,
+                                        userImage,
+                                        licenseimage,
+                                        otherImagee
+                                    )
                                 }
 
                             }
@@ -235,43 +297,48 @@ class ProfileActivity : BaseActivity(), ChoiceCallBack {
 
     }
 
-    private fun makeEnableDisableViews(isEnable : Boolean) {
+    private fun makeEnableDisableViews(isEnable: Boolean) {
         profileBinding.etFirstname.isEnabled = isEnable
         profileBinding.etLastname.isEnabled = isEnable
         profileBinding.etEmail.isEnabled = isEnable
         profileBinding.etPhone.isEnabled = false
         profileBinding.etAddress.isEnabled = isEnable
+        profileBinding.imgLicense.isEnabled = isEnable
+        profileBinding.imgOther.isEnabled = isEnable
+        profileBinding.etLicense.isEnabled = isEnable
+        profileBinding.etOther.isEnabled = isEnable
+
         if (!isEnable) {
             profileBinding.ivEdit.visibility = View.GONE
             profileBinding.btnSubmit.visibility = View.GONE
-            profileBinding.commonToolBar.imgRight.visibility = View.VISIBLE
+            profileBinding.commonToolBar.txtEdit.visibility = View.VISIBLE
         } else {
             profileBinding.ivEdit.visibility = View.VISIBLE
-            profileBinding.commonToolBar.imgRight.visibility = View.GONE
+            profileBinding.commonToolBar.txtEdit.visibility = View.GONE
             profileBinding.btnSubmit.visibility = View.VISIBLE
         }
 
     }
 
-    private fun showError(textView : TextView, error : String) {
+    private fun showError(textView: TextView, error: String) {
         textView.requestFocus()
         textView.error = error
     }
 
-    override fun photoFromCamera(mKey : String) {
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent->
+    override fun photoFromCamera(mKey: String) {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
             // Ensure that there's a camera activity to handle the intent
             takePictureIntent.resolveActivity(packageManager)?.also {
                 // Create the File where the photo should go
-                val photoFile : File? = try {
+                val photoFile: File? = try {
                     createImageFile()
-                } catch (ex : IOException) {
+                } catch (ex: IOException) {
                     // Error occurred while creating the File
                     null
                 }
                 // Continue only if the File was successfully created
                 photoFile?.also {
-                    val photoURI : Uri =
+                    val photoURI: Uri =
                         FileProvider.getUriForFile(this, packageName + ".fileprovider", it)
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                     startActivityForResult(takePictureIntent, CAMERA_REQUEST)
@@ -280,10 +347,10 @@ class ProfileActivity : BaseActivity(), ChoiceCallBack {
         }
     }
 
-    private fun createImageFile() : File {
+    private fun createImageFile(): File {
         // Create an image file name
-        val timeStamp : String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir : File = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         //currentPhotoPath = File(baseActivity?.cacheDir, fileName)
         return File.createTempFile(
             "JPEG_${timeStamp}_", /* prefix */
@@ -295,7 +362,7 @@ class ProfileActivity : BaseActivity(), ChoiceCallBack {
         }
     }
 
-    override fun photoFromGallery(mKey : String) {
+    override fun photoFromGallery(mKey: String) {
         val i = Intent(
             Intent.ACTION_PICK,
             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
@@ -303,15 +370,15 @@ class ProfileActivity : BaseActivity(), ChoiceCallBack {
         startActivityForResult(i, RESULT_LOAD_IMAGE)
     }
 
-    override fun videoFromCamera(mKey : String) {
+    override fun videoFromCamera(mKey: String) {
         //("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun videoFromGallery(mKey : String) {
+    override fun videoFromGallery(mKey: String) {
         //("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun onActivityResult(requestCode : Int, resultCode : Int, data : Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             val selectedImage = data.data
@@ -320,21 +387,51 @@ class ProfileActivity : BaseActivity(), ChoiceCallBack {
             cursor?.moveToFirst()
             val columnIndex = cursor.getColumnIndex(filePathColumn[0])
             val picturePath = cursor.getString(columnIndex)
-            profileImage = picturePath
-            setImage(picturePath)
+            if (imageSelected == 0) {
+                profileImage = picturePath
+                setImage(picturePath, profileBinding.imgProfile)
+            } else if (imageSelected == 1) {
+                licenseImage = picturePath
+                setImage(picturePath, profileBinding.imgLicense)
+            } else {
+                otherImage = picturePath
+                setImage(picturePath, profileBinding.imgOther)
+            }
+            // setImage(picturePath, profileBinding.imgProfile)
             cursor.close()
         } else if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK /*&& null != data*/) {
-            setImage(profileImage)            // val extras = data!!.extras
+            if (imageSelected == 0) {
+                profileImage = profileImage
+                setImage(profileImage, profileBinding.imgProfile)
+            } else if (imageSelected == 1) {
+                licenseImage = profileImage
+                setImage(profileImage, profileBinding.imgLicense)
+            } else {
+                otherImage = profileImage
+                setImage(profileImage, profileBinding.imgOther)
+            }
+            /*setImage(
+               profileImage,
+               profileBinding.imgProfile
+           ) */
+            // val extras = data!!.extras
             // val imageBitmap = extras!!.get("data") as Bitmap
             //getImageUri(imageBitmap)
         }
 
     }
 
-    private fun setImage(path : String) {
+    private fun setImage(path: String, imgProfile: ImageView) {
+        /*if (imageSelected == 0){
+            profileImage = picturePath
+        }else  if (imageSelected == 1){
+            licenseImage = picturePath
+        }else{
+            otherImage = picturePath
+        }*/
         Glide.with(this)
             .load(path)
             .placeholder(R.drawable.user)
-            .into(profileBinding.imgProfile)
+            .into(imgProfile)
     }
 }

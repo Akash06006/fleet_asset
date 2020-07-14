@@ -1,54 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        package="com.example.fleet">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.fleet">
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.READ_SMS"/>
-    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission
-            android:name="android.permission.BROADCAST_SMS"
-            tools:ignore="ProtectedPermissions"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+        android:name="android.permission.BROADCAST_SMS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera" />
     <uses-feature
-            android:name="android.hardware.camera.flash"
-            android:required="true" />
+        android:name="android.hardware.camera.flash"
+        android:required="true" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
-            android:name=".application.MyApplication"
-            android:fullBackupContent="@xml/backup_descriptor"
-            android:icon="@drawable/ic_app"
-            android:label="@string/app_name"
-            android:networkSecurityConfig="@xml/network_security_config"
-            android:roundIcon="@drawable/ic_app"
-            android:supportsRtl="true"
-            android:theme="@style/AppTheme.NoActionBar"
-            tools:ignore="GoogleAppIndexingWarning"
-            tools:targetApi="n">
-        <activity android:name=".views.asset.AssetJobDetailActivity">
-        </activity>
-        <activity android:name=".views.notifications.NotificationsListActivity"/>
-        <activity android:name=".views.home.JobsHistoryActivity"/>
-        <activity android:name=".views.services.UpdateServiceActivity"/>
-        <activity android:name=".views.services.ServicesListActivity"/>
-        <activity android:name=".views.fuel.FuelEntryList"/>
-        <activity android:name=".views.fuel.AddFuelDetailActivity"/>
-        <activity android:name=".views.profile.ProfileActivity"/>
+        android:name=".application.MyApplication"
+        android:fullBackupContent="@xml/backup_descriptor"
+        android:icon="@drawable/ic_app"
+        android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:roundIcon="@drawable/ic_app"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.NoActionBar"
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:targetApi="n">
+        <activity android:name=".views.asset.AssetJobDetailActivity"></activity>
+        <activity android:name=".views.notifications.NotificationsListActivity" />
+        <activity android:name=".views.home.JobsHistoryActivity" />
+        <activity android:name=".views.services.UpdateServiceActivity" />
+        <activity android:name=".views.services.ServicesListActivity" />
+        <activity android:name=".views.fuel.FuelEntryList" />
+        <activity android:name=".views.fuel.AddFuelDetailActivity" />
+        <activity android:name=".views.profile.ProfileActivity" />
+        <activity android:name=".views.vehicles.VehiclesListActivity" />
+        <activity android:name=".views.vehicles.VehicleDetailActivity" />
+
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -56,8 +58,8 @@
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
-                    android:name="android.support.FILE_PROVIDER_PATHS"
-                    android:resource="@xml/fileprovider" />
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/fileprovider" />
         </provider>
 
         <activity
@@ -65,55 +67,55 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-                android:name=".views.authentication.LoginActivity"
-                android:launchMode="singleTop"
-                android:screenOrientation="portrait"/>
+            android:name=".views.authentication.LoginActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <activity
-                android:name=".views.asset.TrackingMapsActivity"
-                android:launchMode="singleTop"
-                android:screenOrientation="portrait"/>
+            android:name=".views.asset.TrackingMapsActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <activity
-                android:name=".views.asset.AssetJobsHistoryActivity"
-                android:launchMode="singleTop"
-                android:screenOrientation="portrait"/>
+            android:name=".views.asset.AssetJobsHistoryActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <activity
-                android:name=".views.authentication.LoginPasswordActivity"
-                android:launchMode="singleTop"
-                android:screenOrientation="portrait"/>
+            android:name=".views.authentication.LoginPasswordActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <activity
-                android:name=".views.authentication.OTPVerificationActivity"
-                android:launchMode="singleTop"
-                android:screenOrientation="portrait"/>
+            android:name=".views.authentication.OTPVerificationActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <activity
-                android:name=".views.authentication.ResetPasswrodActivity"
-                android:launchMode="singleTop"
-                android:screenOrientation="portrait"/>
+            android:name=".views.authentication.ResetPasswrodActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <activity
-                android:name=".views.authentication.ChangePasswrodActivity"
-                android:launchMode="singleTop"
-                android:screenOrientation="portrait"/>
+            android:name=".views.authentication.ChangePasswrodActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <activity
-                android:name=".views.home.DashboardActivity"
-                android:launchMode="singleTop"
-                android:screenOrientation="portrait"/>
+            android:name=".views.home.DashboardActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <activity
-                android:name=".views.settings.MyAccountsActivity"
-                android:launchMode="singleTop"
-                android:screenOrientation="portrait"/>
+            android:name=".views.settings.MyAccountsActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <activity
-                android:name=".views.authentication.RegisterActivity"
-                android:launchMode="singleTop"
-                android:screenOrientation="portrait"/>
+            android:name=".views.authentication.RegisterActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <activity
-                android:name=".socket.TrackingActivity"
-                android:launchMode="singleTop"
-                android:screenOrientation="portrait"/>
+            android:name=".socket.TrackingActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <receiver
             android:name=".views.authentication.SMSBroadcastReciever"
@@ -121,7 +123,7 @@
             android:permission="android.permission.BROADCAST_SMS"
             android:priority="1000">
             <intent-filter>
-                <action android:name="com.google.android.gms.auth.api.phone.SMS_RETRIEVED"/>
+                <action android:name="com.google.android.gms.auth.api.phone.SMS_RETRIEVED" />
             </intent-filter>
         </receiver>
 
@@ -129,24 +131,24 @@
             android:name=".firebaseMobile.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
             </intent-filter>
         </service>
         <service
-                android:name=".database.NetworkJobService"
-                android:permission="android.permission.BIND_JOB_SERVICE"/>
+            android:name=".database.NetworkJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
-                android:name=".socket.LocationTrackingService"
-                android:enabled="true"/>
+            android:name=".socket.LocationTrackingService"
+            android:enabled="true" />
         <service
-                android:name=".database.BackgroundLocationService"
-                android:enabled="true"/>
+            android:name=".database.BackgroundLocationService"
+            android:enabled="true" />
 
         <meta-data
-                android:name="com.google.android.geo.API_KEY"
-                android:value="AIzaSyA7Zj-PTZm4sDG-eoiLPA-XohvgxBe95wU"/>
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyA7Zj-PTZm4sDG-eoiLPA-XohvgxBe95wU" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"

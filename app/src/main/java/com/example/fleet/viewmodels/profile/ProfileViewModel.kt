@@ -4,11 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import android.view.View
 import com.example.fleet.common.UtilsFunctions
-import com.example.fleet.model.CommonModel
 import com.example.fleet.model.LoginResponse
 import com.example.fleet.repositories.profile.ProfileRepository
 import com.example.fleet.viewmodels.BaseViewModel
-import com.google.gson.JsonObject
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
@@ -22,7 +20,7 @@ class ProfileViewModel : BaseViewModel() {
     init {
         if (UtilsFunctions.isNetworkConnectedWithoutToast()) {
             profileDetail = profileRepository.getUserProfile("")
-            data = profileRepository.updateUserProfile(null, null)
+            data = profileRepository.updateUserProfile(null, null, null, null)
         }
 
 
@@ -56,9 +54,14 @@ class ProfileViewModel : BaseViewModel() {
 
     }
 
-    fun updateProfile(hashMap : HashMap<String, RequestBody>, image : MultipartBody.Part?) {
+    fun updateProfile(
+        hashMap: HashMap<String, RequestBody>,
+        image: MultipartBody.Part?,
+        licenseimage: MultipartBody.Part?,
+        otherImagee: MultipartBody.Part?
+    ) {
         if (UtilsFunctions.isNetworkConnected()) {
-            data = profileRepository.updateUserProfile(hashMap, image)
+            data = profileRepository.updateUserProfile(hashMap, image,licenseimage,otherImagee)
             mIsUpdating.postValue(true)
 
         }

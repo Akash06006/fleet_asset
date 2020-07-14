@@ -39,7 +39,6 @@
                 android:onClick="@{onClick}"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/sp_16"
-                app:font="@{`bold`}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/toolbar"

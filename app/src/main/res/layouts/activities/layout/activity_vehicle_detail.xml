@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="fuelViewModel"
+            type="com.example.fleet.viewmodels.fuel.FuelViewModel" />
+
+        <variable
+            name="vehicleDetailRes"
+            type="com.example.fleet.model.vehicle.VehicleDetailResponse.Data" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/common_tool_bar"
+            layout="@layout/common_toolbar_back"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{(v) -> fuelViewModel.clickListener(v)}" />
+
+        <ScrollView
+            android:id="@+id/parent_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorWhite"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:orientation="vertical">
+
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="@dimen/dp_10"
+                    android:padding="@dimen/dp_5">
+
+                    <ImageView
+                        android:id="@+id/imgVehicle"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_150"
+                        android:background="@drawable/ic_truck_detail"
+                        android:scaleType="centerCrop" />
+
+                    <ImageView
+                        android:id="@+id/imgEdit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:onClick="@{(v) -> fuelViewModel.clickListener(v)}"
+                        android:src="@drawable/ic_edit_image" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:layout_marginRight="@dimen/dp_5"
+                    android:elevation="2dp"
+                    android:maxLength="20"
+                    android:singleLine="true"
+                    android:text="@string/vehicle_details"
+                    android:textColor="@color/colorblack"
+                    android:textSize="@dimen/sp_18"
+                    tools:ignore="Autofill,MissingConstraints,TextFields"
+                    tools:targetApi="lollipop" />
+
+                <EditText
+                    android:id="@+id/etName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:background="@drawable/edt_back_shape_colored"
+                    android:elevation="2dp"
+                    android:enabled="false"
+                    android:hint="@string/vehicle_namee"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="20"
+                    android:padding="@dimen/dp_15"
+                    android:singleLine="true"
+                    android:text="@{vehicleDetailRes.name}"
+                    android:textColor="@color/colorblack"
+                    android:textColorHint="@color/colorGrey"
+                    android:textSize="@dimen/sp_14"
+                    tools:ignore="Autofill,MissingConstraints,TextFields"
+                    tools:targetApi="lollipop" />
+
+                <EditText
+                    android:id="@+id/etRegistration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:background="@drawable/edt_back_shape_colored"
+                    android:elevation="2dp"
+                    android:enabled="false"
+                    android:hint="@string/registration_number"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="20"
+                    android:padding="@dimen/dp_15"
+                    android:singleLine="true"
+                    android:text="@{vehicleDetailRes.regNumber}"
+                    android:textColor="@color/colorblack"
+                    android:textColorHint="@color/colorGrey"
+                    android:textSize="@dimen/sp_14"
+                    tools:ignore="Autofill,MissingConstraints,TextFields"
+                    tools:targetApi="lollipop" />
+
+                <EditText
+                    android:id="@+id/etVehicleModel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:background="@drawable/edt_back_shape_colored"
+                    android:elevation="2dp"
+                    android:enabled="false"
+                    android:hint="@string/vehicle_model"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="20"
+                    android:padding="@dimen/dp_15"
+                    android:singleLine="true"
+                    android:text="@{vehicleDetailRes.model}"
+                    android:textColor="@color/colorblack"
+                    android:textColorHint="@color/colorGrey"
+                    android:textSize="@dimen/sp_14"
+                    tools:ignore="Autofill,MissingConstraints,TextFields"
+                    tools:targetApi="lollipop" />
+
+                <EditText
+                    android:id="@+id/etVehicleColor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:background="@drawable/edt_back_shape_colored"
+                    android:elevation="2dp"
+                    android:hint="@string/vehicle_color"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:maxLength="20"
+                    android:padding="@dimen/dp_15"
+                    android:singleLine="true"
+                    android:text="@{vehicleDetailRes.color}"
+                    android:textColor="@color/colorblack"
+                    android:textColorHint="@color/colorGrey"
+                    android:textSize="@dimen/sp_14"
+                    tools:ignore="Autofill,MissingConstraints,TextFields"
+                    tools:targetApi="lollipop" />
+
+                <EditText
+                    android:id="@+id/etEgineNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:background="@drawable/edt_back_shape_colored"
+                    android:elevation="2dp"
+                    android:enabled="false"
+                    android:hint="@string/engine_number"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="20"
+                    android:padding="@dimen/dp_15"
+                    android:singleLine="true"
+                    android:text="@{vehicleDetailRes.engineNumber}"
+                    android:textColor="@color/colorblack"
+                    android:textColorHint="@color/colorGrey"
+                    android:textSize="@dimen/sp_14"
+                    tools:ignore="Autofill,MissingConstraints,TextFields"
+                    tools:targetApi="lollipop" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:layout_marginRight="@dimen/dp_5"
+                    android:elevation="2dp"
+                    android:maxLength="20"
+                    android:singleLine="true"
+                    android:text="@string/insurance_details"
+                    android:textColor="@color/colorblack"
+                    android:textSize="@dimen/sp_18"
+                    tools:ignore="Autofill,MissingConstraints,TextFields"
+                    tools:targetApi="lollipop" />
+
+                <EditText
+                    android:id="@+id/etInsuranceExpiry"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:background="@drawable/edt_back_shape_colored"
+                    android:editable="false"
+                    android:elevation="2dp"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/expiry_date"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:maxLength="20"
+                    android:onClick="@{(v) -> fuelViewModel.clickListener(v)}"
+                    android:padding="@dimen/dp_15"
+                    android:singleLine="true"
+                    android:text="@{vehicleDetailRes.insurexpirydate}"
+                    android:textColor="@color/colorblack"
+                    android:textColorHint="@color/colorGrey"
+                    android:textSize="@dimen/sp_14"
+                    tools:ignore="Autofill,MissingConstraints,TextFields"
+                    tools:targetApi="lollipop" />
+
+                <EditText
+                    android:id="@+id/etCompanyName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:background="@drawable/edt_back_shape_colored"
+                    android:elevation="2dp"
+                    android:hint="@string/insurance_company_name"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:maxLength="20"
+                    android:padding="@dimen/dp_15"
+                    android:singleLine="true"
+                    android:text="@{vehicleDetailRes.insurcompanyname}"
+                    android:textColor="@color/colorblack"
+                    android:textColorHint="@color/colorGrey"
+                    android:textSize="@dimen/sp_14"
+                    tools:ignore="Autofill,MissingConstraints,TextFields"
+                    tools:targetApi="lollipop" />
+
+                <EditText
+                    android:id="@+id/etInsuranceNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_10"
+                    android:background="@drawable/edt_back_shape_colored"
+                    android:elevation="2dp"
+                    android:hint="@string/insurance_number"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:maxLength="20"
+                    android:padding="@dimen/dp_15"
+                    android:singleLine="true"
+                    android:text="@{vehicleDetailRes.insurnumber}"
+                    android:textColor="@color/colorblack"
+                    android:textColorHint="@color/colorGrey"
+                    android:textSize="@dimen/sp_14"
+                    tools:ignore="Autofill,MissingConstraints,TextFields"
+                    tools:targetApi="lollipop" />
+
+                <Button
+                    android:id="@+id/btn_submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_20"
+                    android:background="@drawable/btn_bg_shape_colored"
+                    android:elevation="@dimen/dp_10"
+                    android:onClick="@{(v) -> fuelViewModel.clickListener(v)}"
+                    android:paddingLeft="@dimen/dp_20"
+                    android:paddingRight="@dimen/dp_20"
+                    android:text="@string/submit"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorWhite"
+                    tools:ignore="UnusedAttribute" />
+
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+</layout>

@@ -1,4 +1,4 @@
-<!DOCTYPE resources [<!ENTITY app_name "FleetManagement">]>
+<!DOCTYPE resources [<!ENTITY app_name "Fleet Management">]>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">&app_name;</string>
     <string name="internal_server_error">Internal server error, so please try after some time!</string>
@@ -43,8 +43,8 @@
     <string name="other_alert">Other Alert</string>
     <string name="memebership">Memebership</string>
     <string name="type">Type</string>
-    <string name="type_colon">Type : </string>
-    <string name="service_type">Service Type : </string>
+    <string name="type_colon">Type: </string>
+    <string name="service_type">Service Name: </string>
     <string name="accounts">Accounts</string>
     <string name="settings">Settings</string>
     <string name="payment_method">Payment Method</string>
@@ -202,11 +202,13 @@
     <string name="notifications">Notifications</string>
     <string name="help_and_info">Help and info</string>
     <string name="feedback">Feedback</string>
+    <string name="my_vehicles">My Vehicles</string>
+    <string name="insurance">Insurance</string>
     <string name="contact_us">Contact Us</string>
     <string name="booked">Booked</string>
-    <string name="your_upcoming_booking">Upcoming Booking :</string>
+    <string name="your_upcoming_booking">Upcoming Booking:</string>
     <string name="key_activity">activity</string>
-    <string name="date_time">Date &amp; Time : </string>
+    <string name="date_time">Date &amp; Time: </string>
     <string name="distance">Distance</string>
     <string name="vehicle_reg">Vehicle Registration</string>
     <string name="item_name">Item name</string>
@@ -242,9 +244,9 @@
     <string name="allow_location">Allow to turn on Location Permissions</string>
     <string name="turn_on_location">Turn on Location</string>
     <string name="GPS_enabled">Location Services is not enabled,Please enable Location Services</string>
-    <string name="to">To : </string>
-    <string name="from">From : </string>
-    <string name="load">Load : </string>
+    <string name="to">To: </string>
+    <string name="from">From: </string>
+    <string name="load">Load: </string>
     <string name="view">View</string>
     <string name="warehouse_pickup">Warehouse Pickup</string>
     <string name="warehouse_dropoff">Warehouse DropOff</string>
@@ -253,21 +255,23 @@
     <string name="price">Price</string>
     <string name="invoice_number">Invoice Number</string>
     <string name="partial_fuel_up">Partial Fuel Up</string>
-    <string name="fuel_entry">Fuel Entry</string>
-    <string name="fuel_entry_list">Fuel Entry List</string>
+    <string name="fuel_entry">Fuel Details Entry</string>
+    <string name="vehicle_details">Vehicle Details</string>
+    <string name="fuel_entry_list">Fuel Details List</string>
+    <string name="vehicles">Vehicles</string>
     <string name="please_select">Please </string>
     <string name="select_vendor">Select Vendor</string>
     <string name="invoice_image">Select Invoice Image</string>
-    <string name="invoice">Invoice : </string>
+    <string name="invoice">Invoice: </string>
     <string name="select_date">Select Date</string>
-    <string name="amount">Amount :</string>
+    <string name="amount">Amount:</string>
     <string name="upcoming">Upcoming</string>
     <string name="history">History</string>
     <string name="renewal">Renewal</string>
-    <string name="vehicle_name">Vehicle Name :</string>
-    <string name="due_date">Due Date :</string>
+    <string name="vehicle_name">Vehicle Name:</string>
+    <string name="due_date">Due Date &amp; Time:</string>
     <string name="vendor_colon">Vendor Name:</string>
-    <string name="date_colon">Date :</string>
+    <string name="date_colon">Date &amp; Time:</string>
     <string name="labor_price">Labor Price</string>
     <string name="parts_price">Parts Price</string>
     <string name="tax">Tax</string>
@@ -281,7 +285,7 @@
     <string name="asset">Asset</string>
     <string name="fleet_management">Fleet Management</string>
     <string name="asset_management">Asset Management</string>
-    <string name="completed_date">Completed Date :</string>
+    <string name="completed_date">Completed Date &amp; Time:</string>
     <string name="clear_all">Clear All</string>
     <string name="start">Start</string>
     <string name="api_key">AIzaSyA7Zj-PTZm4sDG-eoiLPA-XohvgxBe95wU</string>
@@ -292,11 +296,26 @@
     <string name="otp_not_received_text">Didn\'t Received OTP?</string>
     <string name="resend">Resend</string>
     <string name="track">Track</string>
+    <string name="edit">EDIT</string>
+    <string name="code">Code</string>
     <string name="job_finished_msg">Job Finished Successfully</string>
     <string name="logout_msg">Logout Successfully</string>
     <string name="warning_finish_job">Do you really want to finish this job?</string>
     <string name="warning_cancel_job">Do you really want to cancel this job?</string>
     <string name="warning_reject_job">Do you really want to reject this job?</string>
     <string name="warning_logout">Do you really want to logout?</string>
+    <string name="license">License</string>
+    <string name="other_proof">Other Proof</string>
+    <string name="vehicle_namee">Vehicle Name</string>
+    <string name="registration_number">Registration Number</string>
+    <string name="vehicle_model">Vehicle Model</string>
+    <string name="vehicle_color">Vehicle Color</string>
+    <string name="engine_number">Engine Number</string>
+    <string name="expiry_date">Expiry Date</string>
+    <string name="insurance_company_name">Insurance Company Name</string>
+    <string name="insurance_number">Insurance Number</string>
+    <string name="insurance_details">Insurance Details</string>
+    <string name="vehicle_update_msg">Vehicle detail updated successfully</string>
+
 
 </resources>

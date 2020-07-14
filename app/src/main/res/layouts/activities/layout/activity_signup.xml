@@ -66,8 +66,7 @@
                             android:text="@string/upload_profile_picture"
                             android:textAllCaps="false"
                             android:textColor="@color/colorBlack2"
-                            android:textSize="@dimen/sp_13"
-                            app:font="@{`regular`}"/>
+                            android:textSize="@dimen/sp_13" />
 
                 </LinearLayout>
 
@@ -85,7 +84,6 @@
                         android:textColor="@color/colorblack"
                         android:textColorHint="@color/colorGrey"
                         android:textSize="@dimen/sp_14"
-                        app:font="@{`regular`}"
                         tools:ignore="MissingConstraints"/>
 
                 <EditText
@@ -102,7 +100,6 @@
                         android:textColor="@color/colorblack"
                         android:textColorHint="@color/colorGrey"
                         android:textSize="@dimen/sp_14"
-                        app:font="@{`regular`}"
                         tools:ignore="MissingConstraints"/>
 
                 <EditText
@@ -118,7 +115,6 @@
                         android:textColor="@color/colorblack"
                         android:textColorHint="@color/colorGrey"
                         android:textSize="@dimen/sp_14"
-                        app:font="@{`regular`}"
                         tools:ignore="MissingConstraints"/>
 
                 <EditText
@@ -135,7 +131,6 @@
                         android:textColor="@color/colorblack"
                         android:textColorHint="@color/colorGrey"
                         android:textSize="@dimen/sp_14"
-                        app:font="@{`regular`}"
                         tools:ignore="MissingConstraints"/>
 
                 <EditText
@@ -151,7 +146,6 @@
                         android:textColor="@color/colorblack"
                         android:textColorHint="@color/colorGrey"
                         android:textSize="@dimen/sp_14"
-                        app:font="@{`regular`}"
                         android:hint="@string/password"
                         tools:ignore="MissingConstraints"/>
 
@@ -164,7 +158,6 @@
                         android:layout_marginTop="@dimen/dp_10"
                         android:textColor="@color/colorBlack2"
                         android:textSize="@dimen/sp_10"
-                        app:font="@{`regular`}"
                 />
 
                 <EditText
@@ -181,7 +174,6 @@
                         android:textColor="@color/colorblack"
                         android:textColorHint="@color/colorGrey"
                         android:textSize="@dimen/sp_14"
-                        app:font="@{`regular`}"
                         tools:ignore="MissingConstraints"/>
 
                 <ImageView

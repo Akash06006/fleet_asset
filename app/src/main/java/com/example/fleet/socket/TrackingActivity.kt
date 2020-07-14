@@ -494,7 +494,7 @@ open class TrackingActivity : BaseActivity(), OnMapReadyCallback, LocationListen
             ).toString().equals("0")
         ) {
             // var icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_car)
-            var icon = bitmapDescriptorFromVector(this, R.drawable.ic_car)
+            var icon = bitmapDescriptorFromVector(this, R.drawable.ic_truck_icon)
             mGoogleMap!!.addMarker(
                 MarkerOptions()
                     .position(LatLng(location.latitude, location.longitude))
@@ -532,7 +532,7 @@ open class TrackingActivity : BaseActivity(), OnMapReadyCallback, LocationListen
     }
 
     fun bitmapDescriptorFromVector(context : Context, @DrawableRes vectorDrawableResourceId : Int) : BitmapDescriptor {
-        var background = ContextCompat.getDrawable(this, R.drawable.ic_car);
+        var background = ContextCompat.getDrawable(this, R.drawable.ic_truck_icon);
         background?.setBounds(
             0,
             0,
@@ -870,7 +870,7 @@ open class TrackingActivity : BaseActivity(), OnMapReadyCallback, LocationListen
         polyPath = path
         mGoogleMap?.clear()
         //  var icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_car)
-        var icon = bitmapDescriptorFromVector(this, R.drawable.ic_car)
+        var icon = bitmapDescriptorFromVector(this, R.drawable.ic_truck_icon)
         mGoogleMap!!.addMarker(
             MarkerOptions()
                 .position(LatLng(fkip.latitude, fkip.longitude))
@@ -884,7 +884,7 @@ open class TrackingActivity : BaseActivity(), OnMapReadyCallback, LocationListen
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
         )
         if (polyPath!!.size > 0) {
-            val opts = PolylineOptions().addAll(path).color(R.color.colorRed).width(20f)
+            val opts = PolylineOptions().addAll(path).color(R.color.linePathColor).width(20f)
             /*polylineFinal = */mGoogleMap?.addPolyline(opts)
         }
 

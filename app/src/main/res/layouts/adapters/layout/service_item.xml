@@ -44,7 +44,7 @@
                     android:layout_marginRight="@dimen/dp_5"
                     android:layout_toLeftOf="@+id/btn_update_service"
                     android:orientation="vertical"
-                    android:paddingLeft="@dimen/dp_5">
+                    android:padding="@dimen/dp_5">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -56,97 +56,193 @@
                         android:weightSum="2">
 
                         <LinearLayout
-
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
-                            <TextView
-                                android:id="@+id/tv_due_completed"
-                                android:layout_width="@dimen/dp_100"
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="@dimen/dp_5"
-                                android:padding="@dimen/dp_3"
-                                android:text="@string/due_date"
-                                android:textAllCaps="false"
-                                android:textColor="@color/colorBlack"
-                                android:textSize="@dimen/sp_12"
-                                app:font="@{`bold`}" />
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                tools:ignore="UseCompoundDrawables">
 
-                            <TextView
-                                android:id="@+id/tv_due_date"
-                                android:layout_width="wrap_content"
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/dp_5"
+                                    android:src="@drawable/ic_calendar"
+                                    tools:ignore="ContentDescription" />
+
+                                <TextView
+                                    android:id="@+id/tv_due_completed"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginLeft="@dimen/dp_5"
+                                    android:layout_marginTop="@dimen/dp_5"
+                                    android:padding="@dimen/dp_3"
+                                    android:text="@string/due_date"
+                                    android:textAllCaps="false"
+                                    android:textColor="@color/colorBlack" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:padding="@dimen/dp_5"
-                                android:text="10-12-2020"
-                                android:textAllCaps="false"
-                                android:textColor="@color/list_text_color"
-                                android:textSize="@dimen/sp_12"
-                                app:font="@{`regular`}" />
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                tools:ignore="UseCompoundDrawables">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_calendar"
+                                    android:visibility="invisible"
+                                    tools:ignore="ContentDescription" />
+
+                                <TextView
+                                    android:id="@+id/tv_due_date"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginLeft="@dimen/dp_5"
+                                    android:paddingLeft="@dimen/dp_5"
+                                    android:text="10-12-2020"
+                                    android:textAllCaps="false"
+                                    android:textColor="@color/list_text_color"
+                                    android:textSize="@dimen/sp_12" />
+                            </LinearLayout>
+
+
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
-                            <TextView
-                                android:layout_width="@dimen/dp_100"
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="@dimen/dp_5"
-                                android:padding="@dimen/dp_3"
-                                android:text="@string/service_type"
-                                android:textAllCaps="false"
-                                android:textColor="@color/colorBlack"
-                                android:textSize="@dimen/sp_12"
-                                app:font="@{`bold`}" />
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                tools:ignore="UseCompoundDrawables">
 
-                            <TextView
-                                android:id="@+id/tv_service_type"
-                                android:layout_width="wrap_content"
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/dp_5"
+                                    android:src="@drawable/ic_settings"
+                                    tools:ignore="ContentDescription" />
+
+                                <TextView
+                                    android:layout_width="@dimen/dp_100"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginLeft="@dimen/dp_5"
+                                    android:layout_marginTop="@dimen/dp_5"
+                                    android:padding="@dimen/dp_3"
+                                    android:text="@string/service_type"
+                                    android:textAllCaps="false"
+                                    android:textColor="@color/colorBlack" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:padding="@dimen/dp_5"
-                                android:text="10 Tons "
-                                android:textAllCaps="false"
-                                android:textColor="@color/list_text_color"
-                                android:textSize="@dimen/sp_12"
-                                app:font="@{`regular`}" />
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                tools:ignore="UseCompoundDrawables">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_calendar"
+                                    android:visibility="invisible"
+                                    tools:ignore="ContentDescription" />
+
+                                <TextView
+                                    android:id="@+id/tv_service_type"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginLeft="@dimen/dp_5"
+                                    android:paddingLeft="@dimen/dp_5"
+                                    android:text="10 Tons "
+                                    android:textAllCaps="false"
+                                    android:textColor="@color/list_text_color"
+                                    android:textSize="@dimen/sp_12" />
+                            </LinearLayout>
+
+
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
-                            <TextView
-
-                                android:id="@+id/tv_vendor_name"
-                                android:layout_width="@dimen/dp_100"
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="@dimen/dp_5"
-                                android:padding="@dimen/dp_3"
-                                android:text="@string/vendor_colon"
-                                android:textAllCaps="false"
-                                android:textColor="@color/colorBlack"
-                                android:textSize="@dimen/sp_12"
-                                app:font="@{`bold`}" />
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                tools:ignore="UseCompoundDrawables">
 
-                            <TextView
-                                android:id="@+id/tv_vendor_name_value"
-                                android:layout_width="wrap_content"
+                                <ImageView
+                                    android:layout_width="wrap_content"
+
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/dp_5"
+                                    android:src="@drawable/ic_user"
+                                    tools:ignore="ContentDescription" />
+
+                                <TextView
+
+                                    android:id="@+id/tv_vendor_name"
+                                    android:layout_width="@dimen/dp_100"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginLeft="@dimen/dp_5"
+                                    android:layout_marginTop="@dimen/dp_5"
+                                    android:padding="@dimen/dp_3"
+                                    android:text="@string/vendor_colon"
+                                    android:textAllCaps="false"
+                                    android:textColor="@color/colorBlack" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:padding="@dimen/dp_5"
-                                android:text="Akash"
-                                android:textAllCaps="false"
-                                android:textColor="@color/list_text_color"
-                                android:textSize="@dimen/sp_12"
-                                app:font="@{`regular`}" />
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                tools:ignore="UseCompoundDrawables">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_calendar"
+                                    android:visibility="invisible"
+                                    tools:ignore="ContentDescription" />
+
+                                <TextView
+                                    android:id="@+id/tv_vendor_name_value"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginLeft="@dimen/dp_5"
+                                    android:paddingLeft="@dimen/dp_5"
+                                    android:text="Akash"
+                                    android:textAllCaps="false"
+                                    android:textColor="@color/list_text_color"
+                                    android:textSize="@dimen/sp_12" />
+                            </LinearLayout>
+
+
                         </LinearLayout>
 
                     </LinearLayout>
@@ -157,10 +253,10 @@
                     android:id="@+id/btn_update_service"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_marginRight="@dimen/dp_5"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/ic_right_arrow" />
+                    android:layout_marginRight="@dimen/dp_5"
+                    android:src="@drawable/ic_next" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 

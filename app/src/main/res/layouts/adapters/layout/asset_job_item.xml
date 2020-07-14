@@ -76,8 +76,7 @@
                                     android:text="@string/from"
                                     android:textAllCaps="false"
                                     android:textColor="@color/colorBlack"
-                                    android:textSize="@dimen/sp_12"
-                                    app:font="@{`bold`}" />
+                                    android:textSize="@dimen/sp_12"  />
 
                             <TextView
                                     android:id="@+id/tv_from_location_name"
@@ -91,8 +90,7 @@
                                     android:text="Seasia Infotech Mohali"
                                     android:textAllCaps="false"
                                     android:textColor="@color/list_text_color"
-                                    android:textSize="@dimen/sp_12"
-                                    app:font="@{`regular`}" />
+                                    android:textSize="@dimen/sp_12" />
 
                         </LinearLayout>
 
@@ -133,8 +131,7 @@
                                     android:text="@string/to"
                                     android:textAllCaps="false"
                                     android:textColor="@color/colorBlack"
-                                    android:textSize="@dimen/sp_12"
-                                    app:font="@{`bold`}" />
+                                    android:textSize="@dimen/sp_12"  />
 
                             <TextView
                                     android:id="@+id/tv_to_location_name"
@@ -148,8 +145,7 @@
                                     android:text="#1339, 5 Phase Mohali "
                                     android:textAllCaps="false"
                                     android:textColor="@color/list_text_color"
-                                    android:textSize="@dimen/sp_12"
-                                    app:font="@{`regular`}" />
+                                    android:textSize="@dimen/sp_12"  />
 
                         </LinearLayout>
 
@@ -208,8 +204,7 @@
                                 android:text="@string/load"
                                 android:textAllCaps="false"
                                 android:textColor="@color/colorBlack"
-                                android:textSize="@dimen/sp_12"
-                                app:font="@{`bold`}" />
+                                android:textSize="@dimen/sp_12" />
 
                         <TextView
                                 android:id="@+id/tv_load_value"
@@ -222,8 +217,7 @@
                                 android:text="10 Tons "
                                 android:textAllCaps="false"
                                 android:textColor="@color/list_text_color"
-                                android:textSize="@dimen/sp_12"
-                                app:font="@{`regular`}" />
+                                android:textSize="@dimen/sp_12"  />
 
                     </LinearLayout>
 
@@ -251,8 +245,7 @@
                                 android:text="@string/date_time"
                                 android:textAllCaps="false"
                                 android:textColor="@color/colorBlack"
-                                android:textSize="@dimen/sp_12"
-                                app:font="@{`bold`}" />
+                                android:textSize="@dimen/sp_12" />
 
                         <TextView
                                 android:id="@+id/tv_time_value"
@@ -265,8 +258,7 @@
                                 android:text="18:30 27 Feb 2020 "
                                 android:textAllCaps="false"
                                 android:textColor="@color/list_text_color"
-                                android:textSize="@dimen/sp_12"
-                                app:font="@{`regular`}" />
+                                android:textSize="@dimen/sp_12" />
 
                     </LinearLayout>
 
@@ -294,8 +286,7 @@
                                 android:text="@string/type_colon"
                                 android:textAllCaps="false"
                                 android:textColor="@color/colorBlack"
-                                android:textSize="@dimen/sp_12"
-                                app:font="@{`bold`}" />
+                                android:textSize="@dimen/sp_12" />
 
                         <TextView
                                 android:id="@+id/tv_type_value"
@@ -307,8 +298,7 @@
                                 android:padding="@dimen/dp_5"
                                 android:textAllCaps="false"
                                 android:textColor="@color/list_text_color"
-                                android:textSize="@dimen/sp_12"
-                                app:font="@{`regular`}" />
+                                android:textSize="@dimen/sp_12" />
 
                     </LinearLayout>
 

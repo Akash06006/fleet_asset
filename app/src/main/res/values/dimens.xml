@@ -21,6 +21,7 @@
     <dimen name="sp_20">20sp</dimen>
     <dimen name="sp_16">16sp</dimen>
     <dimen name="sp_14">14sp</dimen>
+    <dimen name="sp_24">24sp</dimen>
     <dimen name="sp_15">15sp</dimen>
     <dimen name="hint_size">14sp</dimen>
     <dimen name="dp_12">12dp</dimen>

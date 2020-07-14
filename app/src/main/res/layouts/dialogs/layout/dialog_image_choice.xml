@@ -21,8 +21,7 @@
                 android:paddingBottom="@dimen/dp_10"
                 android:text="@string/select_option"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/sp_14"
-                app:font="@{`semibold`}"/>
+                android:textSize="@dimen/sp_14" />
 
         <LinearLayout
                 android:layout_width="match_parent"
@@ -64,8 +63,7 @@
                             android:gravity="center"
                             android:text="@string/upload_with_camera"
                             android:textColor="@color/colorGrey"
-                            android:textSize="@dimen/sp_12"
-                            app:font="@{`regular`}"/>
+                            android:textSize="@dimen/sp_12" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -102,8 +100,7 @@
                             android:gravity="center"
                             android:text="@string/place_image_here"
                             android:textColor="@color/colorGrey"
-                            android:textSize="@dimen/sp_12"
-                            app:font="@{`regular`}"/>
+                            android:textSize="@dimen/sp_12" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

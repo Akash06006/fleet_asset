@@ -24,7 +24,6 @@
                     android:textColor="@color/colorPrimary"
                     android:layout_marginTop="@dimen/dp_20"
                     android:textSize="@dimen/sp_18"
-                    app:font="@{`bold`}"
             />
 
             <TextView
@@ -34,8 +33,7 @@
                     android:text="@string/rate_title"
                     android:textColor="@color/colorblack"
                     android:layout_marginTop="@dimen/dp_10"
-                    android:textSize="@dimen/sp_14"
-                    app:font="@{`semibold`}"/>
+                    android:textSize="@dimen/sp_14" />
 
 
             <RatingBar
@@ -58,7 +56,6 @@
                     android:textColor="@color/colorblack"
                     android:layout_marginTop="@dimen/dp_10"
                     android:textSize="@dimen/sp_14"
-                    app:font="@{`semibold`}"
             />
             <EditText
                     android:id="@+id/et_email"
@@ -71,7 +68,6 @@
                     android:scrollbars="vertical"
                     android:background="@drawable/shape_round_corner_back"
                     android:textSize="@dimen/hint_size"
-                    app:font="@{`regular`}"
                     android:gravity="start"
                     android:padding="@dimen/dp_15"
                     android:textColor="@color/colorblack"
@@ -88,7 +84,6 @@
                     android:gravity="start"
                     android:maxLines="2"
                     android:textSize="@dimen/sp_14"
-                    app:font="@{`semibold`}"
             />
 
 
@@ -109,7 +104,6 @@
                         android:background="@drawable/circle_background"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/sp_16"
-                        app:font="@{`semibold`}"
                         android:gravity="center"/>
 
                 <TextView
@@ -121,7 +115,6 @@
                         android:background="@drawable/circle_background"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/sp_16"
-                        app:font="@{`semibold`}"
                         android:gravity="center" android:layout_marginStart="@dimen/dp_20"/>
 
 
@@ -134,7 +127,6 @@
                         android:background="@drawable/circle_background"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/sp_16"
-                        app:font="@{`semibold`}"
                         android:gravity="center" android:layout_marginStart="@dimen/dp_20"/>
 
 
@@ -149,7 +141,6 @@
                     android:textColor="@color/colorblack"
                     android:layout_marginTop="@dimen/dp_20"
                     android:textSize="@dimen/sp_11"
-                    app:font="@{`semibold`}"
                     android:gravity="center"/>
 
 
@@ -162,7 +153,6 @@
                     android:layout_marginTop="@dimen/dp_10"
                     android:background="@drawable/shape_round_corner_back"
                     android:textSize="@dimen/hint_size"
-                    app:font="@{`regular`}"
                     android:paddingLeft="@dimen/dp_20"
                     android:visibility="gone"
                     android:inputType="number"
@@ -186,7 +176,6 @@
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/btn_text"
                     android:textStyle="bold"
-                    app:font="@{`regular`}"
                     android:layout_marginStart="@dimen/dp_10"
                     tools:ignore="ButtonStyle"/>
 

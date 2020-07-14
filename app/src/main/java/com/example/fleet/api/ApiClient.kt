@@ -19,21 +19,22 @@ import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 object ApiClient {
     @JvmStatic
     private val BASE_URL = GlobalConstants.BASE_URL
     private val sharedPrefClass = SharedPrefClass()
     @JvmStatic
-    private var mApiInterface : ApiInterface? = null
+    private var mApiInterface: ApiInterface? = null
 
     @JvmStatic
-    fun getApiInterface() : ApiInterface {
+    fun getApiInterface(): ApiInterface {
         return setApiInterface()
     }
 
     @JvmStatic
-    private fun setApiInterface() : ApiInterface {
+    private fun setApiInterface(): ApiInterface {
         val lang = "en"
         var mAuthToken = GlobalConstants.SESSION_TOKEN
 
@@ -51,9 +52,9 @@ object ApiClient {
             ).toString()
         }
         val httpClient = OkHttpClient.Builder()
-        //.connectTimeout(1, TimeUnit.MINUTES)
-        // .readTimeout(1, TimeUnit.MINUTES)
-        // .writeTimeout(1, TimeUnit.MINUTES)
+            .connectTimeout(1, TimeUnit.MINUTES)
+            .readTimeout(1, TimeUnit.MINUTES)
+            .writeTimeout(1, TimeUnit.MINUTES)
         val mBuilder = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -64,16 +65,16 @@ object ApiClient {
         if (!TextUtils.isEmpty(mAuthToken) && mAuthToken.equals("session_token")) {
             mAuthToken = ""
         }
-        if(isLogin == "false"){
+        if (isLogin == "false") {
             mAuthToken = ""
         }
         /*  mAuthToken =
               "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZV9udW1iZXIiOiI5NTMwNjA2MDA2IiwiY291bnRyeV9jb2RlIjoiKzkxIiwidHlwZSI6MiwiaWQiOjEsImlhdCI6MTU4NDAwODAyOSwiZXhwIjoxNTg0MTgwODI5fQ.hSkvHRBHlHlwf1Drg2dtPaMamRg27aI48H4ZOgWTilY"*/
         if (!TextUtils.isEmpty(mAuthToken)) {
             val finalMAuthToken = mAuthToken
-            val interceptor : Interceptor = object : Interceptor {
+            val interceptor: Interceptor = object : Interceptor {
                 @Throws(IOException::class)
-                override fun intercept(@NonNull chain : Interceptor.Chain) : Response {
+                override fun intercept(@NonNull chain: Interceptor.Chain): Response {
                     val original = chain.request()
                     val builder = original.newBuilder()
                         .header("Authorization", finalMAuthToken)

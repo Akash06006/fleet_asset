@@ -111,6 +111,18 @@ class LoginResponse {
         @SerializedName("updated_at")
         @Expose
         var updatedAt : String? = null
+        @SerializedName("title1")
+        @Expose
+        var title1 : String? = null
+        @SerializedName("title2")
+        @Expose
+        var title2 : String? = null
+        @SerializedName("licenseImage")
+        @Expose
+        var licenseImage : String? = null
+        @SerializedName("otherimage")
+        @Expose
+        var otherimage : String? = null
 
     }
 

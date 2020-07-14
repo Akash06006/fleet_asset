@@ -170,7 +170,7 @@ class AddFuelDetailActivity : BaseActivity(), ChoiceCallBack {
                         datePickerDialog.getDatePicker().setMaxDate(Date().getTime());
                         datePickerDialog.show()
                     }
-                    "img_profile" -> {
+                    "iv_edit" -> {
                         confirmationDialog =
                             mDialogClass.setUploadConfirmationDialog(this, this, "gallery")
                     }

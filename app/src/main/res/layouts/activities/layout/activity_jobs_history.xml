@@ -42,8 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="@string/no_record_found"
-                app:font="@{`regular`}" />
+                android:text="@string/no_record_found" />
     </RelativeLayout>
 
 </layout>

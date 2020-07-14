@@ -16,14 +16,14 @@ import com.example.fleet.utils.Utils
 import com.example.fleet.views.services.CompletedServicesFragment
 
 class ServicesHistoryListAdapter(
-    context : CompletedServicesFragment,
-    jobsList : ArrayList<ServicesListResponse.Data>,
-    var activity : Context
+    context: CompletedServicesFragment,
+    jobsList: ArrayList<ServicesListResponse.Data>,
+    var activity: Context
 ) :
     RecyclerView.Adapter<ServicesHistoryListAdapter.ViewHolder>() {
-    private val mContext : CompletedServicesFragment
-    private var viewHolder : ViewHolder? = null
-    private var servicesList : ArrayList<ServicesListResponse.Data>
+    private val mContext: CompletedServicesFragment
+    private var viewHolder: ViewHolder? = null
+    private var servicesList: ArrayList<ServicesListResponse.Data>
 
     init {
         this.mContext = context
@@ -31,7 +31,7 @@ class ServicesHistoryListAdapter(
     }
 
     @NonNull
-    override fun onCreateViewHolder(@NonNull parent : ViewGroup, viewType : Int) : ViewHolder {
+    override fun onCreateViewHolder(@NonNull parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
             R.layout.service_item,
@@ -42,14 +42,14 @@ class ServicesHistoryListAdapter(
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(@NonNull holder : ViewHolder, position : Int) {
+    override fun onBindViewHolder(@NonNull holder: ViewHolder, position: Int) {
         viewHolder = holder
         holder.binding!!.btnUpdateService.visibility = View.GONE
         holder.binding.tvDueCompleted.setText(mContext.getString(R.string.completed_date))
         holder.binding!!.tvDueDate.text = Utils(activity).getDate(
             "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
             servicesList[position].service_date,
-            "yyyy/MM/dd"
+            /*"yyyy/MM/dd"*/"dd-MMM,yyyy | hh:mm a"
         )
         //holder.binding.tvServiceType.text = servicesList[position].vehicle_type
 
@@ -69,16 +69,16 @@ class ServicesHistoryListAdapter(
 
     }
 
-    override fun getItemCount() : Int {
+    override fun getItemCount(): Int {
         return servicesList.count()
     }
 
     inner class ViewHolder//This constructor would switch what to findViewBy according to the type of viewType
         (
-        v : View, val viewType : Int, //These are the general elements in the RecyclerView
-        val binding : ServiceItemBinding?,
-        mContext : CompletedServicesFragment,
-        jobsList : ArrayList<ServicesListResponse.Data>
+        v: View, val viewType: Int, //These are the general elements in the RecyclerView
+        val binding: ServiceItemBinding?,
+        mContext: CompletedServicesFragment,
+        jobsList: ArrayList<ServicesListResponse.Data>
     ) : RecyclerView.ViewHolder(v) {
         /* init {
              binding!!.linAddress.setOnClickListener {

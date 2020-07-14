@@ -55,7 +55,7 @@ class UpdateServiceActivity : BaseActivity(), ChoiceCallBack {
         servicesViewModel = ViewModelProviders.of(this).get(ServicesViewModel::class.java)
         updateServiceBinding.serviceViewModel = servicesViewModel
         updateServiceBinding.commonToolBar.imgToolbarText.text =
-                resources.getString(R.string.update_service_entry)
+            resources.getString(R.string.update_service_entry)
 
         try {
             mJsonObject = JSONObject(intent.extras.get("data").toString())
@@ -75,55 +75,55 @@ class UpdateServiceActivity : BaseActivity(), ChoiceCallBack {
         }
 
         servicesViewModel.updateServiceStatus().observe(this,
-                Observer<CommonModel> { response ->
-                    stopProgressDialog()
-                    if (response != null) {
-                        val message = response.message
-                        when {
-                            response.code == 200 -> {
-                                finish()
-                                showToastSuccess(message)
-                            }
-                            else -> showToastError(message)
+            Observer<CommonModel> { response ->
+                stopProgressDialog()
+                if (response != null) {
+                    val message = response.message
+                    when {
+                        response.code == 200 -> {
+                            finish()
+                            showToastSuccess(message)
                         }
-
+                        else -> showToastError(message)
                     }
-                })
+
+                }
+            })
 
         servicesViewModel.getVendorList().observe(this,
-                Observer<VendorListResponse> { response ->
-                    stopProgressDialog()
-                    if (response != null) {
-                        val message = response.message
-                        when {
-                            response.code == 200 -> {
-                                vendorData = response.data!!
-                                vendorList.add(getString(R.string.select_vendor))
-                                for (i in response.data!!) {
-                                    vendorList.add(i.vendor_name!!)
-                                }
-                                setVendorSpinner()
+            Observer<VendorListResponse> { response ->
+                stopProgressDialog()
+                if (response != null) {
+                    val message = response.message
+                    when {
+                        response.code == 200 -> {
+                            vendorData = response.data!!
+                            vendorList.add(getString(R.string.select_vendor))
+                            for (i in response.data!!) {
+                                vendorList.add(i.vendor_name!!)
                             }
-                            /* response.code == 204 -> {
-                                 FirebaseFunctions.sendOTP("signup", mJsonObject, this)
-                             }*/
-                            else -> showToastError(message)
+                            setVendorSpinner()
                         }
-
+                        /* response.code == 204 -> {
+                             FirebaseFunctions.sendOTP("signup", mJsonObject, this)
+                         }*/
+                        else -> showToastError(message)
                     }
-                })
+
+                }
+            })
 
         servicesViewModel.isClick().observe(
-                this, Observer<String>(function =
-        @SuppressLint("SetTextI18n", "SimpleDateFormat")
-        fun(it: String?) {
-            when (it) {
-                "et_date_service" -> {
-                    val calendar = Calendar.getInstance()
-                    val year = calendar.get(Calendar.YEAR)
-                    val month = calendar.get(Calendar.MONTH)
-                    val day = calendar.get(Calendar.DAY_OF_MONTH)
-                    val datePickerDialog = DatePickerDialog(
+            this, Observer<String>(function =
+            @SuppressLint("SetTextI18n", "SimpleDateFormat")
+            fun(it: String?) {
+                when (it) {
+                    "et_date_service" -> {
+                        val calendar = Calendar.getInstance()
+                        val year = calendar.get(Calendar.YEAR)
+                        val month = calendar.get(Calendar.MONTH)
+                        val day = calendar.get(Calendar.DAY_OF_MONTH)
+                        val datePickerDialog = DatePickerDialog(
                             this@UpdateServiceActivity,
                             DatePickerDialog.OnDateSetListener
                             { view, year, monthOfYear, dayOfMonth ->
@@ -132,129 +132,129 @@ class UpdateServiceActivity : BaseActivity(), ChoiceCallBack {
                             year,
                             month,
                             day
-                    )
-                    datePickerDialog.getDatePicker().setMaxDate(Date().getTime());
-                    datePickerDialog.show()
-                }
-                "img_profile" -> {
-                    confirmationDialog =
+                        )
+                        datePickerDialog.getDatePicker().setMaxDate(Date().getTime());
+                        datePickerDialog.show()
+                    }
+                    "iv_edit" -> {
+                        confirmationDialog =
                             mDialogClass.setUploadConfirmationDialog(this, this, "gallery")
-                }
-                "btn_submit" -> {
-                    val invoiceNumber = updateServiceBinding.etInvoice.text.toString()
-                    val date = updateServiceBinding.etDateService.text.toString()
-                    val odometer = updateServiceBinding.etOdometer.text.toString()
-                    val laborPrice = updateServiceBinding.etLabourPrice.text.toString()
-                    val partsPrice = updateServiceBinding.etPartsPrice.text.toString()
-                    val tax = updateServiceBinding.etTax.text.toString()
-                    val totalPrice = updateServiceBinding.etTotalPrice.text.toString()
-                    val additionalInfo = updateServiceBinding.etComments.text.toString()
+                    }
+                    "btn_submit" -> {
+                        val invoiceNumber = updateServiceBinding.etInvoice.text.toString()
+                        val date = updateServiceBinding.etDateService.text.toString()
+                        val odometer = updateServiceBinding.etOdometer.text.toString()
+                        val laborPrice = updateServiceBinding.etLabourPrice.text.toString()
+                        val partsPrice = updateServiceBinding.etPartsPrice.text.toString()
+                        val tax = updateServiceBinding.etTax.text.toString()
+                        val totalPrice = updateServiceBinding.etTotalPrice.text.toString()
+                        val additionalInfo = updateServiceBinding.etComments.text.toString()
 
-                    when {
-                        profileImage.isEmpty() -> {
-                            showToastError(
+                        when {
+                            profileImage.isEmpty() -> {
+                                showToastError(
                                     getString(R.string.please_select) + " " + getString(
-                                            R.string.invoice_image
+                                        R.string.invoice_image
                                     )
-                            )
-                        }
-                        invoiceNumber.isEmpty() -> showError(
+                                )
+                            }
+                            invoiceNumber.isEmpty() -> showError(
                                 updateServiceBinding.etInvoice,
                                 getString(R.string.empty) + " " + getString(
-                                        R.string.invoice_number
+                                    R.string.invoice_number
                                 )
-                        )
-                        date.isEmpty() -> {
-                            showToastError(
-                                    getString(R.string.please_select) + " " + getString(
-                                            R.string.select_date
-                                    )
                             )
-                        }
-                        odometer.isEmpty() -> showError(
+                            date.isEmpty() -> {
+                                showToastError(
+                                    getString(R.string.please_select) + " " + getString(
+                                        R.string.select_date
+                                    )
+                                )
+                            }
+                            odometer.isEmpty() -> showError(
                                 updateServiceBinding.etOdometer,
                                 getString(R.string.empty) + " " + getString(
-                                        R.string.odometer
+                                    R.string.odometer
                                 )
-                        )
-                        laborPrice.isEmpty() -> showError(
+                            )
+                            laborPrice.isEmpty() -> showError(
                                 updateServiceBinding.etLabourPrice,
                                 getString(R.string.empty) + " " + getString(
-                                        R.string.labor_price
+                                    R.string.labor_price
                                 )
-                        )
-                        partsPrice.isEmpty() -> showError(
+                            )
+                            partsPrice.isEmpty() -> showError(
                                 updateServiceBinding.etPartsPrice,
                                 getString(R.string.empty) + " " + getString(
-                                        R.string.parts_price
+                                    R.string.parts_price
                                 )
-                        )
-                        tax.isEmpty() -> showError(
+                            )
+                            tax.isEmpty() -> showError(
                                 updateServiceBinding.etTax,
                                 getString(R.string.empty) + " " + getString(
-                                        R.string.tax
+                                    R.string.tax
                                 )
-                        )
-                        totalPrice.isEmpty() -> showError(
+                            )
+                            totalPrice.isEmpty() -> showError(
                                 updateServiceBinding.etTotalPrice,
                                 getString(R.string.empty) + " " + getString(
-                                        R.string.total_price
+                                    R.string.total_price
                                 )
-                        )
-                        additionalInfo.isEmpty() -> showError(
+                            )
+                            additionalInfo.isEmpty() -> showError(
                                 updateServiceBinding.etComments,
                                 getString(R.string.empty) + " " + getString(
-                                        R.string.additional_information
+                                    R.string.additional_information
                                 )
-                        )
-                        else -> {
-                            val androidId = UtilsFunctions.getAndroidID()
-                            val mHashMap = HashMap<String, RequestBody>()
+                            )
+                            else -> {
+                                val androidId = UtilsFunctions.getAndroidID()
+                                val mHashMap = HashMap<String, RequestBody>()
 //vehicleId
-                            //serviceFor
-                            //serviceFor
-                            //renewalType
+                                //serviceFor
+                                //serviceFor
+                                //renewalType
 
-                            mHashMap["vehicleId"] =
+                                mHashMap["vehicleId"] =
                                     Utils(this).createPartFromString(mJsonObject.get("vehicle_id").toString())
-                            mHashMap["updateFrom"] =
+                                mHashMap["updateFrom"] =
                                     Utils(this).createPartFromString("mobile")
-                            mHashMap["serviceId"] =
+                                mHashMap["serviceId"] =
                                     Utils(this).createPartFromString(mJsonObject.get("service_id").toString())
-                            mHashMap["serviceDate"] =
+                                mHashMap["serviceDate"] =
                                     Utils(this).createPartFromString(updateServiceBinding.etDateService.text.toString())
-                            mHashMap["vendorId"] =
+                                mHashMap["vendorId"] =
                                     Utils(this).createPartFromString(vendorId.toString())
-                            mHashMap["laborPrice"] =
+                                mHashMap["laborPrice"] =
                                     Utils(this).createPartFromString(updateServiceBinding.etLabourPrice.text.toString())
-                            mHashMap["odometer"] =
+                                mHashMap["odometer"] =
                                     Utils(this).createPartFromString(updateServiceBinding.etOdometer.text.toString())
-                            mHashMap["partsPrice"] =
+                                mHashMap["partsPrice"] =
                                     Utils(this).createPartFromString(updateServiceBinding.etPartsPrice.text.toString())
-                            mHashMap["tax"] =
+                                mHashMap["tax"] =
                                     Utils(this).createPartFromString(updateServiceBinding.etTax.text.toString())
-                            mHashMap["totalPrice"] =
+                                mHashMap["totalPrice"] =
                                     Utils(this).createPartFromString(updateServiceBinding.etTotalPrice.text.toString())
-                            mHashMap["invoiceNumber"] =
+                                mHashMap["invoiceNumber"] =
                                     Utils(this).createPartFromString(updateServiceBinding.etInvoice.text.toString())
-                            mHashMap["comments"] =
+                                mHashMap["comments"] =
                                     Utils(this).createPartFromString(updateServiceBinding.etComments.text.toString())
-                            var userImage: MultipartBody.Part? = null
-                            if (!profileImage.isEmpty()) {
-                                val f1 = File(profileImage)
-                                userImage = Utils(this).prepareFilePart("invoiceImage", f1)
-                            }
-                            if (UtilsFunctions.isNetworkConnected()) {
-                                servicesViewModel.updateService(mHashMap, userImage)
-                                startProgressDialog()
-                            }
+                                var userImage: MultipartBody.Part? = null
+                                if (!profileImage.isEmpty()) {
+                                    val f1 = File(profileImage)
+                                    userImage = Utils(this).prepareFilePart("invoiceImage", f1)
+                                }
+                                if (UtilsFunctions.isNetworkConnected()) {
+                                    servicesViewModel.updateService(mHashMap, userImage)
+                                    startProgressDialog()
+                                }
 
+                            }
                         }
                     }
                 }
-            }
 
-        })
+            })
         )
 
     }
@@ -265,16 +265,16 @@ class UpdateServiceActivity : BaseActivity(), ChoiceCallBack {
 
     private fun setVendorSpinner() {
         val adapter = ArrayAdapter(
-                this,
-                android.R.layout.simple_spinner_item, vendorList
+            this,
+            android.R.layout.simple_spinner_item, vendorList
         )
         updateServiceBinding.spVendor.adapter = adapter
 
         updateServiceBinding.spVendor.onItemSelectedListener = object :
-                AdapterView.OnItemSelectedListener {
+            AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View, position: Int, id: Long
+                parent: AdapterView<*>,
+                view: View, position: Int, id: Long
             ) {
                 if (position > 0)
                     vendorId = vendorData[position - 1].vendor_id.toString()
@@ -300,7 +300,7 @@ class UpdateServiceActivity : BaseActivity(), ChoiceCallBack {
                 // Continue only if the File was successfully created
                 photoFile?.also {
                     val photoURI: Uri =
-                            FileProvider.getUriForFile(this, packageName + ".fileprovider", it)
+                        FileProvider.getUriForFile(this, packageName + ".fileprovider", it)
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                     startActivityForResult(takePictureIntent, CAMERA_REQUEST)
                 }
@@ -314,9 +314,9 @@ class UpdateServiceActivity : BaseActivity(), ChoiceCallBack {
         val storageDir: File = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         //currentPhotoPath = File(baseActivity?.cacheDir, fileName)
         return File.createTempFile(
-                "JPEG_${timeStamp}_", /* prefix */
-                ".jpg", /* suffix */
-                storageDir /* directory */
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
         ).apply {
             // Save a file: path for use with ACTION_VIEW intents
             profileImage = absolutePath
@@ -325,8 +325,8 @@ class UpdateServiceActivity : BaseActivity(), ChoiceCallBack {
 
     override fun photoFromGallery(mKey: String) {
         val i = Intent(
-                Intent.ACTION_PICK,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+            Intent.ACTION_PICK,
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         )
         startActivityForResult(i, RESULT_LOAD_IMAGE)
     }
@@ -361,9 +361,9 @@ class UpdateServiceActivity : BaseActivity(), ChoiceCallBack {
 
     private fun setImage(path: String) {
         Glide.with(this)
-                .load(path)
-                .placeholder(R.drawable.ic_dummy_image)
-                .into(updateServiceBinding.imgProfile)
+            .load(path)
+            .placeholder(R.drawable.ic_dummy_image)
+            .into(updateServiceBinding.imgProfile)
     }
 
     private fun showError(textView: TextView, error: String) {

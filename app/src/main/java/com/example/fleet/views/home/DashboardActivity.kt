@@ -31,27 +31,28 @@ import com.example.fleet.views.asset.home.AssetJobRequestsFragment
 import com.example.fleet.views.authentication.LoginActivity
 import com.example.fleet.views.fuel.AddFuelDetailActivity
 import com.example.fleet.views.fuel.FuelEntryList
-import com.example.fleet.views.notifications.NotificationsListActivity
+ import com.example.fleet.views.notifications.NotificationsListActivity
 import com.example.fleet.views.profile.ProfileActivity
 import com.example.fleet.views.services.ServicesListActivity
 import com.example.fleet.views.settings.MyAccountsActivity
+import com.example.fleet.views.vehicles.VehiclesListActivity
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 
 class DashboardActivity : BaseActivity(),
-        DialogssInterface {
+    DialogssInterface {
     var activityDashboardBinding: ActivityDashboardBinding? = null
     private var navigationView: NavigationView? = null
     private var drawer: DrawerLayout? = null
     private var confirmationDialog: Dialog? = null
     private var ratingDialog: Dialog? = null
     private var mDialogClass = DialogClass()
-    private var dashboardViewModel : DashboardViewModel? = null
-    private var removedFrag : String = ""
-    private var fleetHomeSelected : Boolean =
+    private var dashboardViewModel: DashboardViewModel? = null
+    private var removedFrag: String = ""
+    private var fleetHomeSelected: Boolean =
         true //this param according to the user role if employee of asset management make it false and if of fleet than true else for both also true
-    var roleAssigned : String = ""
-    var fragment : Fragment? = null
+    var roleAssigned: String = ""
+    var fragment: Fragment? = null
     var from = ""
     //    companion object {
 //        @get:Synchronized
@@ -77,7 +78,7 @@ class DashboardActivity : BaseActivity(),
             MyApplication.instance.applicationContext,
             GlobalConstants.USERROLE
         ).toString()
-        if (roleAssigned.equals(GlobalConstants.DRIVER)) {
+        /*if (roleAssigned.equals(GlobalConstants.DRIVER)) {
             fleetHomeSelected = true
             activityDashboardBinding!!.llAsset.visibility = View.GONE
             activityDashboardBinding!!.llFleet.visibility = View.VISIBLE
@@ -95,7 +96,7 @@ class DashboardActivity : BaseActivity(),
             activityDashboardBinding!!.llFleet.visibility = View.VISIBLE
             fragment = HomeFragment()
 
-        }
+        }*/
         activityDashboardBinding!!.toolbarCommon.toolbar.setImageResource(R.drawable.ic_sidebar)
         activityDashboardBinding!!.toolbarCommon.imgRight.visibility = View.VISIBLE
         activityDashboardBinding!!.toolbarCommon.imgRight.setImageResource(R.drawable.ic_notifications)
@@ -110,24 +111,24 @@ class DashboardActivity : BaseActivity(),
             callFragments(fragment, supportFragmentManager, false, "send_data", "")
         }
         val image = SharedPrefClass().getPrefValue(
-                MyApplication.instance.applicationContext,
-                GlobalConstants.USER_IAMGE
+            MyApplication.instance.applicationContext,
+            GlobalConstants.USER_IAMGE
         )
         // ic_profile
         Glide.with(this)
-                .load(image)
-                .placeholder(R.drawable.user)
-                .into(activityDashboardBinding!!.icProfile)
+            .load(image)
+            .placeholder(R.drawable.user)
+            .into(activityDashboardBinding!!.icProfile)
         val name = SharedPrefClass().getPrefValue(
-                MyApplication.instance.applicationContext,
-                getString(R.string.first_name)
+            MyApplication.instance.applicationContext,
+            getString(R.string.first_name)
         )
         activityDashboardBinding!!.tvName.text = name.toString()
-       // fragment = HomeFragment()
-       // callFragments(fragment, supportFragmentManager, false, "send_data", "")
+        // fragment = HomeFragment()
+        // callFragments(fragment, supportFragmentManager, false, "send_data", "")
         dashboardViewModel!!.isClick().observe(
             this, Observer<String>(function =
-            fun(it : String?) {
+            fun(it: String?) {
                 when (it) {
                     "img_right" -> {
                         val intent = Intent(this, NotificationsListActivity::class.java)
@@ -166,9 +167,9 @@ class DashboardActivity : BaseActivity(),
                             false,
                             "send_data",
                             ""
-                    )
-                    activityDashboardBinding!!.tablayout.getTabAt(0)?.select()
-                    activityDashboardBinding!!.drawerLayout.closeDrawers()
+                        )
+                        activityDashboardBinding!!.tablayout.getTabAt(0)?.select()
+                        activityDashboardBinding!!.drawerLayout.closeDrawers()
 
                     }
                     "tv_nav_contact" -> {
@@ -212,6 +213,10 @@ class DashboardActivity : BaseActivity(),
                         val intent = Intent(this, MyAccountsActivity::class.java)
                         startActivity(intent)
                     }
+                    "tv_nav_vehicle" -> {
+                        val intent = Intent(this, VehiclesListActivity::class.java)
+                        startActivity(intent)
+                    }
                     "img_nav_cancel" -> {
                         activityDashboardBinding!!.drawerLayout.closeDrawers()
                     }
@@ -221,71 +226,71 @@ class DashboardActivity : BaseActivity(),
                             this,
                             "logout",
                             getString(R.string.warning_logout)
-                    )
-                    confirmationDialog?.show()
+                        )
+                        confirmationDialog?.show()
 
-                }
-                "toolbar" -> {
-                    val image = SharedPrefClass().getPrefValue(
+                    }
+                    "toolbar" -> {
+                        val image = SharedPrefClass().getPrefValue(
                             MyApplication.instance.applicationContext,
                             GlobalConstants.USER_IAMGE
-                    )
-                    // ic_profile
-                    Glide.with(this)
+                        )
+                        // ic_profile
+                        Glide.with(this)
                             .load(image)
                             .placeholder(R.drawable.user)
                             .into(activityDashboardBinding!!.icProfile)
                         val name = SharedPrefClass().getPrefValue(
                             MyApplication.instance.applicationContext,
                             getString(R.string.first_name)
-                    )
-                    activityDashboardBinding!!.tvName.text = name.toString()
-                    if (drawer!!.isDrawerOpen(GravityCompat.START)) {
-                        drawer!!.closeDrawer(Gravity.LEFT) //CLOSE Nav Drawer!
-                    } else {
-                        drawer!!.openDrawer(Gravity.LEFT)
-                    }
-                    val fragmentType =
+                        )
+                        activityDashboardBinding!!.tvName.text = name.toString()
+                        if (drawer!!.isDrawerOpen(GravityCompat.START)) {
+                            drawer!!.closeDrawer(Gravity.LEFT) //CLOSE Nav Drawer!
+                        } else {
+                            drawer!!.openDrawer(Gravity.LEFT)
+                        }
+                        val fragmentType =
                             supportFragmentManager.findFragmentById(R.id.frame_layout)
-                    when (fragmentType) {
-                        is HomeFragment -> {
-                            activityDashboardBinding!!.toolbarCommon.imgRight.visibility =
+                        when (fragmentType) {
+                            is HomeFragment -> {
+                                activityDashboardBinding!!.toolbarCommon.imgRight.visibility =
                                     View.VISIBLE
+                            }
                         }
                     }
                 }
-            }
-        })
+            })
         )
 
         dashboardViewModel!!.getLogoutReposne.observe(this,
-                Observer<CommonModel> { logoutResponse ->
-                    this.stopProgressDialog()
+            Observer<CommonModel> { logoutResponse ->
+                this.stopProgressDialog()
 
-                    if (logoutResponse != null) {
-                        val message = logoutResponse.message
+                if (logoutResponse != null) {
+                    val message = logoutResponse.message
 
-                        if (logoutResponse.code == 200) {
-                            SharedPrefClass().putObject(
-                                    this,
-                                    "isLogin",
-                                    false
-                            )
-                            SharedPrefClass().putObject(
-                                    this,
-                                    GlobalConstants.USER_IAMGE,
-                                    "null"
-                            )
-                            showToastSuccess(getString(R.string.logout_msg))
-                            val intent1 = Intent(this, LoginActivity::class.java)
-                            startActivity(intent1)
-                            finish()
+                    if (logoutResponse.code == 200) {
+                        SharedPrefClass().putObject(
+                            this,
+                            "isLogin",
+                            false
+                        )
+                        SharedPrefClass().putObject(
+                            this,
+                            GlobalConstants.USER_IAMGE,
+                            "null"
+                        )
+                        showToastSuccess(getString(R.string.logout_msg))
+                        val intent1 = Intent(this, LoginActivity::class.java)
+                        startActivity(intent1)
+                        finish()
 
-                        } else {
-                            showToastError(message)
-                        }
+                    } else {
+                        showToastError(message)
                     }
-                })
+                }
+            })
 
         dashboardViewModel!!.isLoading().observe(this, Observer<Boolean> { aBoolean ->
             if (aBoolean!!) {
@@ -296,7 +301,7 @@ class DashboardActivity : BaseActivity(),
         })
 
         activityDashboardBinding!!.tablayout.addOnTabSelectedListener(object :
-                TabLayout.OnTabSelectedListener {
+            TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 var fragment: Fragment? = null
                 //   activityDashboardBinding!!.toolbarCommon.imgRight.visibility = View.GONE
@@ -366,18 +371,18 @@ class DashboardActivity : BaseActivity(),
              GlobalConstants.selectedCheckedFragment = 0
          }*/
         val image = SharedPrefClass().getPrefValue(
-                MyApplication.instance.applicationContext,
-                GlobalConstants.USER_IAMGE
+            MyApplication.instance.applicationContext,
+            GlobalConstants.USER_IAMGE
         )
         // ic_profile
 
         Glide.with(this)
-                .load(image)
-                .placeholder(R.drawable.user)
-                .into(activityDashboardBinding!!.icProfile)
+            .load(image)
+            .placeholder(R.drawable.user)
+            .into(activityDashboardBinding!!.icProfile)
         val name = SharedPrefClass().getPrefValue(
-                MyApplication.instance.applicationContext,
-                getString(R.string.first_name)
+            MyApplication.instance.applicationContext,
+            getString(R.string.first_name)
         )
         activityDashboardBinding!!.tvName.text = name.toString()
 

@@ -17,14 +17,14 @@ import com.example.fleet.utils.Utils
 import com.example.fleet.views.fuel.FuelEntryList
 
 class FuelEntryListAdapter(
-    context : FuelEntryList,
-    jobsList : ArrayList<FuelListResponse.Data>,
-    var activity : Context
+    context: FuelEntryList,
+    jobsList: ArrayList<FuelListResponse.Data>,
+    var activity: Context
 ) :
     RecyclerView.Adapter<FuelEntryListAdapter.ViewHolder>() {
-    private val mContext : FuelEntryList
-    private var viewHolder : ViewHolder? = null
-    private var fuelEntryList : ArrayList<FuelListResponse.Data>
+    private val mContext: FuelEntryList
+    private var viewHolder: ViewHolder? = null
+    private var fuelEntryList: ArrayList<FuelListResponse.Data>
 
     init {
         this.mContext = context
@@ -32,7 +32,7 @@ class FuelEntryListAdapter(
     }
 
     @NonNull
-    override fun onCreateViewHolder(@NonNull parent : ViewGroup, viewType : Int) : ViewHolder {
+    override fun onCreateViewHolder(@NonNull parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
             R.layout.fuel_entry_item,
@@ -43,7 +43,7 @@ class FuelEntryListAdapter(
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(@NonNull holder : ViewHolder, position : Int) {
+    override fun onBindViewHolder(@NonNull holder: ViewHolder, position: Int) {
         viewHolder = holder
         //holder.binding!!.tvAddress.text = fuelEntryList!![position]
         /* holder.binding!!.tvFromLocationName.text = fuelEntryList[position].from_location
@@ -62,30 +62,30 @@ class FuelEntryListAdapter(
              holder.binding.tvLoadValue.text =
                  fuelEntryList[position].loadTones + " " + mContext.getString(R.string.tons)
          }*/
-        if(!TextUtils.isEmpty(fuelEntryList[position].entry_date)) {
+        if (!TextUtils.isEmpty(fuelEntryList[position].entry_date)) {
 
             holder.binding!!.tvDateValue.text = Utils(activity).getDate(
                 "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
                 fuelEntryList[position].entry_date,
-                "dd-MMM-yyyy"
+                /*"dd-MMM-yyyy"*/"dd-MMM,yyyy | hh:mm a"
             )
         }
-            holder.binding!!.tvAmountValue.text = fuelEntryList[position].price
-            holder.binding!!.tvVehicleName.text = fuelEntryList[position].vehicleDetail?.name
+        holder.binding!!.tvAmountValue.text = "Rs. " + fuelEntryList[position].price
+        holder.binding!!.tvVehicleName.text = fuelEntryList[position].vehicleDetail?.name
 
 
     }
 
-    override fun getItemCount() : Int {
+    override fun getItemCount(): Int {
         return fuelEntryList.count()
     }
 
     inner class ViewHolder//This constructor would switch what to findViewBy according to the type of viewType
         (
-        v : View, val viewType : Int, //These are the general elements in the RecyclerView
-        val binding : FuelEntryItemBinding?,
-        mContext : FuelEntryList,
-        jobsList : ArrayList<FuelListResponse.Data>
+        v: View, val viewType: Int, //These are the general elements in the RecyclerView
+        val binding: FuelEntryItemBinding?,
+        mContext: FuelEntryList,
+        jobsList: ArrayList<FuelListResponse.Data>
     ) : RecyclerView.ViewHolder(v) {
         /* init {
              binding!!.linAddress.setOnClickListener {

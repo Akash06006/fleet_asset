@@ -1,5 +1,6 @@
 package com.example.fleet.repositories.Fuel
 
+import android.text.TextUtils
 import androidx.lifecycle.MutableLiveData
 import com.example.fleet.R
 import com.example.fleet.api.ApiClient
@@ -10,6 +11,7 @@ import com.example.fleet.common.UtilsFunctions
 import com.example.fleet.model.CommonModel
 import com.example.fleet.model.LoginResponse
 import com.example.fleet.model.fuel.FuelListResponse
+import com.example.fleet.model.vehicle.VehicleDetailResponse
 import com.example.fleet.model.vehicle.VehicleListResponse
 import com.example.fleet.model.vendor.VendorListResponse
 import com.google.gson.GsonBuilder
@@ -21,11 +23,12 @@ import retrofit2.Response
 import java.util.HashMap
 
 class FuelRepository {
-    private var data : MutableLiveData<LoginResponse>? = null
-    private var data3 : MutableLiveData<CommonModel>? = null
-    private var data1 : MutableLiveData<VehicleListResponse>? = null
-    private var data2 : MutableLiveData<VendorListResponse>? = null
-    private var data4 : MutableLiveData<FuelListResponse>? = null
+    private var data: MutableLiveData<LoginResponse>? = null
+    private var data3: MutableLiveData<CommonModel>? = null
+    private var data1: MutableLiveData<VehicleListResponse>? = null
+    private var data2: MutableLiveData<VendorListResponse>? = null
+    private var data4: MutableLiveData<FuelListResponse>? = null
+    private var data5: MutableLiveData<VehicleDetailResponse>? = null
     private val gson = GsonBuilder().serializeNulls().create()
 
     init {
@@ -34,14 +37,15 @@ class FuelRepository {
         data2 = MutableLiveData()
         data3 = MutableLiveData()
         data4 = MutableLiveData()
+        data5 = MutableLiveData()
 
     }
 
-    fun getFuelEntryList() : MutableLiveData<FuelListResponse> {
+    fun getFuelEntryList(): MutableLiveData<FuelListResponse> {
         val mApiService = ApiService<JsonObject>()
         mApiService.get(
             object : ApiResponse<JsonObject> {
-                override fun onResponse(mResponse : Response<JsonObject>) {
+                override fun onResponse(mResponse: Response<JsonObject>) {
                     val loginResponse = if (mResponse.body() != null)
                         gson.fromJson<FuelListResponse>(
                             "" + mResponse.body(),
@@ -56,7 +60,7 @@ class FuelRepository {
                     data4!!.postValue(loginResponse)
                 }
 
-                override fun onError(mKey : String) {
+                override fun onError(mKey: String) {
                     UtilsFunctions.showToastError(MyApplication.instance.getString(R.string.internal_server_error))
                     data4!!.postValue(null)
                 }
@@ -68,15 +72,47 @@ class FuelRepository {
 
     }
 
+    fun getVehicleDetail(id: String): MutableLiveData<VehicleDetailResponse> {
+        if (!TextUtils.isEmpty(id)) {
+            val mApiService = ApiService<JsonObject>()
+            mApiService.get(
+                object : ApiResponse<JsonObject> {
+                    override fun onResponse(mResponse: Response<JsonObject>) {
+                        val loginResponse = if (mResponse.body() != null)
+                            gson.fromJson<VehicleDetailResponse>(
+                                "" + mResponse.body(),
+                                VehicleDetailResponse::class.java
+                            )
+                        else {
+                            gson.fromJson<VehicleDetailResponse>(
+                                mResponse.errorBody()!!.charStream(),
+                                VehicleDetailResponse::class.java
+                            )
+                        }
+                        data5!!.postValue(loginResponse)
+                    }
+
+                    override fun onError(mKey: String) {
+                        UtilsFunctions.showToastError(MyApplication.instance.getString(R.string.internal_server_error))
+                        data5!!.postValue(null)
+                    }
+
+                }, ApiClient.getApiInterface().getVehicleDetail(id)
+            )
+        }
+        return data5!!
+
+    }
+
     fun addFuelEntry(
-        hashMap : HashMap<String, RequestBody>?,
-        image : MultipartBody.Part?
-    ) : MutableLiveData<CommonModel> {
+        hashMap: HashMap<String, RequestBody>?,
+        image: MultipartBody.Part?
+    ): MutableLiveData<CommonModel> {
         if (hashMap != null) {
             val mApiService = ApiService<JsonObject>()
             mApiService.get(
                 object : ApiResponse<JsonObject> {
-                    override fun onResponse(mResponse : Response<JsonObject>) {
+                    override fun onResponse(mResponse: Response<JsonObject>) {
                         val loginResponse = if (mResponse.body() != null)
                             gson.fromJson<CommonModel>(
                                 "" + mResponse.body(),
@@ -94,7 +130,7 @@ class FuelRepository {
 
                     }
 
-                    override fun onError(mKey : String) {
+                    override fun onError(mKey: String) {
                         UtilsFunctions.showToastError(MyApplication.instance.getString(R.string.internal_server_error))
                         data3!!.postValue(null)
 
@@ -107,11 +143,11 @@ class FuelRepository {
 
     }
 
-    fun getVehicleList() : MutableLiveData<VehicleListResponse> {
+    fun getVehicleList(): MutableLiveData<VehicleListResponse> {
         val mApiService = ApiService<JsonObject>()
         mApiService.get(
             object : ApiResponse<JsonObject> {
-                override fun onResponse(mResponse : Response<JsonObject>) {
+                override fun onResponse(mResponse: Response<JsonObject>) {
                     val loginResponse = if (mResponse.body() != null)
                         gson.fromJson<VehicleListResponse>(
                             "" + mResponse.body(),
@@ -126,7 +162,7 @@ class FuelRepository {
                     data1!!.postValue(loginResponse)
                 }
 
-                override fun onError(mKey : String) {
+                override fun onError(mKey: String) {
                     UtilsFunctions.showToastError(MyApplication.instance.getString(R.string.internal_server_error))
                     data1!!.postValue(null)
                 }
@@ -138,11 +174,11 @@ class FuelRepository {
 
     }
 
-    fun getVendorList() : MutableLiveData<VendorListResponse> {
+    fun getVendorList(): MutableLiveData<VendorListResponse> {
         val mApiService = ApiService<JsonObject>()
         mApiService.get(
             object : ApiResponse<JsonObject> {
-                override fun onResponse(mResponse : Response<JsonObject>) {
+                override fun onResponse(mResponse: Response<JsonObject>) {
                     val loginResponse = if (mResponse.body() != null)
                         gson.fromJson<VendorListResponse>(
                             "" + mResponse.body(),
@@ -157,15 +193,54 @@ class FuelRepository {
                     data2!!.postValue(loginResponse)
                 }
 
-                override fun onError(mKey : String) {
+                override fun onError(mKey: String) {
                     UtilsFunctions.showToastError(MyApplication.instance.getString(R.string.internal_server_error))
                     data2!!.postValue(null)
                 }
 
-            }, ApiClient.getApiInterface().getVendorList(1,1000)
+            }, ApiClient.getApiInterface().getVendorList(1, 1000)
         )
 
         return data2!!
+
+    }
+
+    fun updateVehicleDetail(
+        hashMap: HashMap<String, RequestBody>?,
+        image: MultipartBody.Part?
+    ): MutableLiveData<CommonModel> {
+        if (hashMap != null) {
+            val mApiService = ApiService<JsonObject>()
+            mApiService.get(
+                object : ApiResponse<JsonObject> {
+                    override fun onResponse(mResponse: Response<JsonObject>) {
+                        val loginResponse = if (mResponse.body() != null)
+                            gson.fromJson<CommonModel>(
+                                "" + mResponse.body(),
+                                CommonModel::class.java
+                            )
+                        else {
+                            gson.fromJson<CommonModel>(
+                                mResponse.errorBody()!!.charStream(),
+                                CommonModel::class.java
+                            )
+                        }
+
+
+                        data3!!.postValue(loginResponse)
+
+                    }
+
+                    override fun onError(mKey: String) {
+                        UtilsFunctions.showToastError(MyApplication.instance.getString(R.string.internal_server_error))
+                        data3!!.postValue(null)
+
+                    }
+
+                }, ApiClient.getApiInterface().updateVehicleDetail(hashMap, image)
+            )
+        }
+        return data3!!
 
     }
 

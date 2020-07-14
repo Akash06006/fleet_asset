@@ -23,14 +23,14 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class ServicesListAdapter(
-    context : UpcomingServicesFragment,
-    jobsList : ArrayList<ServicesListResponse.Data>,
-    var activity : Context
+    context: UpcomingServicesFragment,
+    jobsList: ArrayList<ServicesListResponse.Data>,
+    var activity: Context
 ) :
     RecyclerView.Adapter<ServicesListAdapter.ViewHolder>() {
-    private val mContext : UpcomingServicesFragment
-    private var viewHolder : ViewHolder? = null
-    private var servicesList : ArrayList<ServicesListResponse.Data>
+    private val mContext: UpcomingServicesFragment
+    private var viewHolder: ViewHolder? = null
+    private var servicesList: ArrayList<ServicesListResponse.Data>
 
     init {
         this.mContext = context
@@ -38,7 +38,7 @@ class ServicesListAdapter(
     }
 
     @NonNull
-    override fun onCreateViewHolder(@NonNull parent : ViewGroup, viewType : Int) : ViewHolder {
+    override fun onCreateViewHolder(@NonNull parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
             R.layout.service_item,
@@ -50,15 +50,15 @@ class ServicesListAdapter(
 
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("SetTextI18n", "ResourceAsColor")
-    override fun onBindViewHolder(@NonNull holder : ViewHolder, position : Int) {
+    override fun onBindViewHolder(@NonNull holder: ViewHolder, position: Int) {
         viewHolder = holder
 
         holder.binding!!.tvDueDate.text = Utils(activity).getDate(
             "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
             servicesList[position].service_date,
-            "yyyy/MM/dd"
+            /*"yyyy/MM/dd"*/"dd-MMM,yyyy | hh:mm a"
         )
-       // holder.binding.tvServiceType.text = servicesList[position].vehicle_type
+        // holder.binding.tvServiceType.text = servicesList[position].vehicle_type
 
         if (!TextUtils.isEmpty(servicesList[position].vendor?.vendorName)) {
             holder.binding.tvVendorName.visibility = View.VISIBLE
@@ -79,19 +79,19 @@ class ServicesListAdapter(
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         var cur_date = year.toString() + "/" + (month + 1) + "/" + day.toString()
         var date1 = Date(cur_date)
-        var date2 = Date(holder.binding.tvDueDate.text.toString())
+       // var date2 = Date(holder.binding.tvDueDate.text.toString())
 // To calculate the time difference of two dates
-        var Difference_In_Time = date2.getTime() - date1.getTime()
+       // var Difference_In_Time = date2.getTime() - date1.getTime()
 // To calculate the no. of days between two dates
-        var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24)
-        if (Difference_In_Days < 0) {
-            holder.binding.mainLayout.setBackgroundColor(mContext.resources.getColor(R.color.colorRed))
-        } else if (Difference_In_Days >= 0 && Difference_In_Days <= 3) {
-            holder.binding.mainLayout.setBackgroundColor(mContext.resources.getColor(R.color.colorSuccess))
-        } else if (Difference_In_Days > 3 ) {
-            holder.binding.mainLayout.setBackgroundColor(mContext.resources.getColor(R.color.colorLightBlue))
-        }
-        holder.binding.btnUpdateService.setOnClickListener {
+        //var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24)
+        /* if (Difference_In_Days < 0) {
+             holder.binding.mainLayout.setBackgroundColor(mContext.resources.getColor(R.color.colorRed))
+         } else if (Difference_In_Days >= 0 && Difference_In_Days <= 3) {
+             holder.binding.mainLayout.setBackgroundColor(mContext.resources.getColor(R.color.colorSuccess))
+         } else if (Difference_In_Days > 3 ) {
+             holder.binding.mainLayout.setBackgroundColor(mContext.resources.getColor(R.color.colorLightBlue))
+         }*/
+        holder.binding.mainLayout.setOnClickListener {
             var vendorId = "0"
             if (!TextUtils.isEmpty(servicesList[position].vendor?.id)) {
                 vendorId = servicesList[position].vendor?.id!!
@@ -116,16 +116,16 @@ class ServicesListAdapter(
 
     }
 
-    override fun getItemCount() : Int {
+    override fun getItemCount(): Int {
         return servicesList.count()
     }
 
     inner class ViewHolder//This constructor would switch what to findViewBy according to the type of viewType
         (
-        v : View, val viewType : Int, //These are the general elements in the RecyclerView
-        val binding : ServiceItemBinding?,
-        mContext : UpcomingServicesFragment,
-        jobsList : ArrayList<ServicesListResponse.Data>
+        v: View, val viewType: Int, //These are the general elements in the RecyclerView
+        val binding: ServiceItemBinding?,
+        mContext: UpcomingServicesFragment,
+        jobsList: ArrayList<ServicesListResponse.Data>
     ) : RecyclerView.ViewHolder(v) {
         /* init {
              binding!!.linAddress.setOnClickListener {

@@ -16,12 +16,12 @@ import com.uniongoods.adapters.ServicesListAdapter
 
 class UpcomingServicesFragment : BaseFragment() {
     private var servicesList = ArrayList<ServicesListResponse.Data>()
-    override fun getLayoutResId() : Int {
+    override fun getLayoutResId(): Int {
         return R.layout.fragment_services
     }
 
-    private lateinit var fragmentServicesBinding : FragmentServicesBinding
-    private lateinit var servicesViewModel : ServicesViewModel
+    private lateinit var fragmentServicesBinding: FragmentServicesBinding
+    private lateinit var servicesViewModel: ServicesViewModel
     private val mJsonObject = JsonObject()
     override fun initView() {
         fragmentServicesBinding = viewDataBinding as FragmentServicesBinding
@@ -38,12 +38,13 @@ class UpcomingServicesFragment : BaseFragment() {
 
         //   servicesViewModel.getServicesList()
         servicesViewModel.getServicesList().observe(this,
-            Observer<ServicesListResponse> { response->
+            Observer<ServicesListResponse> { response ->
                 if (response != null) {
                     val message = response.message
                     baseActivity.stopProgressDialog()
                     when {
                         response.code == 200 -> {
+                            servicesList.clear()
                             if (response.data != null) {
                                 servicesList.addAll(response.data!!)
                                 fragmentServicesBinding.rvServices.visibility = View.VISIBLE
@@ -80,7 +81,7 @@ class UpcomingServicesFragment : BaseFragment() {
         fragmentServicesBinding.rvServices.adapter = servicesListAdapter
         fragmentServicesBinding.rvServices.addOnScrollListener(object :
             RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView : RecyclerView, dx : Int, dy : Int) {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
 
             }
         })
@@ -89,7 +90,7 @@ class UpcomingServicesFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         if (UtilsFunctions.isNetworkConnected()) {
-            servicesList.clear()
+
             servicesViewModel.getServices("0")
         }
     }

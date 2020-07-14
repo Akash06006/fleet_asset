@@ -34,8 +34,7 @@
                         android:textAllCaps="true"
                         android:textColor="@color/colorBlack"
                         android:textSize="@dimen/sp_18"
-                        android:visibility="gone"
-                        app:font="@{`bold`}" />
+                        android:visibility="gone" />
 
                 <TextView
                         android:id="@+id/txt_dia"
@@ -48,7 +47,6 @@
                         android:textAlignment="center"
                         android:textColor="@color/colorBlack2"
                         android:textSize="@dimen/sp_14"
-                        app:font="@{`regular`}"
                         tools:text="awsfaskja sajfcgsd vvkjsv sdvbkjsh smhvjk dbvkjddnbvmmsdn vmjdsvbkjdsv mndsvmndsbvmds vsmbvksd vdvdmbdm" />
 
                 <LinearLayout
@@ -87,7 +85,6 @@
                                 android:textColor="@color/colorBlack"
                                 android:textSize="@dimen/sp_15"
                                 android:textStyle="bold"
-                                app:font="@{`regular`}"
                                 tools:ignore="ButtonStyle" />
 
                     </RelativeLayout>
@@ -114,7 +111,6 @@
                                 android:textColor="@color/colorWhite"
                                 android:textSize="@dimen/sp_15"
                                 android:textStyle="bold"
-                                app:font="@{`regular`}"
                                 tools:ignore="ButtonStyle" />
                     </RelativeLayout>
 
